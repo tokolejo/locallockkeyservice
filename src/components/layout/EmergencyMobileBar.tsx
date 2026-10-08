@@ -51,8 +51,12 @@ export function EmergencyMobileBar() {
             {/* Direct Phone Call */}
             <a
               href={phoneRaw}
-              className="flex-1 flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs tracking-tight shadow-xs transition active:scale-[0.98]"
+              className="flex-1 flex items-center justify-center gap-2 py-3 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs tracking-tight shadow-xs transition active:scale-[0.98]"
             >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
               <PhoneCall className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
               <span className="truncate">CALL</span>
             </a>

@@ -428,8 +428,12 @@ export function ServicesSection({
             <div className="pt-2 sm:pt-4 border-t border-slate-200/90 flex flex-col sm:flex-row items-center justify-center gap-3">
               <a
                 href={phoneRaw}
-                className="w-full sm:w-auto px-6 py-3.5 rounded-xl sm:rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm tracking-wide shadow-sm hover:shadow transition flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99]"
+                className="w-full sm:w-auto px-6 py-3.5 rounded-xl sm:rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm tracking-wide shadow-sm hover:shadow transition flex items-center justify-center gap-2.5 cursor-pointer active:scale-[0.99]"
               >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
                 <PhoneCall className="w-4 h-4 text-emerald-400" />
                 <span>CALL</span>
               </a>
