@@ -286,7 +286,7 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
   }, [selectedJob, handleNextPhoto, handlePrevPhoto]);
 
   return (
-    <section id="gallery" className="py-16 sm:py-24 bg-white border-b border-slate-200 scroll-mt-20">
+    <section id="gallery" className="py-16 sm:py-24 bg-white border-b border-slate-200 scroll-mt-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <ScrollReveal direction="up">

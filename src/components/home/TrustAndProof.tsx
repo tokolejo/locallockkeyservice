@@ -64,7 +64,7 @@ export function TrustAndProof({ testimonials = [] }: TrustAndProofProps) {
   };
 
   return (
-    <section id="reviews" className="py-6 sm:py-14 md:py-20 bg-white border-b border-slate-200 text-slate-800 scroll-mt-20">
+    <section id="reviews" className="py-6 sm:py-14 md:py-20 bg-white border-b border-slate-200 text-slate-800 scroll-mt-28">
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 space-y-6 sm:space-y-12 md:space-y-16">
         {/* 0. Live Scroll-Triggered Impact Numbers */}
         <ScrollReveal direction="up">

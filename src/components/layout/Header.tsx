@@ -39,7 +39,10 @@ export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: Header
 
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
-    setMobileMenuOpen(false);
+    const wasMenuOpen = mobileMenuOpen;
+    if (wasMenuOpen) {
+      setMobileMenuOpen(false);
+    }
 
     if (typeof window === "undefined") return;
 
@@ -56,17 +59,33 @@ export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: Header
       return;
     }
 
-    const element = document.getElementById(targetId);
-    if (element) {
-      const headerOffset = 85;
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    const executeScroll = () => {
+      const element = document.getElementById(targetId);
+      if (element) {
+        let actualTop = 0;
+        let curr: HTMLElement | null = element;
+        while (curr) {
+          actualTop += curr.offsetTop;
+          curr = curr.offsetParent as HTMLElement | null;
+        }
 
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      });
-      window.history.pushState(null, "", `#${targetId}`);
+        // Generous offset so sticky header never clips badges or titles
+        const headerOffset = window.innerWidth >= 768 ? 115 : 95;
+        const targetScroll = Math.max(0, actualTop - headerOffset);
+
+        window.scrollTo({
+          top: targetScroll,
+          behavior: "smooth",
+        });
+
+        window.history.pushState(null, "", `#${targetId}`);
+      }
+    };
+
+    if (wasMenuOpen) {
+      setTimeout(executeScroll, 120);
+    } else {
+      executeScroll();
     }
   };
 

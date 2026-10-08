@@ -275,7 +275,7 @@ export function ServicesSection({
   return (
     <section
       id="services"
-      className="py-6 sm:py-14 md:py-20 bg-white border-b border-slate-200 text-slate-800 relative scroll-mt-16"
+      className="py-6 sm:py-14 md:py-20 bg-white border-b border-slate-200 text-slate-800 relative scroll-mt-28"
     >
       <div id="estimator" className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
         {/* Section Header */}

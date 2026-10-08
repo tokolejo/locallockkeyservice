@@ -55,7 +55,7 @@ export function CoverageMap({}: CoverageMapProps) {
   const phoneRaw = process.env.NEXT_PUBLIC_DISPATCH_PHONE_RAW || "tel:+16032905554";
 
   return (
-    <section id="coverage" className="py-6 sm:py-12 md:py-16 bg-[#faf9f6] border-b border-slate-200 text-slate-800 scroll-mt-20">
+    <section id="coverage" className="py-6 sm:py-12 md:py-16 bg-[#faf9f6] border-b border-slate-200 text-slate-800 scroll-mt-28">
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">
           <div className="bg-white border border-slate-200 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 shadow-xs space-y-4 sm:space-y-6">
