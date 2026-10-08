@@ -37,14 +37,48 @@ export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: Header
     "Hello, I need locksmith service (Local Lock & Key Service)"
   )}`;
 
+  const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+
+    if (typeof window === "undefined") return;
+
+    if (window.location.pathname !== "/") {
+      window.location.href = targetId === "top" ? "/" : `/#${targetId}`;
+      return;
+    }
+
+    if (targetId === "top") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (window.location.hash) {
+        window.history.pushState(null, "", window.location.pathname);
+      }
+      return;
+    }
+
+    const element = document.getElementById(targetId);
+    if (element) {
+      const headerOffset = 85;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+      window.history.pushState(null, "", `#${targetId}`);
+    }
+  };
+
   return (
     <header className="w-full sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-xs text-slate-800 transition-colors">
       {/* Main Navigation Bar */}
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-18 sm:h-20 md:h-22 flex items-center justify-between gap-4">
         {/* Left: Brand Identity */}
         <div className="flex items-center shrink-0">
-          <Link
+          <a
             href="/"
+            onClick={(e) => handleScrollTo(e, "top")}
             className="flex items-center group cursor-pointer shrink-0 py-1"
             title="Local Lock & Key Service - Manchester NH Locksmith"
             aria-label="Local Lock & Key Service - Manchester NH Locksmith"
@@ -54,27 +88,47 @@ export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: Header
               alt="Local Lock & Key Service Logo"
               className="h-11 sm:h-13 md:h-15 w-auto max-w-[240px] sm:max-w-[300px] md:max-w-[340px] object-contain transition-transform duration-200 group-hover:scale-[1.03]"
             />
-          </Link>
+          </a>
         </div>
 
         {/* Center: Desktop Quick Nav Links */}
         <nav className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 text-sm font-semibold text-slate-700 flex-1 px-4">
-          <Link href="#about" className="hover:text-emerald-700 transition">
+          <a
+            href="#about"
+            onClick={(e) => handleScrollTo(e, "about")}
+            className="hover:text-emerald-700 transition"
+          >
             About Us
-          </Link>
-          <Link href="#services" className="hover:text-emerald-700 transition">
+          </a>
+          <a
+            href="#services"
+            onClick={(e) => handleScrollTo(e, "services")}
+            className="hover:text-emerald-700 transition"
+          >
             {t("nav_services")}
-          </Link>
-          <Link href="#gallery" className="hover:text-emerald-700 transition flex items-center gap-1.5 font-bold text-slate-900 bg-slate-100 hover:bg-emerald-50 px-3 py-1 rounded-lg">
+          </a>
+          <a
+            href="#gallery"
+            onClick={(e) => handleScrollTo(e, "gallery")}
+            className="hover:text-emerald-700 transition flex items-center gap-1.5 font-bold text-slate-900 bg-slate-100 hover:bg-emerald-50 px-3 py-1 rounded-lg"
+          >
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             {t("nav_gallery")}
-          </Link>
-          <Link href="#coverage" className="hover:text-emerald-700 transition">
+          </a>
+          <a
+            href="#coverage"
+            onClick={(e) => handleScrollTo(e, "coverage")}
+            className="hover:text-emerald-700 transition"
+          >
             {t("nav_coverage")}
-          </Link>
-          <Link href="#reviews" className="hover:text-emerald-700 transition">
+          </a>
+          <a
+            href="#reviews"
+            onClick={(e) => handleScrollTo(e, "reviews")}
+            className="hover:text-emerald-700 transition"
+          >
             {t("nav_reviews")}
-          </Link>
+          </a>
         </nav>
 
         {/* Right: Desktop Actions */}
@@ -120,50 +174,50 @@ export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: Header
         <div className="md:hidden bg-white border-t border-slate-200 px-4 pt-3 pb-6 space-y-4 shadow-xl animate-in slide-in-from-top-2 duration-150">
           {/* Nav Links with Clear Icons */}
           <div className="grid grid-cols-2 gap-2 text-xs font-bold text-slate-800 pt-1">
-            <Link
+            <a
               href="#about"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={(e) => handleScrollTo(e, "about")}
               className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 transition-colors"
             >
               <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
               <span className="truncate">About Us</span>
-            </Link>
+            </a>
 
-            <Link
+            <a
               href="#services"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={(e) => handleScrollTo(e, "services")}
               className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 transition-colors"
             >
               <Wrench className="w-4 h-4 text-emerald-700 shrink-0" />
               <span className="truncate">{t("nav_services")}</span>
-            </Link>
+            </a>
 
-            <Link
+            <a
               href="#gallery"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={(e) => handleScrollTo(e, "gallery")}
               className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 transition-colors"
             >
               <Camera className="w-4 h-4 text-emerald-700 shrink-0" />
               <span className="truncate">{t("nav_gallery")}</span>
-            </Link>
+            </a>
 
-            <Link
+            <a
               href="#coverage"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={(e) => handleScrollTo(e, "coverage")}
               className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 transition-colors"
             >
               <MapPin className="w-4 h-4 text-emerald-700 shrink-0" />
               <span className="truncate">{t("nav_coverage")}</span>
-            </Link>
+            </a>
 
-            <Link
+            <a
               href="#reviews"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 transition-colors"
+              onClick={(e) => handleScrollTo(e, "reviews")}
+              className="col-span-2 flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 transition-colors text-center"
             >
               <Star className="w-4 h-4 text-amber-500 fill-amber-500 shrink-0" />
-              <span className="truncate">{t("nav_reviews")}</span>
-            </Link>
+              <span>{t("nav_reviews")}</span>
+            </a>
           </div>
 
           {/* Quick Action Buttons in Menu */}
