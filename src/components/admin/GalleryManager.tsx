@@ -31,6 +31,10 @@ export function GalleryManager({ initialItems }: GalleryManagerProps) {
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
+  // Pagination (6 items per batch)
+  const GALLERY_PAGE_SIZE = 6;
+  const [displayLimit, setDisplayLimit] = useState<number>(GALLERY_PAGE_SIZE);
+
   // Form states for creating / editing
   const [formData, setFormData] = useState<{
     title: string;
@@ -543,84 +547,113 @@ export function GalleryManager({ initialItems }: GalleryManagerProps) {
       )}
 
       {/* Gallery Items Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {items.map((item) => {
-          const coverImg = item.cover_image || item.images[0] || "/gallery/hero-banner.png";
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {items.slice(0, displayLimit).map((item) => {
+            const coverImg = item.cover_image || item.images[0] || "/gallery/hero-banner.png";
 
-          return (
-            <div
-              key={item.id}
-              className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs hover:shadow-md flex flex-col justify-between group hover:border-slate-300 transition"
-            >
-              <div>
-                {/* Photo Preview Container with Cover indicator */}
-                <div className="relative h-48 w-full bg-slate-100 overflow-hidden">
-                  <img
-                    src={coverImg}
-                    alt={item.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
+            return (
+              <div
+                key={item.id}
+                className="bg-white border border-slate-200/90 rounded-xl overflow-hidden shadow-xs hover:shadow-sm flex flex-col justify-between group hover:border-slate-300 transition"
+              >
+                <div>
+                  {/* Photo Preview Container with Cover indicator (h-36 max) */}
+                  <div className="relative h-36 w-full bg-slate-100 overflow-hidden">
+                    <img
+                      src={coverImg}
+                      alt={item.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
 
-                  {/* Badges on image */}
-                  <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                    <span className="px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-md text-[10px] font-bold text-white border border-white/10">
-                      {item.category_label}
-                    </span>
-                    <span className="px-2 py-0.5 rounded-md bg-emerald-600 text-[10px] font-bold text-white flex items-center gap-1 shadow-xs">
-                      <Star className="w-2.5 h-2.5 fill-white" />
-                      Cover
-                    </span>
+                    {/* Compact Badges on image */}
+                    <div className="absolute top-2 left-2 flex flex-wrap gap-1">
+                      <span className="px-1.5 py-0.5 rounded bg-black/60 backdrop-blur-md text-[10px] font-bold text-white border border-white/10">
+                        {item.category_label}
+                      </span>
+                      <span className="px-1.5 py-0.5 rounded bg-emerald-600 text-[10px] font-bold text-white flex items-center gap-1 shadow-xs">
+                        <Star className="w-2.5 h-2.5 fill-white" />
+                        Cover
+                      </span>
+                    </div>
+
+                    <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md px-1.5 py-0.5 rounded text-[10px] font-medium text-white flex items-center gap-1 border border-white/10">
+                      <ImageIcon className="w-3 h-3 text-emerald-400" />
+                      <span>{item.images.length}</span>
+                    </div>
+
+                    <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-1.5 py-0.5 rounded text-[10px] text-white flex items-center gap-1">
+                      <MapPin className="w-3 h-3 text-emerald-400" />
+                      <span className="truncate max-w-[140px]">{item.location}</span>
+                    </div>
                   </div>
 
-                  <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-md text-[10px] font-medium text-white flex items-center gap-1 border border-white/10">
-                    <ImageIcon className="w-3 h-3 text-emerald-400" />
-                    <span>{item.images.length} photos</span>
-                  </div>
+                  {/* Content (compact p-3.5) */}
+                  <div className="p-3.5 space-y-1.5">
+                    <div className="flex items-center justify-between text-[10px] text-slate-400 font-medium">
+                      <span>{item.date_badge}</span>
+                      <span>#{item.display_order}</span>
+                    </div>
 
-                  <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-md text-[10px] text-white flex items-center gap-1">
-                    <MapPin className="w-3 h-3 text-emerald-400" />
-                    <span>{item.location}</span>
+                    <h3 className="font-bold text-slate-900 text-xs sm:text-[13px] line-clamp-1 group-hover:text-emerald-700 transition-colors">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-slate-500 text-[11px] line-clamp-2 leading-relaxed">
+                      {item.description}
+                    </p>
                   </div>
                 </div>
 
-                {/* Content */}
-                <div className="p-5 space-y-2.5">
-                  <div className="flex items-center justify-between text-[11px] text-slate-400 font-medium">
-                    <span>{item.date_badge}</span>
-                    <span>Order: #{item.display_order}</span>
-                  </div>
+                {/* Compact Action buttons */}
+                <div className="px-3.5 pb-3 pt-2 border-t border-slate-100 flex items-center justify-end gap-1.5">
+                  <button
+                    onClick={() => handleStartEdit(item)}
+                    className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold transition cursor-pointer"
+                  >
+                    <Edit2 className="w-3 h-3 text-emerald-600" />
+                    <span>Edit</span>
+                  </button>
 
-                  <h3 className="font-bold text-slate-900 text-sm line-clamp-1 group-hover:text-emerald-700 transition-colors">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-slate-500 text-xs line-clamp-2 leading-relaxed">
-                    {item.description}
-                  </p>
+                  <button
+                    onClick={() => handleDelete(item.id, item.title)}
+                    className="p-1 rounded-md bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-600 text-xs transition cursor-pointer"
+                    title="Delete"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
+            );
+          })}
+        </div>
 
-              {/* Action buttons */}
-              <div className="px-5 pb-5 pt-2 border-t border-slate-100 flex items-center justify-end gap-2">
+        {/* Pagination / Load More Footer */}
+        {items.length > GALLERY_PAGE_SIZE && (
+          <div className="bg-white border border-slate-200 rounded-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-2.5 shadow-xs">
+            <span className="text-xs text-slate-500 font-medium">
+              Showing {Math.min(displayLimit, items.length)} of {items.length} items
+            </span>
+            <div className="flex items-center gap-2">
+              {displayLimit < items.length && (
                 <button
-                  onClick={() => handleStartEdit(item)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold transition cursor-pointer"
+                  onClick={() => setDisplayLimit((prev) => prev + GALLERY_PAGE_SIZE)}
+                  className="px-3.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-xs font-semibold text-emerald-700 transition cursor-pointer"
                 >
-                  <Edit2 className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>Edit</span>
+                  Load More ({items.length - displayLimit} remaining)
                 </button>
-
+              )}
+              {displayLimit > GALLERY_PAGE_SIZE && (
                 <button
-                  onClick={() => handleDelete(item.id, item.title)}
-                  className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-600 text-xs transition cursor-pointer"
-                  title="Delete"
+                  onClick={() => setDisplayLimit(GALLERY_PAGE_SIZE)}
+                  className="px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-medium text-slate-600 transition cursor-pointer"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  Show Less
                 </button>
-              </div>
+              )}
             </div>
-          );
-        })}
+          </div>
+        )}
       </div>
     </div>
   );

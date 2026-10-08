@@ -29,40 +29,40 @@ export function AnalyticsCards({ requests }: AnalyticsCardsProps) {
         {/* Total Emergency Inquiries */}
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
           <div className="flex items-center justify-between text-slate-500 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider">Total Inquiries</span>
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Total Inquiries</span>
             <div className="p-2 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-600">
               <PhoneCall className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black text-slate-900">{totalCalls}</div>
+          <div className="text-2xl font-bold tracking-tight text-slate-900 tabular-nums">{totalCalls}</div>
           <p className="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
-            <span className="text-emerald-700 font-bold">{activeDispatches}</span> active in dispatch queue
+            <span className="text-emerald-700 font-semibold">{activeDispatches}</span> active in dispatch queue
           </p>
         </div>
 
         {/* Completed Jobs */}
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
           <div className="flex items-center justify-between text-slate-500 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider">Completed Jobs</span>
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Completed Jobs</span>
             <div className="p-2 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-600">
               <CheckCircle2 className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black text-slate-900">{completedJobs}</div>
+          <div className="text-2xl font-bold tracking-tight text-slate-900 tabular-nums">{completedJobs}</div>
           <p className="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
-            <span className="text-emerald-700 font-bold">100%</span> damage-free verified
+            <span className="text-emerald-700 font-semibold">100%</span> damage-free verified
           </p>
         </div>
 
         {/* Conversion Rate */}
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
           <div className="flex items-center justify-between text-slate-500 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider">Dispatch Conversion</span>
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Dispatch Conversion</span>
             <div className="p-2 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-600">
               <TrendingUp className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black text-slate-900">{conversionRate}%</div>
+          <div className="text-2xl font-bold tracking-tight text-slate-900 tabular-nums">{conversionRate}%</div>
           <p className="text-[11px] text-slate-500 mt-1">
             Industry standard: 68% • +{conversionRate - 68}% above avg
           </p>
@@ -71,12 +71,12 @@ export function AnalyticsCards({ requests }: AnalyticsCardsProps) {
         {/* Average ETA */}
         <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
           <div className="flex items-center justify-between text-slate-500 mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider">Avg Response ETA</span>
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Avg Response ETA</span>
             <div className="p-2 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-600">
               <Clock className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black text-emerald-700">
+          <div className="text-2xl font-bold tracking-tight text-emerald-700">
             15–20 Mins
           </div>
           <p className="text-[11px] text-slate-500 mt-1">

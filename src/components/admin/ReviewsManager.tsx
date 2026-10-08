@@ -39,6 +39,10 @@ export function ReviewsManager({ initialTestimonials }: ReviewsManagerProps) {
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
+  // Pagination (6 reviews per batch)
+  const REVIEWS_PAGE_SIZE = 6;
+  const [reviewsLimit, setReviewsLimit] = useState<number>(REVIEWS_PAGE_SIZE);
+
   // Form State
   const [formData, setFormData] = useState<Omit<Testimonial, "id" | "created_at">>({
     author_name: "",
@@ -219,10 +223,10 @@ export function ReviewsManager({ initialTestimonials }: ReviewsManagerProps) {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-black text-slate-900 text-base sm:text-lg">
+              <span className="font-bold tracking-tight text-slate-900 text-base sm:text-lg">
                 Local Lock & Key Service
               </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-50 text-blue-700 border border-blue-200">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200">
                 Google Verified
               </span>
             </div>
@@ -486,23 +490,23 @@ export function ReviewsManager({ initialTestimonials }: ReviewsManagerProps) {
             {reviews.map((r) => (
               <div
                 key={r.id}
-                className={`shrink-0 w-[300px] sm:w-[360px] md:w-[400px] snap-start bg-white border rounded-2xl p-5 sm:p-6 text-slate-800 flex flex-col justify-between shadow-xs hover:shadow-md ${
+                className={`shrink-0 w-[280px] sm:w-[320px] md:w-[350px] snap-start bg-white border rounded-xl p-3.5 sm:p-4 text-slate-800 flex flex-col justify-between shadow-xs hover:shadow-sm ${
                   r.is_approved ? "border-slate-200" : "border-amber-200 bg-amber-50/20"
                 }`}
               >
                 <div>
-                  <div className="flex items-center justify-between mb-3 pb-3 border-b border-slate-100">
+                  <div className="flex items-center justify-between mb-2.5 pb-2.5 border-b border-slate-100">
                     <div className="flex items-center gap-1">
                       {[...Array(r.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                        <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
                       ))}
-                      <span className="text-xs font-black text-slate-900 ml-1.5">{r.rating}.0</span>
+                      <span className="text-xs font-bold tabular-nums text-slate-900 ml-1">{r.rating}.0</span>
                     </div>
 
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1">
                       <button
                         onClick={() => toggleFeatured(r)}
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full border cursor-pointer ${
+                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full border cursor-pointer ${
                           r.is_featured
                             ? "bg-amber-50 text-amber-800 border-amber-200"
                             : "bg-slate-100 text-slate-500 border-slate-200"
@@ -513,7 +517,7 @@ export function ReviewsManager({ initialTestimonials }: ReviewsManagerProps) {
 
                       <button
                         onClick={() => toggleApproval(r)}
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase border cursor-pointer ${
+                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase border cursor-pointer ${
                           r.is_approved
                             ? "bg-emerald-50 text-emerald-700 border-emerald-200"
                             : "bg-rose-50 text-rose-700 border-rose-200"
@@ -524,35 +528,35 @@ export function ReviewsManager({ initialTestimonials }: ReviewsManagerProps) {
                     </div>
                   </div>
 
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed italic mb-4 min-h-[60px]">
+                  <p className="text-xs text-slate-600 leading-relaxed italic mb-3 line-clamp-2">
                     &ldquo;{r.review_text}&rdquo;
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
+                <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
                     <ReviewAvatar
                       photoUrl={r.author_photo}
                       name={r.author_name}
                       size="sm"
                     />
                     <div>
-                      <span className="font-bold text-slate-900 text-xs block">{r.author_name}</span>
-                      <span className="text-[10px] text-slate-500 block">{r.service_type}</span>
+                      <span className="font-bold text-slate-900 text-xs block truncate max-w-[120px]">{r.author_name}</span>
+                      <span className="text-[10px] text-slate-500 block truncate max-w-[130px]">{r.service_type}</span>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => handleStartEdit(r)}
-                      className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
+                      className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
                       title="Edit"
                     >
                       <Edit2 className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => handleDelete(r.id, r.author_name)}
-                      className="p-1.5 rounded-lg text-rose-500 hover:text-rose-700 hover:bg-rose-50 cursor-pointer"
+                      className="p-1 rounded-md text-rose-500 hover:text-rose-700 hover:bg-rose-50 cursor-pointer"
                       title="Delete"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -564,87 +568,116 @@ export function ReviewsManager({ initialTestimonials }: ReviewsManagerProps) {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {reviews.map((r) => (
-            <div
-              key={r.id}
-              className={`bg-white border rounded-2xl p-5 text-slate-800 flex flex-col justify-between shadow-xs transition hover:shadow-md hover:border-slate-300 ${
-                r.is_approved ? "border-slate-200" : "border-amber-200 bg-amber-50/20"
-              }`}
-            >
-              <div>
-                <div className="flex items-center justify-between mb-3 pb-3 border-b border-slate-100">
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {reviews.slice(0, reviewsLimit).map((r) => (
+              <div
+                key={r.id}
+                className={`bg-white border rounded-xl p-3.5 sm:p-4 text-slate-800 flex flex-col justify-between shadow-xs transition hover:shadow-sm hover:border-slate-300 ${
+                  r.is_approved ? "border-slate-200" : "border-amber-200 bg-amber-50/20"
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-2.5 pb-2.5 border-b border-slate-100">
+                    <div className="flex items-center gap-1">
+                      {[...Array(r.rating)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                      ))}
+                      <span className="text-xs font-bold tabular-nums text-slate-900 ml-1">{r.rating}.0</span>
+                    </div>
+
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => toggleFeatured(r)}
+                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full border cursor-pointer ${
+                          r.is_featured
+                            ? "bg-amber-50 text-amber-800 border-amber-200"
+                            : "bg-slate-100 text-slate-500 border-slate-200"
+                        }`}
+                      >
+                        {r.is_featured ? "Featured" : "Regular"}
+                      </button>
+
+                      <button
+                        onClick={() => toggleApproval(r)}
+                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase border cursor-pointer ${
+                          r.is_approved
+                            ? "bg-emerald-50 text-emerald-700 border-emerald-200"
+                            : "bg-rose-50 text-rose-700 border-rose-200"
+                        }`}
+                      >
+                        {r.is_approved ? "Live" : "Hidden"}
+                      </button>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-slate-600 leading-relaxed italic mb-3 line-clamp-2">
+                    &ldquo;{r.review_text}&rdquo;
+                  </p>
+                </div>
+
+                <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <ReviewAvatar
+                      photoUrl={r.author_photo}
+                      name={r.author_name}
+                      size="sm"
+                    />
+                    <div>
+                      <span className="font-bold text-slate-900 text-xs block truncate max-w-[130px]">{r.author_name}</span>
+                      <span className="text-[10px] text-slate-500 block truncate max-w-[140px]">
+                        {r.service_type}
+                      </span>
+                    </div>
+                  </div>
+
                   <div className="flex items-center gap-1">
-                    {[...Array(r.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                    ))}
-                    <span className="text-xs font-black text-slate-900 ml-1.5">{r.rating}.0</span>
-                  </div>
-
-                  <div className="flex items-center gap-1.5">
                     <button
-                      onClick={() => toggleFeatured(r)}
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full border cursor-pointer ${
-                        r.is_featured
-                          ? "bg-amber-50 text-amber-800 border-amber-200"
-                          : "bg-slate-100 text-slate-500 border-slate-200"
-                      }`}
+                      onClick={() => handleStartEdit(r)}
+                      className="p-1 rounded-md text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
+                      title="Edit"
                     >
-                      {r.is_featured ? "Featured" : "Regular"}
+                      <Edit2 className="w-3.5 h-3.5" />
                     </button>
-
                     <button
-                      onClick={() => toggleApproval(r)}
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase border cursor-pointer ${
-                        r.is_approved
-                          ? "bg-emerald-50 text-emerald-700 border-emerald-200"
-                          : "bg-rose-50 text-rose-700 border-rose-200"
-                      }`}
+                      onClick={() => handleDelete(r.id, r.author_name)}
+                      className="p-1 rounded-md text-rose-500 hover:text-rose-700 hover:bg-rose-50 cursor-pointer"
+                      title="Delete"
                     >
-                      {r.is_approved ? "Live" : "Hidden"}
+                      <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
-
-                <p className="text-xs text-slate-600 leading-relaxed italic mb-4 min-h-[50px]">
-                  &ldquo;{r.review_text}&rdquo;
-                </p>
               </div>
+            ))}
+          </div>
 
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <ReviewAvatar
-                    photoUrl={r.author_photo}
-                    name={r.author_name}
-                    size="sm"
-                  />
-                  <div>
-                    <span className="font-bold text-slate-900 text-xs block">{r.author_name}</span>
-                    <span className="text-[10px] text-slate-500 block truncate max-w-[160px]">
-                      {r.service_type}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-1">
+          {/* Pagination / Load More Footer */}
+          {reviews.length > REVIEWS_PAGE_SIZE && (
+            <div className="bg-white border border-slate-200 rounded-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-2.5 shadow-xs">
+              <span className="text-xs text-slate-500 font-medium">
+                Showing {Math.min(reviewsLimit, reviews.length)} of {reviews.length} reviews
+              </span>
+              <div className="flex items-center gap-2">
+                {reviewsLimit < reviews.length && (
                   <button
-                    onClick={() => handleStartEdit(r)}
-                    className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
-                    title="Edit"
+                    onClick={() => setReviewsLimit((prev) => prev + REVIEWS_PAGE_SIZE)}
+                    className="px-3.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-xs font-semibold text-emerald-700 transition cursor-pointer"
                   >
-                    <Edit2 className="w-3.5 h-3.5" />
+                    Load More ({reviews.length - reviewsLimit} remaining)
                   </button>
+                )}
+                {reviewsLimit > REVIEWS_PAGE_SIZE && (
                   <button
-                    onClick={() => handleDelete(r.id, r.author_name)}
-                    className="p-1.5 rounded-lg text-rose-500 hover:text-rose-700 hover:bg-rose-50 cursor-pointer"
-                    title="Delete"
+                    onClick={() => setReviewsLimit(REVIEWS_PAGE_SIZE)}
+                    className="px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-medium text-slate-600 transition cursor-pointer"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    Show Less
                   </button>
-                </div>
+                )}
               </div>
             </div>
-          ))}
+          )}
         </div>
       )}
     </div>

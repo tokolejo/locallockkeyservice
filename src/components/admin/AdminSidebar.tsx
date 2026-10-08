@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Wrench,
@@ -16,11 +16,25 @@ import {
   Menu,
   X,
   ShieldCheck,
+  LogOut,
 } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 export function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+
+
+  const handleSignOut = async () => {
+    const supabase = createClient();
+    if (supabase) {
+      await supabase.auth.signOut();
+    }
+    router.push("/admin/login");
+    router.refresh();
+  };
+
 
   // Close drawer on path change
   useEffect(() => {
@@ -82,15 +96,12 @@ export function AdminSidebar() {
     <>
       {/* 1. Mobile Top Sticky Header with Hamburger Button (< md) */}
       <header className="md:hidden sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 py-3 flex items-center justify-between text-slate-800 shadow-xs">
-        <Link href="/admin" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white shadow-md shadow-emerald-600/20">
-            <KeyRound className="w-4 h-4" />
-          </div>
-          <div>
-            <span className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-1">
-              LOCAL LOCK <span className="text-emerald-600">ADMIN</span>
-            </span>
-          </div>
+        <Link href="/admin" className="flex items-center gap-2 group min-w-0">
+          <img
+            src="/gallery/logo.png"
+            alt="Local Lock & Key Service Logo"
+            className="h-7 sm:h-8 w-auto max-w-[170px] sm:max-w-[200px] object-contain"
+          />
         </Link>
 
         <div className="flex items-center gap-2">
@@ -130,19 +141,16 @@ export function AdminSidebar() {
                 <Link
                   href="/admin"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-2.5"
+                  className="flex flex-col gap-1 min-w-0"
                 >
-                  <div className="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-md shadow-emerald-600/20">
-                    <KeyRound className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-base font-bold text-slate-900 tracking-tight flex items-center gap-1">
-                      LOCAL LOCK <span className="text-emerald-600">ADMIN</span>
-                    </span>
-                    <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">
-                      Content Management
-                    </span>
-                  </div>
+                  <img
+                    src="/gallery/logo.png"
+                    alt="Local Lock & Key Service Logo"
+                    className="h-8 w-auto max-w-[175px] object-contain"
+                  />
+                  <span className="text-[10px] uppercase font-semibold tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-md inline-block w-fit">
+                    Admin Portal
+                  </span>
                 </Link>
 
                 <button
@@ -155,7 +163,7 @@ export function AdminSidebar() {
 
               {/* Navigation Links */}
               <nav className="space-y-1">
-                <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 mb-2">
+                <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 px-3 mb-2">
                   Management Navigation
                 </div>
                 {navLinks.map((item) => {
@@ -197,7 +205,7 @@ export function AdminSidebar() {
                 <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
               </Link>
               <div className="text-[11px] text-slate-400 text-center">
-                Local Locksmith Admin v2.4 • Production
+                Local Lock & Key Service • Admin Portal
               </div>
             </div>
           </div>
@@ -208,23 +216,20 @@ export function AdminSidebar() {
       <aside className="hidden md:flex w-64 bg-white border-r border-slate-200/90 flex-col justify-between shrink-0 min-h-screen text-slate-700 shadow-xs">
         <div className="p-5">
           {/* Brand */}
-          <Link href="/admin" className="flex items-center gap-2.5 mb-8 group">
-            <div className="w-9 h-9 rounded-lg bg-emerald-600 flex items-center justify-center text-white shadow-md shadow-emerald-600/20">
-              <KeyRound className="w-5 h-5" />
-            </div>
-            <div>
-              <span className="text-base font-bold text-slate-900 tracking-tight flex items-center gap-1">
-                LOCAL LOCK <span className="text-emerald-600">ADMIN</span>
-              </span>
-              <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">
-                Content & Site Control
-              </span>
-            </div>
+          <Link href="/admin" className="flex flex-col gap-1.5 mb-6 group min-w-0">
+            <img
+              src="/gallery/logo.png"
+              alt="Local Lock & Key Service Logo"
+              className="h-9 w-auto max-w-[200px] object-contain transition-transform group-hover:scale-[1.02]"
+            />
+            <span className="text-[10px] uppercase font-semibold tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-md inline-block w-fit">
+              Admin Portal
+            </span>
           </Link>
 
           {/* Navigation */}
           <nav className="space-y-1">
-            <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-3 mb-2">
+            <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 px-3 mb-2">
               Management Portal
             </div>
             {navLinks.map((item) => {
@@ -262,6 +267,17 @@ export function AdminSidebar() {
             <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 transition" />
           </Link>
 
+          {/* Sign Out Button */}
+          <button
+            onClick={handleSignOut}
+            className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 border border-rose-200/80 text-xs font-semibold text-rose-700 hover:text-rose-800 transition cursor-pointer"
+          >
+            <span className="flex items-center gap-2">
+              <LogOut className="w-3.5 h-3.5 text-rose-600" />
+              Sign Out
+            </span>
+          </button>
+
           <div className="flex items-center justify-between text-[11px] text-slate-500 px-1">
             <span>Admin Status:</span>
             <span className="text-emerald-600 font-semibold flex items-center gap-1.5">
@@ -274,3 +290,4 @@ export function AdminSidebar() {
     </>
   );
 }
+

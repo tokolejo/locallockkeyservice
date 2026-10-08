@@ -33,8 +33,41 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  // Refresh session if needed
-  await supabase.auth.getUser();
+  // Refresh session and get authenticated user
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const pathname = request.nextUrl.pathname;
+
+  // Protect sensitive internal API routes against unauthenticated access
+  const protectedApiPrefixes = ["/api/dispatch", "/api/logs", "/api/upload"];
+  if (protectedApiPrefixes.some((prefix) => pathname.startsWith(prefix))) {
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized access: Admin authentication required" },
+        { status: 401 }
+      );
+    }
+  }
+
+  // Protect /admin routes (except /admin/login)
+  if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
+    if (!user) {
+      const loginUrl = request.nextUrl.clone();
+      loginUrl.pathname = "/admin/login";
+      loginUrl.searchParams.set("redirectedFrom", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+  }
+
+  // If user is already logged in and navigates to /admin/login, redirect to /admin
+  if (pathname === "/admin/login" && user) {
+    const adminUrl = request.nextUrl.clone();
+    adminUrl.pathname = "/admin";
+    adminUrl.searchParams.delete("redirectedFrom");
+    return NextResponse.redirect(adminUrl);
+  }
 
   return supabaseResponse;
 }

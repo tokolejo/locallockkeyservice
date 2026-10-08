@@ -93,14 +93,14 @@ export function DispatchTable({ requests, onDataChanged }: DispatchTableProps) {
       <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-700">
-            <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider text-[10px] border-b border-slate-200">
+            <thead className="bg-slate-50 text-slate-500 uppercase tracking-wider text-[11px] font-semibold border-b border-slate-200">
               <tr>
-                <th className="py-3.5 px-4 font-bold">Caller & Contact</th>
-                <th className="py-3.5 px-4 font-bold">Location & ZIP</th>
-                <th className="py-3.5 px-4 font-bold">Service & Vehicle</th>
-                <th className="py-3.5 px-4 font-bold">Status</th>
-                <th className="py-3.5 px-4 font-bold">Assigned Tech</th>
-                <th className="py-3.5 px-4 font-bold text-right">Time</th>
+                <th className="py-3.5 px-4 font-semibold">Caller & Contact</th>
+                <th className="py-3.5 px-4 font-semibold">Location & ZIP</th>
+                <th className="py-3.5 px-4 font-semibold">Service & Vehicle</th>
+                <th className="py-3.5 px-4 font-semibold">Status</th>
+                <th className="py-3.5 px-4 font-semibold">Assigned Tech</th>
+                <th className="py-3.5 px-4 font-semibold text-right">Time</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">

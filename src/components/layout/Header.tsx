@@ -95,7 +95,7 @@ export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: Header
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-18 sm:h-20 md:h-22 flex items-center justify-between gap-4">
         {/* Left: Brand Identity */}
         <div className="flex items-center shrink-0">
-          <a
+          <Link
             href="/"
             onClick={(e) => handleScrollTo(e, "top")}
             className="flex items-center group cursor-pointer shrink-0 py-1"
@@ -107,7 +107,7 @@ export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: Header
               alt="Local Lock & Key Service Logo"
               className="h-11 sm:h-13 md:h-15 w-auto max-w-[240px] sm:max-w-[300px] md:max-w-[340px] object-contain transition-transform duration-200 group-hover:scale-[1.03]"
             />
-          </a>
+          </Link>
         </div>
 
         {/* Center: Desktop Quick Nav Links */}

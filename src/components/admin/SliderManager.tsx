@@ -29,6 +29,10 @@ export function SliderManager({ initialSlides }: SliderManagerProps) {
   const [isAddingNew, setIsAddingNew] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
+  // Pagination (6 slides per batch)
+  const SLIDES_PAGE_SIZE = 6;
+  const [slidesLimit, setSlidesLimit] = useState<number>(SLIDES_PAGE_SIZE);
+
   const [formData, setFormData] = useState<Omit<HeroSlide, "id" | "created_at">>({
     title: "",
     badge: "24/7 Mobile Dispatch",
@@ -385,79 +389,108 @@ export function SliderManager({ initialSlides }: SliderManagerProps) {
       )}
 
       {/* Slides Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {slides.map((slide) => (
-          <div
-            key={slide.id}
-            className={`bg-white border rounded-2xl overflow-hidden shadow-xs hover:shadow-md flex flex-col justify-between group transition ${
-              slide.is_active ? "border-slate-200/90 hover:border-slate-300" : "border-slate-200/50 opacity-60"
-            }`}
-          >
-            <div>
-              {/* Image banner preview */}
-              <div className="relative h-44 w-full bg-slate-100 overflow-hidden">
-                <img
-                  src={slide.image_url}
-                  alt={slide.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {slides.slice(0, slidesLimit).map((slide) => (
+            <div
+              key={slide.id}
+              className={`bg-white border rounded-xl overflow-hidden shadow-xs hover:shadow-sm flex flex-col justify-between group transition ${
+                slide.is_active ? "border-slate-200/90 hover:border-slate-300" : "border-slate-200/50 opacity-60"
+              }`}
+            >
+              <div>
+                {/* Image banner preview (compact h-28 to h-32) */}
+                <div className="relative h-28 sm:h-32 w-full bg-slate-100 overflow-hidden">
+                  <img
+                    src={slide.image_url}
+                    alt={slide.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
 
-                <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                  <span className="px-2 py-0.5 rounded-md bg-emerald-600 text-[10px] font-bold text-white shadow-xs">
-                    {slide.badge}
-                  </span>
+                  <div className="absolute top-2 left-2 flex flex-wrap gap-1">
+                    <span className="px-1.5 py-0.5 rounded bg-emerald-600 text-[10px] font-bold text-white shadow-xs">
+                      {slide.badge}
+                    </span>
+                  </div>
+
+                  <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-1.5 py-0.5 rounded text-[10px] text-white flex items-center gap-1">
+                    <MapPin className="w-3 h-3 text-emerald-400" />
+                    <span className="truncate max-w-[140px]">{slide.location}</span>
+                  </div>
+
+                  <div className="absolute top-2 right-2">
+                    <button
+                      onClick={() => handleToggleActive(slide)}
+                      className={`px-1.5 py-0.5 rounded text-[10px] font-semibold transition cursor-pointer ${
+                        slide.is_active
+                          ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                          : "bg-slate-100 text-slate-500 border border-slate-200"
+                      }`}
+                    >
+                      {slide.is_active ? "Active" : "Disabled"}
+                    </button>
+                  </div>
                 </div>
 
-                <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-md text-[10px] text-white flex items-center gap-1">
-                  <MapPin className="w-3 h-3 text-emerald-400" />
-                  <span>{slide.location}</span>
-                </div>
-
-                <div className="absolute top-3 right-3">
-                  <button
-                    onClick={() => handleToggleActive(slide)}
-                    className={`px-2 py-0.5 rounded-md text-[10px] font-bold transition cursor-pointer ${
-                      slide.is_active
-                        ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                        : "bg-slate-100 text-slate-500 border border-slate-200"
-                    }`}
-                  >
-                    {slide.is_active ? "Active" : "Disabled"}
-                  </button>
+                {/* Title & info (compact p-3) */}
+                <div className="p-3 space-y-1">
+                  <div className="flex items-center justify-between text-[10px] text-slate-400 font-medium">
+                    <span>Order #{slide.display_order}</span>
+                  </div>
+                  <h3 className="font-bold text-slate-900 text-xs sm:text-[13px] leading-snug line-clamp-1 group-hover:text-emerald-700 transition-colors">
+                    {slide.title}
+                  </h3>
                 </div>
               </div>
 
-              {/* Title & info */}
-              <div className="p-5 space-y-2">
-                <div className="flex items-center justify-between text-[11px] text-slate-400 font-medium">
-                  <span>Slide #{slide.display_order}</span>
-                </div>
-                <h3 className="font-bold text-slate-900 text-base leading-snug group-hover:text-emerald-700 transition-colors">
-                  {slide.title}
-                </h3>
+              {/* Compact Actions */}
+              <div className="px-3 pb-3 pt-2 border-t border-slate-100 flex items-center justify-end gap-1.5">
+                <button
+                  onClick={() => handleStartEdit(slide)}
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-md bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold transition cursor-pointer"
+                >
+                  <Edit2 className="w-3 h-3 text-emerald-600" />
+                  <span>Edit</span>
+                </button>
+
+                <button
+                  onClick={() => handleDelete(slide.id, slide.title)}
+                  className="p-1 rounded-md bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-600 text-xs transition cursor-pointer"
+                  title="Delete"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </button>
               </div>
             </div>
+          ))}
+        </div>
 
-            {/* Actions */}
-            <div className="px-5 pb-5 pt-2 border-t border-slate-100 flex items-center justify-end gap-2">
-              <button
-                onClick={() => handleStartEdit(slide)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold transition cursor-pointer"
-              >
-                <Edit2 className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Edit</span>
-              </button>
-
-              <button
-                onClick={() => handleDelete(slide.id, slide.title)}
-                className="p-1.5 rounded-lg bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-600 text-xs transition cursor-pointer"
-                title="Delete"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
+        {/* Pagination / Load More Footer */}
+        {slides.length > SLIDES_PAGE_SIZE && (
+          <div className="bg-white border border-slate-200 rounded-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-2.5 shadow-xs">
+            <span className="text-xs text-slate-500 font-medium">
+              Showing {Math.min(slidesLimit, slides.length)} of {slides.length} slides
+            </span>
+            <div className="flex items-center gap-2">
+              {slidesLimit < slides.length && (
+                <button
+                  onClick={() => setSlidesLimit((prev) => prev + SLIDES_PAGE_SIZE)}
+                  className="px-3.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-xs font-semibold text-emerald-700 transition cursor-pointer"
+                >
+                  Load More ({slides.length - slidesLimit} remaining)
+                </button>
+              )}
+              {slidesLimit > SLIDES_PAGE_SIZE && (
+                <button
+                  onClick={() => setSlidesLimit(SLIDES_PAGE_SIZE)}
+                  className="px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-medium text-slate-600 transition cursor-pointer"
+                >
+                  Show Less
+                </button>
+              )}
             </div>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );

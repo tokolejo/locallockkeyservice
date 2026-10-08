@@ -81,7 +81,7 @@ export function DispatchKanban({ requests, onDataChanged }: DispatchKanbanProps)
             >
               {/* Column Title */}
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
-                <span className={`text-xs font-bold uppercase tracking-wider ${col.color}`}>
+                <span className={`text-[11px] font-semibold uppercase tracking-wider ${col.color}`}>
                   {col.label}
                 </span>
                 <span className="w-5 h-5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 flex items-center justify-center text-[11px] font-mono">
