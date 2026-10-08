@@ -154,13 +154,13 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
                   <span>{t("hero_badge")}</span>
                 </div>
 
-                {/* Primary Headline */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-[1.15]">
+                {/* Primary Headline with Harmonized Hierarchy */}
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.75rem] font-black tracking-tight text-slate-950 leading-[1.12]">
                   <span className="block">{t("hero_title_1")}</span>
-                  <span className="block text-lg sm:text-2xl md:text-3xl lg:text-4xl text-emerald-700 font-extrabold whitespace-nowrap tracking-tight my-1 sm:my-1.5">
+                  <span className="block text-2xl sm:text-3xl md:text-4xl text-emerald-700 font-extrabold tracking-tight mt-1.5 mb-1">
                     {t("hero_title_2")}
                   </span>
-                  <span className="block text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-slate-800 font-black">
+                  <span className="block text-xl sm:text-2xl md:text-3xl text-slate-700 font-bold tracking-tight">
                     {t("hero_title_3")}
                   </span>
                 </h1>
@@ -170,72 +170,76 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
                   {t("hero_desc")}
                 </p>
 
-                {/* ONLY TWO BUTTONS: Direct Call + WhatsApp 24/7 */}
+                {/* High-Impact Action Buttons */}
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
-                  {/* 1. Phone Call CTA */}
+                  {/* 1. Primary Urgent Call CTA */}
                   <a
                     href={phoneRaw}
-                    className="relative overflow-hidden group flex items-center justify-center gap-2.5 bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 rounded-2xl font-bold text-base tracking-wide shadow-lg shadow-slate-900/20 transition-all duration-300 hover:-translate-y-0.5 active:scale-98 text-center"
+                    className="relative overflow-hidden group flex items-center justify-center gap-2.5 bg-slate-950 hover:bg-black text-white px-9 py-4 rounded-2xl font-black text-base tracking-wide shadow-xl shadow-slate-900/25 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98] border border-slate-800"
                   >
-                    <PhoneCall className="w-5 h-5 text-emerald-400 group-hover:rotate-12 transition-transform duration-300 shrink-0" />
+                    <span className="relative flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                    </span>
+                    <PhoneCall className="w-5 h-5 text-emerald-400 group-hover:rotate-12 transition-transform duration-200 shrink-0" />
                     <span>CALL</span>
                   </a>
 
-                  {/* 2. WhatsApp CTA */}
+                  {/* 2. Secondary WhatsApp CTA */}
                   <a
                     href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-2xl font-bold text-base tracking-wide shadow-lg shadow-emerald-600/20 transition-all duration-300 hover:-translate-y-0.5 active:scale-98 text-center cursor-pointer"
+                    className="flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-2xl font-bold text-base tracking-wide shadow-lg shadow-emerald-600/20 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer"
                   >
                     <MessageCircle className="w-5 h-5 fill-white text-white shrink-0" />
                     <span>WhatsApp</span>
                   </a>
                 </div>
 
-                {/* 3 Interactive Stat Cards */}
-                <div className="grid grid-cols-3 gap-2 sm:gap-4 pt-4 sm:pt-6 border-t border-slate-200/80">
-                  <div className="bg-white/95 border border-slate-200/90 rounded-2xl p-3 sm:p-4 shadow-xs hover:shadow-md transition-all">
-                    <div className="flex items-center gap-1.5 text-emerald-700 mb-1">
-                      <ShieldCheck className="w-4 h-4 shrink-0" />
+                {/* 3 Unified Trust Metric Cards */}
+                <div className="grid grid-cols-3 gap-2.5 sm:gap-4 pt-5 sm:pt-6 border-t border-slate-200/90">
+                  <div className="bg-white/95 backdrop-blur-xs border border-slate-200/90 rounded-2xl p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between">
+                    <div className="flex items-center gap-1.5 text-emerald-700 mb-1.5">
+                      <ShieldCheck className="w-4 h-4 shrink-0 text-emerald-600" />
                       <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 truncate">
                         Entry
                       </span>
                     </div>
-                    <div className="text-xs sm:text-base md:text-lg font-black text-slate-900 leading-tight">
+                    <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 leading-tight">
                       {t("hero_stat_1_title")}
                     </div>
-                    <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 hidden sm:block">
+                    <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 hidden sm:block leading-snug">
                       {t("hero_stat_1_sub")}
                     </p>
                   </div>
 
-                  <div className="bg-white/95 border border-slate-200/90 rounded-2xl p-3 sm:p-4 shadow-xs hover:shadow-md transition-all">
-                    <div className="flex items-center gap-1.5 text-emerald-700 mb-1">
-                      <Clock className="w-4 h-4 shrink-0" />
+                  <div className="bg-white/95 backdrop-blur-xs border border-slate-200/90 rounded-2xl p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between">
+                    <div className="flex items-center gap-1.5 text-emerald-700 mb-1.5">
+                      <Clock className="w-4 h-4 shrink-0 text-emerald-600" />
                       <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 truncate">
                         Arrival
                       </span>
                     </div>
-                    <div className="text-xs sm:text-base md:text-lg font-black text-slate-900 leading-tight">
+                    <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 leading-tight">
                       {t("hero_stat_2_title")}
                     </div>
-                    <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 hidden sm:block">
+                    <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 hidden sm:block leading-snug">
                       {t("hero_stat_2_sub")}
                     </p>
                   </div>
 
-                  <div className="bg-white/95 border border-slate-200/90 rounded-2xl p-3 sm:p-4 shadow-xs hover:shadow-md transition-all">
-                    <div className="flex items-center gap-1.5 text-emerald-700 mb-1">
-                      <Star className="w-4 h-4 fill-emerald-600 transition-transform shrink-0" />
+                  <div className="bg-white/95 backdrop-blur-xs border border-slate-200/90 rounded-2xl p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between">
+                    <div className="flex items-center gap-1.5 text-emerald-700 mb-1.5">
+                      <Star className="w-4 h-4 fill-emerald-600 text-emerald-600 shrink-0" />
                       <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 truncate">
                         Rating
                       </span>
                     </div>
-                    <div className="text-xs sm:text-base md:text-lg font-black text-slate-900 leading-tight">
+                    <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 leading-tight">
                       {t("hero_stat_3_title")}
                     </div>
-                    <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 hidden sm:block">
+                    <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 hidden sm:block leading-snug">
                       {t("hero_stat_3_sub")}
                     </p>
                   </div>
