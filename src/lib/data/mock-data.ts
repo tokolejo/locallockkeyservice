@@ -1,0 +1,414 @@
+import {
+  DispatchRequest,
+  ServiceItem,
+  CoverageArea,
+  Testimonial,
+  GalleryItem,
+  HeroSlide,
+  SiteSettings,
+} from "@/types/database.types";
+import googleReviewsCache from "./google-reviews-cache.json";
+
+export const initialSiteSettings: SiteSettings = {
+  id: "global",
+  phone_display: "+1 (603) 290-5554",
+  phone_raw: "tel:+16032905554",
+  whatsapp_number: "+16032905554",
+  address: "Manchester, NH & Greater Southern NH Area",
+  google_maps_url: "https://maps.app.goo.gl/j9Zvw9xhNKP5Rgk29",
+  google_maps_embed_url: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d187234.3411425129!2d-71.5546271!3d42.9956426!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24fa5064e62a1%3A0xbd546422a772ff3f!2sLocal%20Lock%20%26%20Key%20Service!5e0!3m2!1sen!2sus!4v1710000000000!5m2!1sen!2sus",
+  google_rating: 5.0,
+  google_review_count: 35,
+  working_hours: "24/7 Emergency Dispatch",
+  emergency_eta: "15–20 Min Rapid Mobile Units",
+  emergency_badge: "Live Patrols in Manchester & NH Areas",
+  updated_at: new Date().toISOString(),
+};
+
+export const initialHeroSlides: HeroSlide[] = [
+  {
+    id: "slide-1",
+    image_url: "/gallery/hero-banner.png",
+    title: "24/7 Mobile Locksmith Service",
+    badge: "Active Mobile Fleet",
+    location: "Manchester, NH",
+    display_order: 1,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "slide-2",
+    image_url: "/gallery/lock-repair-door.jpg",
+    title: "High-Security Deadbolts & Hardware",
+    badge: "Residential Entry",
+    location: "Manchester, NH",
+    display_order: 2,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "slide-3",
+    image_url: "/gallery/toyota-car-key.jpg",
+    title: "Smart Key & Proximity Fobs",
+    badge: "Automotive Rescue",
+    location: "Bedford, NH",
+    display_order: 3,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "slide-4",
+    image_url: "/gallery/technician-work-1.jpg",
+    title: "Commercial Mortise & Lock Upgrades",
+    badge: "100% Damage-Free",
+    location: "Concord, NH",
+    display_order: 4,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "slide-5",
+    image_url: "/gallery/key-cutting-machine.jpg",
+    title: "Computerized Laser Key Cutting",
+    badge: "Mobile Equipment",
+    location: "Manchester, NH",
+    display_order: 5,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "slide-6",
+    image_url: "/gallery/van-work.jpg",
+    title: "15–20 Min Rapid Mobile Units",
+    badge: "Manchester & Surrounding NH",
+    location: "Nashua, NH",
+    display_order: 6,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+];
+
+export const initialGalleryItems: GalleryItem[] = [
+  {
+    id: "g-ford",
+    display_order: 9,
+    title: "Ford Smart Key Fob & OBD-II Programming",
+    category: "auto",
+    category_label: "Car Keys & Fobs",
+    location: "Manchester, NH",
+    images: [
+      "/gallery/jobs/ford-smart-fob-1.jpg",
+      "/gallery/jobs/ford-smart-fob-2.jpg"
+    ],
+    cover_image: "/gallery/jobs/ford-smart-fob-1.jpg",
+    description: "Push-to-start smart key fob generation and immobilizer programming for Ford Explorer using our Autel MaxiIM diagnostic tablet on-site.",
+    date_badge: "Today",
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "g-storefront",
+    display_order: 8,
+    title: "Storefront Glass Door Mortise Lock & Lever",
+    category: "commercial",
+    category_label: "Commercial Doors",
+    location: "Manchester, NH",
+    images: [
+      "/gallery/jobs/storefront-mortise-lock-1.jpg",
+      "/gallery/jobs/storefront-mortise-lock-2.jpg"
+    ],
+    cover_image: "/gallery/jobs/storefront-mortise-lock-1.jpg",
+    description: "Complete storefront aluminum entrance door lock installation: high-security mortise cylinder, latch mechanism, and commercial lever handle.",
+    date_badge: "Yesterday",
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "g-nissan",
+    display_order: 7,
+    title: "Nissan Transponder Keys & Remote Pairing",
+    category: "auto",
+    category_label: "Car Keys & Fobs",
+    location: "Bedford, NH",
+    images: [
+      "/gallery/jobs/nissan-key-programming.jpg"
+    ],
+    cover_image: "/gallery/jobs/nissan-key-programming.jpg",
+    description: "All-keys-lost roadside rescue: precision blade cutting for two chip keys and remote programming via XTool X100 PAD2 tablet.",
+    date_badge: "2 days ago",
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "g-multlock",
+    display_order: 6,
+    title: "Mul-T-Lock MTL 800 High-Security Cylinder",
+    category: "locks",
+    category_label: "Residential Locks",
+    location: "Manchester, NH",
+    images: [
+      "/gallery/jobs/multlock-high-security-cylinder.jpg"
+    ],
+    cover_image: "/gallery/jobs/multlock-high-security-cylinder.jpg",
+    description: "Home security upgrade: drill-resistant, pick-proof Mul-T-Lock MTL 800 interactive cylinder system and duplicate security keys.",
+    date_badge: "3 days ago",
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "g-subaru",
+    display_order: 5,
+    title: "Subaru Laser Cut Keys & Chip Sync",
+    category: "auto",
+    category_label: "Car Keys & Fobs",
+    location: "Merrimack, NH",
+    images: [
+      "/gallery/jobs/subaru-laser-key-programming.jpg"
+    ],
+    cover_image: "/gallery/jobs/subaru-laser-key-programming.jpg",
+    description: "High-security laser side-mill key duplication with integrated remote heads programmed via OBD-II diagnostic computer.",
+    date_badge: "4 days ago",
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "g-electric-strike",
+    display_order: 4,
+    title: "Access Control Electric Strike Frame Retrofit",
+    category: "commercial",
+    category_label: "Commercial & Access",
+    location: "Manchester, NH",
+    images: [
+      "/gallery/jobs/commercial-electric-strike.jpg"
+    ],
+    cover_image: "/gallery/jobs/commercial-electric-strike.jpg",
+    description: "Precision steel frame cutout and low-voltage electric strike installation for building intercom buzzer integration.",
+    date_badge: "5 days ago",
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "g-panic-bar",
+    display_order: 3,
+    title: "Heavy-Duty Emergency Panic Bar Installation",
+    category: "commercial",
+    category_label: "Commercial Doors",
+    location: "Concord, NH",
+    images: [
+      "/gallery/jobs/commercial-panic-bar-exit.jpg"
+    ],
+    cover_image: "/gallery/jobs/commercial-panic-bar-exit.jpg",
+    description: "Fire-code compliant commercial panic exit push bar and exterior rim cylinder trim installed on heavy steel exit door.",
+    date_badge: "1 week ago",
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "g-securitech",
+    display_order: 2,
+    title: "Securitech Multi-Point Lever Lock Service",
+    category: "commercial",
+    category_label: "Commercial Doors",
+    location: "Manchester, NH",
+    images: [
+      "/gallery/jobs/securitech-multipoint-lock.jpg"
+    ],
+    cover_image: "/gallery/jobs/securitech-multipoint-lock.jpg",
+    description: "Multi-point deadlocking security mechanism and heavy-duty architectural lever set installed on commercial entrance door.",
+    date_badge: "1 week ago",
+    is_active: true,
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "g-steel-mortise",
+    display_order: 1,
+    title: "Commercial Steel Door Mortise Lock Replacement",
+    category: "commercial",
+    category_label: "Commercial Doors",
+    location: "Nashua, NH",
+    images: [
+      "/gallery/jobs/commercial-steel-door-mortise.jpg"
+    ],
+    cover_image: "/gallery/jobs/commercial-steel-door-mortise.jpg",
+    description: "Heavy-duty brass mortise cylinder installation, deadlocking latch service, and exterior handle alignment on warehouse door.",
+    date_badge: "2 weeks ago",
+    is_active: true,
+    created_at: new Date().toISOString(),
+  }
+];
+
+export const initialServices: ServiceItem[] = [
+  {
+    id: "srv-1",
+    category: "emergency",
+    title: "24/7 Car Lockout Rescue",
+    slug: "car-lockout",
+    description: "Keys locked inside sedan, SUV, pickup, or trunk. Rapid 15-20 min arrival across Manchester & surrounding NH with 100% damage-free air-wedge entry.",
+    estimated_duration_min: 15,
+    is_active: true,
+    display_order: 1,
+    features: [
+      "100% Damage-Free Guarantee",
+      "No Broken Windows or Scratched Frames",
+      "Mobile Locksmith Units in Manchester & Surrounding NH",
+      "Direct Call Dispatch +1 (603) 290-5554"
+    ],
+    icon_name: "Car"
+  },
+  {
+    id: "srv-2",
+    category: "residential",
+    title: "House & Apartment Lockout",
+    slug: "house-lockout",
+    description: "Emergency front door, deadbolt, mortise, and cylinder lockout assistance. Quick pick and entry for apartments, brownstones, and houses.",
+    estimated_duration_min: 20,
+    is_active: true,
+    display_order: 2,
+    features: [
+      "No Door Chipping or Lock Destruction",
+      "Schlage, Kwikset, Yale, Medeco Pick Specialists",
+      "Keys Cut On-Site in Mobile Service Unit",
+      "Mandatory Ownership / Lease ID Verification"
+    ],
+    icon_name: "Home"
+  },
+  {
+    id: "srv-3",
+    category: "residential",
+    title: "Lock Change & Re-Keying",
+    slug: "lock-change",
+    description: "Complete lock replacement, fresh deadbolt installations, cylinder re-keying, and security upgrades for tenants, new buyers, and landlords.",
+    estimated_duration_min: 30,
+    is_active: true,
+    display_order: 3,
+    features: [
+      "Fresh High-Security Deadbolt Upgrades",
+      "New Keys Cut and Tested on the Spot",
+      "Grade 1 & Grade 2 Certified Cylinders",
+      "Master Key Setup for NYC Apartments"
+    ],
+    icon_name: "Zap"
+  },
+  {
+    id: "srv-4",
+    category: "automotive",
+    title: "Car Key Cutting & Fob Programming",
+    slug: "auto-key-fob",
+    description: "Laser-cut high-security transponder keys, push-to-start smart fobs, and OBD-II diagnostics roadside without expensive flatbed towing.",
+    estimated_duration_min: 25,
+    is_active: true,
+    display_order: 4,
+    features: [
+      "No Expensive Roadside Towing Needed",
+      "Supports 98% of US & Foreign Vehicles",
+      "On-Site OBD-II Diagnostic Pairing",
+      "Proximity Push-To-Start Smart Remote Blanks"
+    ],
+    icon_name: "Car"
+  },
+  {
+    id: "srv-5",
+    category: "commercial",
+    title: "Commercial Storefront Locks & Panic Bars",
+    slug: "commercial-security",
+    description: "Storefront rim cylinders, mortise locks, ADA exit panic crash bars, and master key systems for retail stores and commercial properties.",
+    estimated_duration_min: 45,
+    is_active: true,
+    display_order: 5,
+    features: [
+      "Fire Marshal & ADA Code Compliant",
+      "Heavy Steel Commercial Hardware",
+      "Same-Day Emergency Storefront Dispatch",
+      "Corporate Billing & Invoicing Available"
+    ],
+    icon_name: "Building2"
+  }
+];
+
+export const initialCoverageAreas: CoverageArea[] = [
+  { id: "cov-1", zip_code: "03101", city: "Downtown Manchester", county: "Hillsborough County", state: "NH", avg_eta_minutes: 15, is_serviceable: true, active_units: 4 },
+  { id: "cov-2", zip_code: "03104", city: "North End Manchester", county: "Hillsborough County", state: "NH", avg_eta_minutes: 15, is_serviceable: true, active_units: 3 },
+  { id: "cov-3", zip_code: "03110", city: "Bedford", county: "Hillsborough County", state: "NH", avg_eta_minutes: 16, is_serviceable: true, active_units: 3 },
+  { id: "cov-4", zip_code: "03301", city: "Concord", county: "Merrimack County", state: "NH", avg_eta_minutes: 20, is_serviceable: true, active_units: 2 },
+  { id: "cov-5", zip_code: "03060", city: "Nashua", county: "Hillsborough County", state: "NH", avg_eta_minutes: 20, is_serviceable: true, active_units: 3 },
+  { id: "cov-6", zip_code: "03038", city: "Derry", county: "Rockingham County", state: "NH", avg_eta_minutes: 18, is_serviceable: true, active_units: 2 },
+  { id: "cov-7", zip_code: "03053", city: "Londonderry", county: "Rockingham County", state: "NH", avg_eta_minutes: 17, is_serviceable: true, active_units: 3 },
+  { id: "cov-8", zip_code: "03106", city: "Hooksett", county: "Merrimack County", state: "NH", avg_eta_minutes: 16, is_serviceable: true, active_units: 2 }
+];
+
+export const initialTestimonials: Testimonial[] =
+  ((googleReviewsCache as any)?.reviews as unknown as Testimonial[]) || [
+    {
+      id: "test-1",
+      author_name: "Steve Plante",
+      location: "Manchester, NH & Surrounding Areas",
+      rating: 5,
+      review_text: "I stupidly locked my car with the keys and my dog inside. I was kind of stressed. They came within 15 minutes and unlocked. Luckily for me it was a cool day.\nFabulous service.. Highly recommend.",
+      service_type: "Automotive Key & Lockout Rescue",
+      verified_customer: true,
+      is_featured: true,
+      is_approved: true,
+      created_at: "2026-09-09T20:54:40.646Z",
+      author_photo: "https://lh3.googleusercontent.com/a-/ALV-UjWOJifUXl9PDFfz5tXl6gnte36qHc4dUKF3svW5k3PNw5FSZYfcxQ=s64-c-rp-mo-ba12-br100",
+      review_url: "https://maps.app.goo.gl/j9Zvw9xhNKP5Rgk29"
+    }
+  ];
+
+export const initialDispatchRequests: DispatchRequest[] = [
+  {
+    id: "req-101",
+    created_at: "2026-10-07T08:45:00Z",
+    updated_at: "2026-10-07T08:52:00Z",
+    customer_name: "Robert M.",
+    phone: "(603) 290-5554",
+    zip_code: "03101",
+    address: "Elm Street, Manchester, NH",
+    service_category: "emergency",
+    service_sub_type: "House Lockout - Deadbolt Jammed",
+    vehicle_make: null,
+    vehicle_model: null,
+    vehicle_year: null,
+    status: "in_progress",
+    estimated_price_min: 75,
+    estimated_price_max: 115,
+    final_price: null,
+    assigned_technician: "Unit 2 - Manchester Mobile Unit",
+    internal_notes: "Customer verified lease + ID. Working on front entrance deadbolt.",
+    source: "direct_call"
+  }
+];
+
+export const estimatorCategories = [
+  {
+    id: "automotive",
+    name: "Car Lockout & Keys",
+    icon: "Car",
+    scenarios: [
+      { id: "auto-lockout", label: "Car Door / Trunk Lockout Rescue", eta: "15-20 mins", notes: "100% Non-destructive air-wedge & specialized reach tools" },
+      { id: "auto-lost-key", label: "All Car Keys Lost (On-Site Origination)", eta: "25-35 mins", notes: "Laser cut & OBD-II ECU computer pairing on the street" },
+      { id: "auto-duplicate-fob", label: "Spare Key Fob Duplication", eta: "20-30 mins", notes: "Push-to-start smart proximity remote blanks" },
+      { id: "auto-broken-key", label: "Broken Key Extracted from Door / Ignition", eta: "15-20 mins", notes: "Precision extraction tools, no lock replacement required" }
+    ]
+  },
+  {
+    id: "residential",
+    name: "House & Apartment",
+    icon: "Home",
+    scenarios: [
+      { id: "res-lockout", label: "Locked Out of Apartment / House", eta: "15-20 mins", notes: "Damage-free cylinder picking for deadbolts & mortise locks" },
+      { id: "res-lock-change", label: "Lock Change / New Cylinder Installation", eta: "Same-Day / Scheduled", notes: "Fresh high-security locks + keys cut on-site" },
+      { id: "res-rekey", label: "Lock Re-Keying (Per Cylinder)", eta: "Same-Day", notes: "Keep current locks, change internal pins for new keys" },
+      { id: "res-broken-key", label: "Key Snapped in Deadbolt Cylinder", eta: "15-20 mins", notes: "Non-destructive extraction + fresh key duplicate" }
+    ]
+  },
+  {
+    id: "commercial",
+    name: "Commercial Storefront",
+    icon: "Building2",
+    scenarios: [
+      { id: "comm-lockout", label: "Storefront / Commercial Lockout", eta: "15-25 mins", notes: "Commercial mortise & rim cylinder bypass" },
+      { id: "comm-panic-bar", label: "Panic Crash Bar Exit Device Repair", eta: "Same-Day", notes: "Fire Code & ADA compliant repair" },
+      { id: "comm-master-key", label: "Storefront Master Key System", eta: "Scheduled", notes: "Multi-door tiered master key hierarchy" }
+    ]
+  }
+];

@@ -1,0 +1,69 @@
+import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+import fs from "fs";
+
+export async function POST(request: NextRequest) {
+  try {
+    const formData = await request.formData();
+    const file = formData.get("file") as File | null;
+
+    if (!file) {
+      return NextResponse.json(
+        { success: false, message: "No file uploaded" },
+        { status: 400 }
+      );
+    }
+
+    // Validate type
+    const validTypes = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"];
+    if (!validTypes.includes(file.type)) {
+      return NextResponse.json(
+        { success: false, message: "Only image files (JPEG, PNG, WebP, GIF, AVIF) are allowed" },
+        { status: 400 }
+      );
+    }
+
+    // Size limit (10MB)
+    const MAX_SIZE = 10 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      return NextResponse.json(
+        { success: false, message: "File exceeds 10MB limit" },
+        { status: 400 }
+      );
+    }
+
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+
+    // Sanitize file name
+    const ext = path.extname(file.name) || ".jpg";
+    const baseName = path
+      .basename(file.name, ext)
+      .toLowerCase()
+      .replace(/[^a-z0-9_-]/g, "-")
+      .slice(0, 40);
+    const fileName = `img-${Date.now()}-${baseName}${ext}`;
+
+    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    const filePath = path.join(uploadDir, fileName);
+    fs.writeFileSync(filePath, buffer);
+
+    const publicUrl = `/uploads/${fileName}`;
+
+    return NextResponse.json({
+      success: true,
+      url: publicUrl,
+      fileName,
+    });
+  } catch (error: any) {
+    console.error("Upload error:", error);
+    return NextResponse.json(
+      { success: false, message: error?.message || "Failed to upload image" },
+      { status: 500 }
+    );
+  }
+}
