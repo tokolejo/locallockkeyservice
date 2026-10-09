@@ -182,7 +182,7 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
                       <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                     </span>
                     <PhoneCall className="w-5 h-5 text-emerald-400 group-hover:rotate-12 transition-transform duration-200 shrink-0" />
-                    <span>CALL</span>
+                    <span>{phoneDisplay}</span>
                   </a>
 
                   {/* 2. Secondary WhatsApp CTA */}

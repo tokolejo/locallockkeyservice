@@ -143,7 +143,7 @@ export function Footer({ siteSettings }: FooterProps) {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
                 <PhoneCall className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>CALL</span>
+                <span>{phoneDisplay}</span>
               </a>
 
               <a
