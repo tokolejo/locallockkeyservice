@@ -169,8 +169,8 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
   const [selectedJob, setSelectedJob] = useState<GalleryItem | null>(null);
   const [activePhotoIdx, setActivePhotoIdx] = useState<number>(0);
 
-  // 2 Rows in 3-column desktop layout = 6 items initially
-  const INITIAL_COUNT = 6;
+  // 3 items initially on both desktop and mobile
+  const INITIAL_COUNT = 3;
   const [visibleCount, setVisibleCount] = useState<number>(INITIAL_COUNT);
 
   const phone = siteSettings?.phone_display || process.env.NEXT_PUBLIC_DISPATCH_PHONE || "+1 (603) 290-5554";
@@ -478,22 +478,28 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
           })}
         </div>
 
-        {/* Load More Button (Appears when there are more than 2 rows) */}
+        {/* Load More / Show Less Button */}
         <div className="mt-10 flex justify-center">
           {hasMore ? (
             <button
-              onClick={() => setVisibleCount((prev) => prev + 6)}
+              onClick={() => setVisibleCount((prev) => prev + 3)}
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-98 cursor-pointer"
             >
-              <span>Load More Jobs (+{processedItems.length - visibleCount})</span>
+              <span>Load More Jobs</span>
               <ChevronDown className="w-4 h-4 text-emerald-400" />
             </button>
           ) : processedItems.length > INITIAL_COUNT ? (
             <button
-              onClick={() => setVisibleCount(INITIAL_COUNT)}
+              onClick={() => {
+                setVisibleCount(INITIAL_COUNT);
+                const galleryEl = document.getElementById("gallery");
+                if (galleryEl) {
+                  galleryEl.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
               className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition cursor-pointer"
             >
-              <span>Show Initial 2 Rows</span>
+              <span>Show Less</span>
               <ChevronUp className="w-3.5 h-3.5 text-slate-600" />
             </button>
           ) : null}
