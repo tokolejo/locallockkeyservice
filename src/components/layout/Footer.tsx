@@ -136,12 +136,8 @@ export function Footer({ siteSettings }: FooterProps) {
             <div className="flex flex-col gap-2 pt-0.5">
               <a
                 href={phoneRaw}
-                className="w-full flex items-center justify-center gap-2.5 py-2.5 px-3.5 rounded-xl bg-slate-800 hover:bg-slate-700/90 text-white border border-slate-700 hover:border-emerald-500/50 font-bold text-xs shadow-xs transition-all active:scale-[0.99]"
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-3.5 rounded-xl bg-slate-800 hover:bg-slate-700/90 text-white border border-slate-700 hover:border-emerald-500/50 font-bold text-xs shadow-xs transition-all active:scale-[0.99]"
               >
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
                 <PhoneCall className="w-4 h-4 text-emerald-400 shrink-0" />
                 <span>{phoneDisplay}</span>
               </a>
