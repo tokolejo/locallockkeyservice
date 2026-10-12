@@ -30,7 +30,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       localStorage.removeItem("app_lang");
       const savedLogo = localStorage.getItem("app_logo_opt");
       if (savedLogo && ["1", "2", "3"].includes(savedLogo)) {
-        setLogoOptionState(Number(savedLogo) as LogoOption);
+        queueMicrotask(() => setLogoOptionState(Number(savedLogo) as LogoOption));
       }
     } catch {
       // Ignore localStorage exceptions in restrictive environments

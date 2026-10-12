@@ -3,6 +3,36 @@ import { NextResponse, type NextRequest } from "next/server";
 import type { Database } from "@/types/database.types";
 
 export async function updateSession(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  const isLoginPage = pathname === "/admin/login";
+  const isAdminRoute = pathname.startsWith("/admin");
+  const protectedApiPrefixes = ["/api/dispatch", "/api/logs", "/api/upload"];
+  const isProtectedApi = protectedApiPrefixes.some((prefix) => pathname.startsWith(prefix));
+
+  // Quick check: If no Supabase auth cookies exist at all, avoid network roundtrips to Supabase
+  const allCookies = request.cookies.getAll();
+  const hasAuthCookie = allCookies.some((c) => c.name.startsWith("sb-"));
+
+  if (!hasAuthCookie) {
+    if (isProtectedApi) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized access: Admin authentication required" },
+        { status: 401 }
+      );
+    }
+
+    if (isAdminRoute && !isLoginPage) {
+      const loginUrl = request.nextUrl.clone();
+      loginUrl.pathname = "/admin/login";
+      loginUrl.searchParams.set("redirectedFrom", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    if (isLoginPage) {
+      return NextResponse.next({ request });
+    }
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   });
@@ -38,31 +68,24 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const pathname = request.nextUrl.pathname;
-
   // Protect sensitive internal API routes against unauthenticated access
-  const protectedApiPrefixes = ["/api/dispatch", "/api/logs", "/api/upload"];
-  if (protectedApiPrefixes.some((prefix) => pathname.startsWith(prefix))) {
-    if (!user) {
-      return NextResponse.json(
-        { success: false, error: "Unauthorized access: Admin authentication required" },
-        { status: 401 }
-      );
-    }
+  if (isProtectedApi && !user) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized access: Admin authentication required" },
+      { status: 401 }
+    );
   }
 
   // Protect /admin routes (except /admin/login)
-  if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
-    if (!user) {
-      const loginUrl = request.nextUrl.clone();
-      loginUrl.pathname = "/admin/login";
-      loginUrl.searchParams.set("redirectedFrom", pathname);
-      return NextResponse.redirect(loginUrl);
-    }
+  if (isAdminRoute && !isLoginPage && !user) {
+    const loginUrl = request.nextUrl.clone();
+    loginUrl.pathname = "/admin/login";
+    loginUrl.searchParams.set("redirectedFrom", pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
   // If user is already logged in and navigates to /admin/login, redirect to /admin
-  if (pathname === "/admin/login" && user) {
+  if (isLoginPage && user) {
     const adminUrl = request.nextUrl.clone();
     adminUrl.pathname = "/admin";
     adminUrl.searchParams.delete("redirectedFrom");

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+export const revalidate = 86400; // Cache 24 hours
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const targetUrl = searchParams.get("url");
@@ -44,7 +46,9 @@ export async function GET(request: NextRequest) {
       status: 200,
       headers: {
         "Content-Type": contentType,
-        "Cache-Control": "public, max-age=604800, stale-while-revalidate=86400",
+        "Cache-Control": "public, max-age=604800, s-maxage=604800, stale-while-revalidate=86400",
+        "CDN-Cache-Control": "public, s-maxage=604800, stale-while-revalidate=86400",
+        "Vercel-CDN-Cache-Control": "public, s-maxage=604800, stale-while-revalidate=86400",
       },
     });
   } catch (error: any) {

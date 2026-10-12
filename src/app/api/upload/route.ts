@@ -59,21 +59,62 @@ export async function POST(request: NextRequest) {
       .slice(0, 40);
     const fileName = `img-${Date.now()}-${baseName}${ext}`;
 
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
+    // 1. Upload to Supabase Storage in production
+    if (supabase) {
+      const bucketName = "gallery";
+      const storagePath = `uploads/${fileName}`;
+
+      const { data: uploadData, error: storageError } = await supabase.storage
+        .from(bucketName)
+        .upload(storagePath, buffer, {
+          contentType: file.type,
+          upsert: true,
+        });
+
+      if (!storageError && uploadData) {
+        const { data: publicUrlData } = supabase.storage
+          .from(bucketName)
+          .getPublicUrl(storagePath);
+
+        return NextResponse.json({
+          success: true,
+          url: publicUrlData.publicUrl,
+          fileName,
+        });
+      }
+
+      if (storageError) {
+        console.warn("Notice: Supabase Storage upload error, falling back to local disk if available:", storageError.message);
+      }
     }
 
-    const filePath = path.join(uploadDir, fileName);
-    fs.writeFileSync(filePath, buffer);
+    // 2. Local filesystem fallback for development environments
+    try {
+      const uploadDir = path.join(process.cwd(), "public", "uploads");
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
 
-    const publicUrl = `/uploads/${fileName}`;
+      const filePath = path.join(uploadDir, fileName);
+      fs.writeFileSync(filePath, buffer);
 
-    return NextResponse.json({
-      success: true,
-      url: publicUrl,
-      fileName,
-    });
+      const publicUrl = `/uploads/${fileName}`;
+
+      return NextResponse.json({
+        success: true,
+        url: publicUrl,
+        fileName,
+      });
+    } catch (fsErr: any) {
+      console.error("Local disk upload failed (read-only environment):", fsErr);
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Storage upload failed. Please ensure the Supabase Storage 'gallery' bucket is created and public in your Supabase project.",
+        },
+        { status: 500 }
+      );
+    }
   } catch (error: any) {
     console.error("Upload error:", error);
     return NextResponse.json(

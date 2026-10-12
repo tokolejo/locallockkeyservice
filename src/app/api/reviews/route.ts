@@ -52,9 +52,17 @@ const HARD_FALLBACK_REVIEWS = [
   }
 ];
 
+export const revalidate = 300; // Cache on Vercel CDN for 5 minutes
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const shouldRefresh = searchParams.get("refresh") === "true" || searchParams.get("sync") === "true";
+
+  const publicCacheHeaders = {
+    "Cache-Control": "public, s-maxage=300, stale-while-revalidate=86400",
+    "CDN-Cache-Control": "public, s-maxage=300, stale-while-revalidate=86400",
+    "Vercel-CDN-Cache-Control": "public, s-maxage=300, stale-while-revalidate=86400",
+  };
 
   try {
     // 1. If explicit refresh is requested, run live scraper
@@ -71,15 +79,20 @@ export async function GET(request: NextRequest) {
           // Revalidate path warning ignored in dev
         }
 
-        return NextResponse.json({
-          success: true,
-          source: "live_google_sync",
-          rating: scrapeResult.rating,
-          total_reviews: scrapeResult.total_reviews,
-          place_id: scrapeResult.place_id,
-          last_synced_at: scrapeResult.synced_at,
-          reviews: scrapeResult.reviews
-        });
+        return NextResponse.json(
+          {
+            success: true,
+            source: "live_google_sync",
+            rating: scrapeResult.rating,
+            total_reviews: scrapeResult.total_reviews,
+            place_id: scrapeResult.place_id,
+            last_synced_at: scrapeResult.synced_at,
+            reviews: scrapeResult.reviews
+          },
+          {
+            headers: { "Cache-Control": "no-store, no-cache, must-revalidate" },
+          }
+        );
       }
     }
 
@@ -88,40 +101,49 @@ export async function GET(request: NextRequest) {
     const meta = getGoogleReviewsCacheMeta();
 
     if (stored && stored.length > 0) {
-      return NextResponse.json({
-        success: true,
-        source: "persistent_store",
-        rating: meta.rating,
-        total_reviews: stored.length,
-        place_id: PLACE_CONFIG.placeId,
-        last_synced_at: meta.last_synced_at,
-        reviews: stored
-      });
+      return NextResponse.json(
+        {
+          success: true,
+          source: "persistent_store",
+          rating: meta.rating,
+          total_reviews: stored.length,
+          place_id: PLACE_CONFIG.placeId,
+          last_synced_at: meta.last_synced_at,
+          reviews: stored
+        },
+        { headers: publicCacheHeaders }
+      );
     }
 
     // 3. Fallback to hardcoded verified reviews
-    return NextResponse.json({
-      success: true,
-      source: "fallback",
-      rating: 5.0,
-      total_reviews: HARD_FALLBACK_REVIEWS.length,
-      place_id: PLACE_CONFIG.placeId,
-      reviews: HARD_FALLBACK_REVIEWS
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        source: "fallback",
+        rating: 5.0,
+        total_reviews: HARD_FALLBACK_REVIEWS.length,
+        place_id: PLACE_CONFIG.placeId,
+        reviews: HARD_FALLBACK_REVIEWS
+      },
+      { headers: publicCacheHeaders }
+    );
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : "Unknown error";
     console.error("GET /api/reviews encountered error:", errorMsg);
 
     const fallback = await getAllTestimonials();
-    return NextResponse.json({
-      success: true,
-      source: "resilient_fallback",
-      rating: 5.0,
-      total_reviews: fallback.length || HARD_FALLBACK_REVIEWS.length,
-      place_id: PLACE_CONFIG.placeId,
-      reviews: fallback.length > 0 ? fallback : HARD_FALLBACK_REVIEWS,
-      error: errorMsg
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        source: "resilient_fallback",
+        rating: 5.0,
+        total_reviews: fallback.length || HARD_FALLBACK_REVIEWS.length,
+        place_id: PLACE_CONFIG.placeId,
+        reviews: fallback.length > 0 ? fallback : HARD_FALLBACK_REVIEWS,
+        error: errorMsg
+      },
+      { headers: publicCacheHeaders }
+    );
   }
 }
 

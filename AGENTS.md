@@ -29,3 +29,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **Task Batching:** მოერიდე სუბაგენტების მიყოლებით, "პინგ-პონგის" სტილში გამოძახებას. დააჯგუფე დავალებები და გააგზავნე ერთიანი, სრული პრომპტი.
 - **Context Payload Minimization:** სუბაგენტის გამოძახებისას გადაეცი მხოლოდ აუცილებელი კონტექსტი (კონკრეტული ფაილის ბილიკები და დავალება). არასდროს გააყოლო მთლიანი ჩატის ისტორია.
 - **QA / Build Throttling:** სრული ბილდის გაშვება (`npm run build`) ან ღრმა ტესტირება ხდება მხოლოდ დიდი ეტაპის დასრულებისას ან მომხმარებლის პირდაპირი ბრძანებით.
+
+## 4. Supabase & PostgreSQL უსაფრთხოების სტანდარტები (Security Guardrails)
+- **Search Path Invariant:** ყველა PostgreSQL ფუნქციას (`CREATE FUNCTION`) აუცილებლად უნდა ჰქონდეს გაწერილი `SET search_path = ''` (ტრიგერებისთვის) ან `SET search_path = public, auth`, რათა გამოირიცხოს Search Path Hijacking (`function_search_path_mutable`).
+- **Private Schema for Internal Helpers:** RLS-ის ან შიდა დამხმარე `SECURITY DEFINER` ფუნქციები (მაგ. `is_admin()`) არასდროს არ უნდა დარჩეს `public` სქემაში. ისინი უნდა განთავსდეს იზოლირებულ სქემაში (მაგ. `app_private`), რათა PostgREST-მა არ გამოაჩინოს საჯარო REST API RPC ენდფოინთებად (`anon_security_definer_function_executable` / `authenticated_security_definer_function_executable`).
+- **Append-Only Audit Logs:** აუდიტის და უსაფრთხოების ლოგები (`activity_logs`) უნდა იყოს მკაცრად დაცული `UPDATE` და `DELETE` ოპერაციებისგან ბაზის ტრიგერით.
+

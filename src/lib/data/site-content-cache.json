@@ -7,7 +7,7 @@
     "address": "Manchester, NH & Greater Southern NH Area",
     "google_maps_url": "https://maps.app.goo.gl/j9Zvw9xhNKP5Rgk29",
     "google_maps_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d187234.3411425129!2d-71.5546271!3d42.9956426!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e24fa5064e62a1%3A0xbd546422a772ff3f!2sLocal%20Lock%20%26%20Key%20Service!5e0!3m2!1sen!2sus!4v1710000000000!5m2!1sen!2sus",
-    "google_rating": 5.0,
+    "google_rating": 5,
     "google_review_count": 35,
     "working_hours": "24/7 Emergency Dispatch",
     "emergency_eta": "15–20 Min Rapid Mobile Units",
@@ -82,7 +82,7 @@
         "/gallery/jobs/ford-smart-fob-1.jpg",
         "/gallery/jobs/ford-smart-fob-2.jpg"
       ],
-      "cover_image": "/gallery/jobs/ford-smart-fob-1.jpg",
+      "cover_image": "/gallery/jobs/ford-smart-fob-2.jpg",
       "description": "Push-to-start smart key fob generation and immobilizer programming for Ford Explorer using our Autel MaxiIM diagnostic tablet on-site.",
       "date_badge": "Today",
       "is_active": true
@@ -334,6 +334,69 @@
     }
   ],
   "activity_logs": [
+    {
+      "id": "log-1791486719397-yu5nl",
+      "created_at": "2026-10-08T19:11:59.397Z",
+      "action": "UPDATE",
+      "entity": "gallery_items",
+      "details": "{\"id\":\"g-ford\",\"updates\":{\"title\":\"Ford Smart Key Fob & OBD-II Programming\",\"category\":\"auto\",\"category_label\":\"Car Keys & Fobs\",\"location\":\"Manchester, NH\",\"description\":\"Push-to-start smart key fob generation and immobilizer programming for Ford Explorer using our Autel MaxiIM diagnostic tablet on-site.\",\"date_badge\":\"Today\",\"display_order\":9,\"images\":[\"/gallery/jobs/ford-smart-fob-1.jpg\",\"/gallery/jobs/ford-smart-fob-2.jpg\"],\"cover_image\":\"/gallery/jobs/ford-smart-fob-2.jpg\"}}",
+      "ip_address": null,
+      "status": "success"
+    },
+    {
+      "id": "log-1791486703041-6dome",
+      "created_at": "2026-10-08T19:11:43.041Z",
+      "action": "DELETE",
+      "entity": "service_categories",
+      "details": "{\"id\":\"sadasda\"}",
+      "ip_address": null,
+      "status": "success"
+    },
+    {
+      "id": "log-1791486699445-1zzoy",
+      "created_at": "2026-10-08T19:11:39.445Z",
+      "action": "DELETE",
+      "entity": "service_scenarios",
+      "details": "{\"id\":\"scen-1791486686864\"}",
+      "ip_address": null,
+      "status": "success"
+    },
+    {
+      "id": "log-1791486687072-enymk",
+      "created_at": "2026-10-08T19:11:27.072Z",
+      "action": "CREATE",
+      "entity": "service_scenarios",
+      "details": "{\"id\":\"scen-1791486686864\",\"label\":\"sadas\"}",
+      "ip_address": null,
+      "status": "success"
+    },
+    {
+      "id": "log-1791486679485-soo1j",
+      "created_at": "2026-10-08T19:11:19.485Z",
+      "action": "CREATE",
+      "entity": "service_categories",
+      "details": "{\"id\":\"sadasda\",\"name\":\"sadasda\"}",
+      "ip_address": null,
+      "status": "success"
+    },
+    {
+      "id": "log-1791486671533-j175f",
+      "created_at": "2026-10-08T19:11:11.533Z",
+      "action": "UPDATE",
+      "entity": "service_scenarios",
+      "details": "{\"id\":\"auto-lockout\",\"updates\":{\"category_id\":\"automotive\",\"label\":\"Car Door / Trunk Lockout Rescue\",\"notes\":\"100% Non-destructive air-wedge & specialized reach tools\",\"eta\":\"15-20 mins\",\"display_order\":1,\"is_active\":true}}",
+      "ip_address": null,
+      "status": "success"
+    },
+    {
+      "id": "log-1791486652524-2q67k",
+      "created_at": "2026-10-08T19:10:52.525Z",
+      "action": "UPDATE",
+      "entity": "service_scenarios",
+      "details": "{\"id\":\"auto-lockout\",\"updates\":{\"category_id\":\"automotive\",\"label\":\"Car Door / Trunk Lockout Rescue\",\"notes\":\"sdsadasdasdas\",\"eta\":\"15-20 mins\",\"display_order\":1,\"is_active\":true}}",
+      "ip_address": null,
+      "status": "success"
+    },
     {
       "id": "log-init-system",
       "created_at": "2026-10-08T12:00:00.000Z",

@@ -18,11 +18,19 @@ CREATE INDEX IF NOT EXISTS idx_admins_email ON public.admins(email);
 
 ALTER TABLE public.admins ENABLE ROW LEVEL SECURITY;
 
--- 2. Hardened is_admin() Function (Immune to User-Metadata privilege escalation)
--- Note: User metadata is client-writable in Supabase, so we strictly check app_metadata,
--- the immutable email whitelist, and the public.admins table.
-CREATE OR REPLACE FUNCTION public.is_admin()
-RETURNS BOOLEAN AS $$
+-- 2. Hardened is_admin() Function in app_private schema
+-- Moving helper functions out of public schema ensures PostgREST never exposes
+-- them as public REST API RPC endpoints (/rest/v1/rpc/is_admin), resolving Supabase
+-- lint warnings (0028 & 0029) while preserving full RLS authorization capabilities.
+CREATE SCHEMA IF NOT EXISTS app_private;
+
+CREATE OR REPLACE FUNCTION app_private.is_admin()
+RETURNS BOOLEAN 
+LANGUAGE plpgsql 
+SECURITY DEFINER 
+SET search_path = public, auth
+STABLE
+AS $$
 BEGIN
   RETURN (
     auth.role() = 'authenticated' AND (
@@ -35,7 +43,13 @@ BEGIN
     )
   );
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, auth STABLE;
+$$;
+
+GRANT USAGE ON SCHEMA app_private TO anon, authenticated, service_role;
+GRANT EXECUTE ON FUNCTION app_private.is_admin() TO anon, authenticated, service_role;
+
+-- Drop obsolete public.is_admin() if it exists
+DROP FUNCTION IF EXISTS public.is_admin();
 
 -- Admins RLS
 DO $$ BEGIN
@@ -45,12 +59,12 @@ END $$;
 
 CREATE POLICY "Admins can view admin list"
 ON public.admins FOR SELECT TO authenticated
-USING (public.is_admin());
+USING (app_private.is_admin());
 
 CREATE POLICY "Admins can manage admin list"
 ON public.admins FOR ALL TO authenticated
-USING (public.is_admin())
-WITH CHECK (public.is_admin());
+USING (app_private.is_admin())
+WITH CHECK (app_private.is_admin());
 
 -- 3. New Entity: Technicians / Mobile Fleet Units Table (PostgreSQL Best Practice)
 CREATE TABLE IF NOT EXISTS public.technicians (
@@ -71,13 +85,12 @@ ALTER TABLE public.technicians ENABLE ROW LEVEL SECURITY;
 
 DO $$ BEGIN
     DROP POLICY IF EXISTS "Admins have full access to technicians" ON public.technicians;
-    DROP POLICY IF EXISTS "Public can view active technicians count only" ON public.technicians;
 END $$;
 
 CREATE POLICY "Admins have full access to technicians"
 ON public.technicians FOR ALL TO authenticated
-USING (public.is_admin())
-WITH CHECK (public.is_admin());
+USING (app_private.is_admin())
+WITH CHECK (app_private.is_admin());
 
 -- 4. New Entity: Dispatch Assignments & Audit Tracking (Junction / State History)
 CREATE TABLE IF NOT EXISTS public.dispatch_assignments (
@@ -105,17 +118,21 @@ END $$;
 
 CREATE POLICY "Admins have full access to dispatch assignments"
 ON public.dispatch_assignments FOR ALL TO authenticated
-USING (public.is_admin())
-WITH CHECK (public.is_admin());
+USING (app_private.is_admin())
+WITH CHECK (app_private.is_admin());
 
 -- 5. Immutability Enforcement for Activity Logs (OWASP Audit Compliance)
 -- Prevents UPDATE and DELETE operations on audit logs to guarantee non-repudiation.
 CREATE OR REPLACE FUNCTION public.prevent_activity_logs_tampering()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER 
+LANGUAGE plpgsql
+SECURITY INVOKER
+SET search_path = ''
+AS $$
 BEGIN
     RAISE EXCEPTION 'Security Policy Violation: Activity logs are append-only and cannot be altered or removed.';
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
 DO $$ BEGIN
     DROP TRIGGER IF EXISTS trg_protect_activity_logs ON public.activity_logs;
@@ -128,7 +145,6 @@ EXCEPTION
 END $$;
 
 -- 6. Rate-Limiting & Anti-Spam Constraint on Dispatch Requests
--- Ensure client data conforms to strict input parameters
 ALTER TABLE public.dispatch_requests 
     DROP CONSTRAINT IF EXISTS chk_dispatch_phone_format,
     ADD CONSTRAINT chk_dispatch_phone_format CHECK (length(trim(phone)) >= 7 AND length(phone) <= 30);
@@ -137,14 +153,18 @@ ALTER TABLE public.dispatch_requests
     DROP CONSTRAINT IF EXISTS chk_dispatch_name_format,
     ADD CONSTRAINT chk_dispatch_name_format CHECK (length(trim(customer_name)) >= 2 AND length(customer_name) <= 100);
 
--- 7. Ensure Updated Timestamps via Reusable Trigger
+-- 7. Ensure Updated Timestamps via Reusable Trigger (Fixed search_path)
 CREATE OR REPLACE FUNCTION public.update_timestamp_column()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER 
+LANGUAGE plpgsql
+SECURITY INVOKER
+SET search_path = ''
+AS $$
 BEGIN
-    NEW.updated_at = now();
+    NEW.updated_at = clock_timestamp();
     RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$;
 
 DO $$ BEGIN
     DROP TRIGGER IF EXISTS trg_update_technicians_timestamp ON public.technicians;

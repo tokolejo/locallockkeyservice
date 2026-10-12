@@ -182,18 +182,28 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
     if (items && items.length > 0) {
       return items
         .filter((it: any) => it.is_active !== false)
-        .map((it: any) => ({
-          id: it.id,
-          order: it.display_order ?? it.order ?? 0,
-          title: it.title,
-          category: it.category,
-          categoryLabel: it.category_label || it.categoryLabel || "Service Work",
-          location: it.location,
-          images: it.images || [],
-          cover_image: it.cover_image || it.images?.[0] || "",
-          description: it.description || "",
-          dateBadge: it.date_badge || it.dateBadge || "Recent",
-        }));
+        .map((it: any) => {
+          const validImgs: string[] = Array.isArray(it.images)
+            ? it.images.filter((img: any) => typeof img === "string" && img.trim().length > 0)
+            : [];
+          const validCover = (typeof it.cover_image === "string" && it.cover_image.trim().length > 0)
+            ? it.cover_image.trim()
+            : validImgs[0] || "/gallery/hero-banner.png";
+          const finalImgs = validImgs.length > 0 ? validImgs : [validCover];
+
+          return {
+            id: it.id,
+            order: it.display_order ?? it.order ?? 0,
+            title: it.title || "Locksmith Service",
+            category: it.category || "commercial",
+            categoryLabel: it.category_label || it.categoryLabel || "Service Work",
+            location: it.location || "Manchester, NH",
+            images: finalImgs,
+            cover_image: validCover,
+            description: it.description || "",
+            dateBadge: it.date_badge || it.dateBadge || "Recent",
+          };
+        });
     }
     return GALLERY_ITEMS;
   }, [items]);
@@ -257,15 +267,29 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
     setActivePhotoIdx(0);
   };
 
-  const handleNextPhoto = useCallback(() => {
-    if (!selectedJob) return;
-    setActivePhotoIdx((prev) => (prev + 1) % selectedJob.images.length);
+  const modalImages = useMemo(() => {
+    if (!selectedJob) return [];
+    const validList = (selectedJob.images || []).filter(
+      (img) => typeof img === "string" && img.trim().length > 0
+    );
+    if (validList.length > 0) return validList;
+    if (selectedJob.cover_image && selectedJob.cover_image.trim().length > 0) {
+      return [selectedJob.cover_image.trim()];
+    }
+    return ["/gallery/hero-banner.png"];
   }, [selectedJob]);
 
+  const currentModalImage = modalImages[activePhotoIdx] || modalImages[0] || "/gallery/hero-banner.png";
+
+  const handleNextPhoto = useCallback(() => {
+    if (modalImages.length <= 1) return;
+    setActivePhotoIdx((prev) => (prev + 1) % modalImages.length);
+  }, [modalImages.length]);
+
   const handlePrevPhoto = useCallback(() => {
-    if (!selectedJob) return;
-    setActivePhotoIdx((prev) => (prev - 1 + selectedJob.images.length) % selectedJob.images.length);
-  }, [selectedJob]);
+    if (modalImages.length <= 1) return;
+    setActivePhotoIdx((prev) => (prev - 1 + modalImages.length) % modalImages.length);
+  }, [modalImages.length]);
 
   // Keyboard navigation for lightbox
   useEffect(() => {
@@ -413,8 +437,12 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
                   {/* Photo Frame */}
                   <div className="relative aspect-4/3 w-full bg-slate-900 overflow-hidden">
                     <Image
-                      src={item.cover_image || item.images[0] || "/gallery/hero-banner.png"}
-                      alt={item.title}
+                      src={
+                        (typeof item.cover_image === "string" && item.cover_image.trim()) ||
+                        (typeof item.images?.[0] === "string" && item.images[0].trim()) ||
+                        "/gallery/hero-banner.png"
+                      }
+                      alt={item.title || "Locksmith Work"}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover group-hover:scale-108 transition-transform duration-500 ease-out"
@@ -563,26 +591,28 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
 
             {/* Modal Image Frame with Carousel Controls */}
             <div className="relative aspect-4/3 sm:aspect-16/10 w-full bg-black shrink-0 overflow-hidden group/modal">
-              <Image
-                src={selectedJob.images[activePhotoIdx] || selectedJob.images[0]}
-                alt={selectedJob.title}
-                fill
-                priority
-                className="object-contain"
-              />
+              {currentModalImage ? (
+                <Image
+                  src={currentModalImage}
+                  alt={selectedJob.title}
+                  fill
+                  priority
+                  className="object-contain"
+                />
+              ) : null}
 
               {/* Photo Counter Badge */}
-              {selectedJob.images.length > 1 && (
+              {modalImages.length > 1 && (
                 <div className="absolute top-4 left-4 z-10 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/20 text-white text-xs font-bold flex items-center gap-1.5">
                   <Images className="w-3.5 h-3.5 text-emerald-400" />
                   <span>
-                    {activePhotoIdx + 1} / {selectedJob.images.length}
+                    {activePhotoIdx + 1} / {modalImages.length}
                   </span>
                 </div>
               )}
 
               {/* Previous / Next Arrow Controls */}
-              {selectedJob.images.length > 1 && (
+              {modalImages.length > 1 && (
                 <>
                   <button
                     type="button"
@@ -611,12 +641,12 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
             </div>
 
             {/* Interactive Photo Thumbnail Switcher (if multi-photo) */}
-            {selectedJob.images.length > 1 && (
+            {modalImages.length > 1 && (
               <div className="bg-slate-950 px-6 py-2.5 border-t border-slate-800 flex items-center justify-center gap-3 shrink-0">
                 <span className="text-[11px] font-semibold text-slate-400 mr-1">
                   Job Photos:
                 </span>
-                {selectedJob.images.map((img, idx) => (
+                {modalImages.map((img, idx) => (
                   <button
                     key={idx}
                     type="button"

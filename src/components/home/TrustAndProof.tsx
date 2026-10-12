@@ -16,21 +16,16 @@ export function TrustAndProof({ testimonials = [] }: TrustAndProofProps) {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [googleStats, setGoogleStats] = useState<{ rating: number; totalReviews: number }>({
     rating: 5.0,
-    totalReviews: 35
+    totalReviews: testimonials?.length || 35
   });
 
   useEffect(() => {
-    fetch("/api/google-reviews")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.rating) {
-          setGoogleStats({
-            rating: Number(data.rating) || 5.0,
-            totalReviews: Number(data.total_reviews) || testimonials?.length || 35
-          });
-        }
-      })
-      .catch(() => {});
+    if (testimonials?.length) {
+      setGoogleStats((prev) => ({
+        ...prev,
+        totalReviews: testimonials.length,
+      }));
+    }
   }, [testimonials]);
 
   const scrollCarousel = (direction: "left" | "right") => {

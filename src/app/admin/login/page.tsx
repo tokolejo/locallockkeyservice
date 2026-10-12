@@ -10,7 +10,7 @@ function LoginForm() {
   const searchParams = useSearchParams();
   const redirectedFrom = searchParams.get("redirectedFrom") || "/admin";
 
-  const [email, setEmail] = useState("tokolejo@gmail.com");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -75,7 +75,7 @@ function LoginForm() {
       )}
 
       {/* Login Form */}
-      <form onSubmit={handleLogin} className="space-y-4">
+      <form onSubmit={handleLogin} className="space-y-4" autoComplete="off">
         <div>
           <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300 mb-2">
             Admin Email
@@ -86,10 +86,13 @@ function LoginForm() {
             </div>
             <input
               type="email"
+              name="admin_login_email"
+              id="admin_login_email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="admin@example.com"
+              autoComplete="off"
               className="w-full pl-10 pr-4 py-3 bg-slate-900/80 border border-slate-700 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition"
             />
           </div>
@@ -105,16 +108,19 @@ function LoginForm() {
             </div>
             <input
               type={showPassword ? "text" : "password"}
+              name="admin_login_password"
+              id="admin_login_password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••••••"
+              autoComplete="new-password"
               className="w-full pl-10 pr-11 py-3 bg-slate-900/80 border border-slate-700 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-200 transition"
+              className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-200 transition cursor-pointer"
             >
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>

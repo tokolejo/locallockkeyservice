@@ -20,14 +20,14 @@ import {
   HeroSlide,
   SiteSettings,
 } from "@/types/database.types";
-import { createClient as createServerSupabase } from "@/lib/supabase/server";
+import { createClient as createServerSupabase, createPublicClient, createAdminClient } from "@/lib/supabase/server";
 import googleReviewsCache from "./google-reviews-cache.json";
 import siteContentCache from "./site-content-cache.json";
 
 // Stateful in-memory caches for fallback mode
 let fallbackRequests: DispatchRequest[] = [...initialDispatchRequests];
 let fallbackServices: ServiceItem[] = [...initialServices];
-let fallbackCoverage: CoverageArea[] = [...initialCoverageAreas];
+const fallbackCoverage: CoverageArea[] = [...initialCoverageAreas];
 let fallbackHeroSlides: HeroSlide[] =
   ((siteContentCache as any)?.hero_slides as HeroSlide[]) || [...initialHeroSlides];
 let fallbackGalleryItems: GalleryItem[] =
@@ -214,7 +214,7 @@ export async function logActivity(
   };
 
   try {
-    const supabase = await createServerSupabase();
+    const supabase = createPublicClient();
     if (supabase) {
       const { data, error } = await (supabase as any)
         .from("activity_logs")
@@ -261,7 +261,7 @@ export async function getActivityLogs(limit: number = 100): Promise<ActivityLog[
 // ---------------------------------------------------------------------------
 export async function getServices(): Promise<ServiceItem[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = createPublicClient();
     if (supabase) {
       const { data, error } = await supabase
         .from("services")
@@ -364,7 +364,7 @@ export async function deleteService(id: string): Promise<boolean> {
 // ---------------------------------------------------------------------------
 export async function getServiceCategories(onlyActive = false): Promise<ServiceCategoryItem[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = createPublicClient();
     if (supabase) {
       let query = supabase.from("service_categories").select("*").order("display_order", { ascending: true });
       if (onlyActive) {
@@ -488,7 +488,7 @@ export async function getServiceScenarios(
   onlyActive = false
 ): Promise<ServiceScenarioItem[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = createPublicClient();
     if (supabase) {
       let query = supabase.from("service_scenarios").select("*").order("display_order", { ascending: true });
       if (categoryId) {
@@ -616,7 +616,7 @@ export async function deleteServiceScenario(id: string): Promise<boolean> {
 // ---------------------------------------------------------------------------
 export async function getGalleryItems(): Promise<GalleryItem[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = createPublicClient();
     if (supabase) {
       const { data, error } = await supabase
         .from("gallery_items")
@@ -723,7 +723,7 @@ export async function deleteGalleryItem(id: string): Promise<boolean> {
 // ---------------------------------------------------------------------------
 export async function getHeroSlides(): Promise<HeroSlide[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = createPublicClient();
     if (supabase) {
       const { data, error } = await supabase
         .from("hero_slides")
@@ -830,7 +830,7 @@ export async function deleteHeroSlide(id: string): Promise<boolean> {
 // ---------------------------------------------------------------------------
 export async function getSiteSettings(): Promise<SiteSettings> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = createPublicClient();
     if (supabase) {
       const { data, error } = await supabase
         .from("site_settings")
@@ -883,7 +883,7 @@ export async function updateSiteSettings(updates: Partial<SiteSettings>): Promis
 // ---------------------------------------------------------------------------
 export async function getTestimonials(): Promise<Testimonial[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = createPublicClient();
     if (supabase) {
       const { data, error } = await supabase
         .from("testimonials")
@@ -902,7 +902,7 @@ export async function getTestimonials(): Promise<Testimonial[]> {
 
 export async function getAllTestimonials(): Promise<Testimonial[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = createPublicClient();
     if (supabase) {
       const { data, error } = await supabase
         .from("testimonials")
@@ -1049,12 +1049,12 @@ export async function saveSyncedGoogleReviews(newReviews: Testimonial[]): Promis
   }
 
   try {
-    const supabase = await createServerSupabase();
+    const supabase = createAdminClient() || (await createServerSupabase());
     if (supabase) {
       await (supabase as any).from("testimonials").upsert(merged);
     }
-  } catch {
-    // Continue in fallback mode
+  } catch (err) {
+    console.warn("Notice: Testimonials upsert caught error:", err);
   }
 }
 
@@ -1125,7 +1125,7 @@ export async function createDispatchRequest(payload: {
   };
 
   try {
-    const supabase = await createServerSupabase();
+    const supabase = createPublicClient();
     if (supabase) {
       const { data, error } = await (supabase as any)
         .from("dispatch_requests")
@@ -1171,7 +1171,7 @@ export async function updateDispatchRequestStatus(
 
 export async function getCoverageAreas(): Promise<CoverageArea[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = createPublicClient();
     if (supabase) {
       const { data, error } = await supabase.from("coverage_areas").select("*");
       if (!error && data && data.length > 0) {

@@ -23,9 +23,13 @@ export function AnimationProvider({ children }: { children: React.ReactNode }) {
   const [isSwitcherOpen, setIsSwitcherOpen] = useState(true);
 
   useEffect(() => {
-    const saved = localStorage.getItem("locksmith_anim_mode") as AnimationMode;
-    if (saved && ["clean", "dynamic", "minimal"].includes(saved)) {
-      setModeState(saved);
+    try {
+      const saved = localStorage.getItem("locksmith_anim_mode") as AnimationMode;
+      if (saved && ["clean", "dynamic", "minimal"].includes(saved)) {
+        queueMicrotask(() => setModeState(saved));
+      }
+    } catch {
+      // Ignore in restrictive environments
     }
   }, []);
 

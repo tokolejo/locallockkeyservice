@@ -63,6 +63,7 @@ export function ReviewAvatar({
       : `/api/avatar?url=${encodeURIComponent(photoUrl)}`;
 
   return (
+    // eslint-disable-next-line @next/next/no-img-element
     <img
       src={currentSrc}
       alt={name}

@@ -20,7 +20,6 @@ export function AALogo({
   size = 40,
   option = 1,
   invert = false,
-  showSubtitle = true,
 }: AALogoProps) {
   const textColor = invert ? "#FFFFFF" : "#18181B"; // Deep rich slate/black
 
