@@ -148,10 +148,16 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
           <div className="lg:col-span-7 space-y-5 sm:space-y-6">
             <ScrollReveal direction="up">
               <div className="space-y-4 sm:space-y-5">
-                {/* Live Trust & Service Badge */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-emerald-800 shadow-2xs">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>{t("hero_badge")}</span>
+                {/* Live Trust & Service Badges */}
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-emerald-800 shadow-2xs">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>{t("hero_badge")}</span>
+                  </div>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-slate-200/90 text-xs font-bold text-slate-700 shadow-2xs">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span>Fully Insured & Registered in NH</span>
+                  </div>
                 </div>
 
                 {/* Primary Headline with Harmonized Hierarchy */}
@@ -199,14 +205,14 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
                     <div className="flex items-center gap-1.5 text-emerald-700 mb-1.5">
                       <ShieldCheck className="w-4 h-4 shrink-0 text-emerald-600" />
                       <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 truncate">
-                        Entry
+                        Guarantee
                       </span>
                     </div>
                     <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 leading-tight">
                       {t("hero_stat_1_title")}
                     </div>
                     <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 hidden sm:block leading-snug">
-                      {t("hero_stat_1_sub")}
+                      Fully Insured &amp; Registered in NH
                     </p>
                   </div>
 
@@ -225,20 +231,31 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
                     </p>
                   </div>
 
-                  <div className="bg-white/95 backdrop-blur-xs border border-slate-200/90 rounded-2xl p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between">
-                    <div className="flex items-center gap-1.5 text-emerald-700 mb-1.5">
-                      <Star className="w-4 h-4 fill-emerald-600 text-emerald-600 shrink-0" />
-                      <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 truncate">
-                        Rating
+                  <a
+                    href="https://maps.app.goo.gl/j9Zvw9xhNKP5Rgk29"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="View Verified Google Reviews"
+                    className="bg-white/95 backdrop-blur-xs border border-slate-200/90 hover:border-amber-400/80 hover:bg-amber-50/20 rounded-2xl p-3.5 sm:p-4 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col justify-between group/rating cursor-pointer"
+                  >
+                    <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center gap-1.5 text-amber-500">
+                        <Star className="w-4 h-4 fill-amber-400 text-amber-400 group-hover/rating:scale-110 transition-transform shrink-0" />
+                        <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-600 truncate group-hover/rating:text-slate-900 transition-colors">
+                          Google Reviews
+                        </span>
+                      </div>
+                      <span className="text-[11px] font-bold text-amber-600 group-hover/rating:translate-x-0.5 group-hover/rating:-translate-y-0.5 transition-transform">
+                        ↗
                       </span>
                     </div>
-                    <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 leading-tight">
-                      {t("hero_stat_3_title")}
+                    <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 group-hover/rating:text-amber-600 transition-colors leading-tight">
+                      5.0 ★ Google Rating
                     </div>
-                    <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 hidden sm:block leading-snug">
-                      {t("hero_stat_3_sub")}
+                    <p className="text-[10px] sm:text-[11px] text-slate-500 group-hover/rating:text-slate-700 mt-1 hidden sm:block leading-snug">
+                      Verified Business Profile
                     </p>
-                  </div>
+                  </a>
                 </div>
               </div>
             </ScrollReveal>
@@ -250,6 +267,7 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
               <div className="relative rounded-3xl overflow-hidden border border-slate-200/90 shadow-2xl bg-slate-900 group">
                 {/* Active Slide Image Container */}
                 <div className="relative aspect-4/3 sm:aspect-16/11 w-full bg-slate-950 overflow-hidden">
+                  {/* Clean Background Images Crossfade */}
                   {activeSlides.map((slide, index) => (
                     <div
                       key={`${slide.src}-${index}`}
@@ -266,35 +284,42 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
                         priority={index === 0}
                       />
                       <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/40 to-transparent" />
-
-                      {/* Top Badges */}
-                      <div className="absolute top-4 left-4 right-4 flex items-center justify-between">
-                        <div className="px-3 py-1.5 rounded-xl bg-slate-900/85 backdrop-blur-md border border-white/20 text-white flex items-center gap-2 text-xs font-bold shadow-lg">
-                          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                          <span>{slide.badge}</span>
-                        </div>
-                        <div className="px-2.5 py-1 rounded-lg bg-emerald-950/90 border border-emerald-500/40 text-emerald-300 font-bold text-xs">
-                          {slide.location}
-                        </div>
-                      </div>
-
-                      {/* Bottom Caption */}
-                      <div className="absolute bottom-5 left-5 right-5 text-white space-y-2">
-                        <h4 className="font-extrabold text-base sm:text-lg leading-snug drop-shadow-md">
-                          {slide.title}
-                        </h4>
-                        <div className="flex items-center justify-between pt-1 text-xs text-slate-300">
-                          <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
-                            <CheckCircle2 className="w-3.5 h-3.5" />
-                            Active Dispatch Unit
-                          </span>
-                          <span className="text-[11px] font-mono text-slate-400">
-                            {index + 1} / {activeSlides.length}
-                          </span>
-                        </div>
-                      </div>
                     </div>
                   ))}
+
+                  {/* Clean Decoupled Top Badges (No ghosting / text overlap) */}
+                  <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none">
+                    <div className="px-3 py-1.5 rounded-xl bg-slate-900/85 backdrop-blur-md border border-white/20 text-white flex items-center gap-2 text-xs font-bold shadow-lg">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                      <span key={`badge-${currentHeroSlide}`}>
+                        {activeSlides[currentHeroSlide]?.badge}
+                      </span>
+                    </div>
+                    <div className="px-2.5 py-1 rounded-lg bg-emerald-950/90 border border-emerald-500/40 text-emerald-300 font-bold text-xs shadow-md">
+                      <span key={`loc-${currentHeroSlide}`}>
+                        {activeSlides[currentHeroSlide]?.location}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Clean Decoupled Bottom Caption (No ghosting / text overlap) */}
+                  <div className="absolute bottom-5 left-5 right-5 z-20 text-white space-y-2 pointer-events-none">
+                    <h4
+                      key={`title-${currentHeroSlide}`}
+                      className="font-extrabold text-base sm:text-lg leading-snug drop-shadow-md"
+                    >
+                      {activeSlides[currentHeroSlide]?.title}
+                    </h4>
+                    <div className="flex items-center justify-between pt-1 text-xs text-slate-300">
+                      <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        Active Dispatch Unit
+                      </span>
+                      <span className="text-[11px] font-mono text-slate-400">
+                        {currentHeroSlide + 1} / {activeSlides.length}
+                      </span>
+                    </div>
+                  </div>
 
                   {/* Slider Prev / Next Controls */}
                   <button

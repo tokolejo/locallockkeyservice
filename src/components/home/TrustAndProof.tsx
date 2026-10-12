@@ -49,8 +49,8 @@ export function TrustAndProof({ testimonials = [] }: TrustAndProofProps) {
       answer: "Every mobile unit carries wireless POS card terminals accepting Visa, MasterCard, Amex, Apple Pay, Google Pay, and Cash with printed receipts."
     },
     {
-      question: "Why direct phone call instead of Instagram DMs?",
-      answer: "Emergencies cannot wait for social media DMs. Calling directly at +1 (603) 290-5554 immediately assigns the nearest patrolling mobile unit via GPS dispatch."
+      question: "Do you provide upfront pricing before dispatching a mobile technician?",
+      answer: "Yes, we always provide clear upfront phone estimates based on your vehicle make, year, or lock type before dispatching. No hidden fees or surprise on-site markups."
     }
   ];
 

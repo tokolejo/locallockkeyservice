@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   PhoneCall,
@@ -29,6 +29,50 @@ interface HeaderProps {
 export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: HeaderProps) {
   const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
+
+  useEffect(() => {
+    const sectionIds = ["about", "services", "gallery", "coverage", "reviews"];
+
+    const handleScroll = () => {
+      const headerOffset = 140;
+
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 60
+      ) {
+        setActiveSection("reviews");
+        return;
+      }
+
+      let current = "";
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= headerOffset && rect.bottom > headerOffset) {
+            current = id;
+            break;
+          }
+        }
+      }
+
+      setActiveSection(current);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navLinks = [
+    { id: "about", label: "About Us" },
+    { id: "services", label: t("nav_services") },
+    { id: "gallery", label: t("nav_gallery") },
+    { id: "coverage", label: t("nav_coverage") },
+    { id: "reviews", label: t("nav_reviews") },
+  ];
 
   const phone = siteSettings?.phone_display || process.env.NEXT_PUBLIC_DISPATCH_PHONE || "+1 (603) 290-5554";
   const phoneRaw = siteSettings?.phone_raw || process.env.NEXT_PUBLIC_DISPATCH_PHONE_RAW || "tel:+16032905554";
@@ -110,44 +154,25 @@ export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: Header
           </Link>
         </div>
 
-        {/* Center: Desktop Quick Nav Links */}
-        <nav className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 text-sm font-semibold text-slate-700 flex-1 px-4">
-          <a
-            href="#about"
-            onClick={(e) => handleScrollTo(e, "about")}
-            className="hover:text-emerald-700 transition"
-          >
-            About Us
-          </a>
-          <a
-            href="#services"
-            onClick={(e) => handleScrollTo(e, "services")}
-            className="hover:text-emerald-700 transition"
-          >
-            {t("nav_services")}
-          </a>
-          <a
-            href="#gallery"
-            onClick={(e) => handleScrollTo(e, "gallery")}
-            className="hover:text-emerald-700 transition flex items-center gap-1.5 font-bold text-slate-900 bg-slate-100 hover:bg-emerald-50 px-3 py-1 rounded-lg"
-          >
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            {t("nav_gallery")}
-          </a>
-          <a
-            href="#coverage"
-            onClick={(e) => handleScrollTo(e, "coverage")}
-            className="hover:text-emerald-700 transition"
-          >
-            {t("nav_coverage")}
-          </a>
-          <a
-            href="#reviews"
-            onClick={(e) => handleScrollTo(e, "reviews")}
-            className="hover:text-emerald-700 transition"
-          >
-            {t("nav_reviews")}
-          </a>
+        {/* Center: Desktop Quick Nav Links with Clean Scrollspy Highlight */}
+        <nav className="hidden lg:flex items-center justify-center gap-1.5 xl:gap-2 text-sm font-semibold text-slate-700 flex-1 px-4">
+          {navLinks.map((item) => {
+            const isActive = activeSection === item.id;
+            return (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={(e) => handleScrollTo(e, item.id)}
+                className={`px-3 py-1.5 rounded-lg transition-all duration-150 ${
+                  isActive
+                    ? "text-emerald-800 bg-emerald-50 font-bold border border-emerald-200/80 shadow-2xs"
+                    : "text-slate-600 hover:text-emerald-700 hover:bg-slate-50 border border-transparent"
+                }`}
+              >
+                {item.label}
+              </a>
+            );
+          })}
         </nav>
 
         {/* Right: Desktop Actions */}
@@ -195,12 +220,16 @@ export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: Header
       {/* Mobile Menu Drawer (Smooth, full-width with clean icons) */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-white border-t border-slate-200 px-4 pt-3 pb-6 space-y-4 shadow-xl animate-in slide-in-from-top-2 duration-150">
-          {/* Nav Links with Clear Icons */}
+          {/* Nav Links with Clear Icons & Scrollspy Sync */}
           <div className="grid grid-cols-2 gap-2 text-xs font-bold text-slate-800 pt-1">
             <a
               href="#about"
               onClick={(e) => handleScrollTo(e, "about")}
-              className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 transition-colors"
+              className={`flex items-center gap-2 p-3 rounded-xl border transition-colors ${
+                activeSection === "about"
+                  ? "bg-emerald-50 border-emerald-300 text-emerald-900"
+                  : "bg-slate-50 hover:bg-emerald-50/50 border-slate-200/80 text-slate-800"
+              }`}
             >
               <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
               <span className="truncate">About Us</span>
@@ -209,7 +238,11 @@ export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: Header
             <a
               href="#services"
               onClick={(e) => handleScrollTo(e, "services")}
-              className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 transition-colors"
+              className={`flex items-center gap-2 p-3 rounded-xl border transition-colors ${
+                activeSection === "services"
+                  ? "bg-emerald-50 border-emerald-300 text-emerald-900"
+                  : "bg-slate-50 hover:bg-emerald-50/50 border-slate-200/80 text-slate-800"
+              }`}
             >
               <Wrench className="w-4 h-4 text-emerald-700 shrink-0" />
               <span className="truncate">{t("nav_services")}</span>
@@ -218,7 +251,11 @@ export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: Header
             <a
               href="#gallery"
               onClick={(e) => handleScrollTo(e, "gallery")}
-              className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 transition-colors"
+              className={`flex items-center gap-2 p-3 rounded-xl border transition-colors ${
+                activeSection === "gallery"
+                  ? "bg-emerald-50 border-emerald-300 text-emerald-900"
+                  : "bg-slate-50 hover:bg-emerald-50/50 border-slate-200/80 text-slate-800"
+              }`}
             >
               <Camera className="w-4 h-4 text-emerald-700 shrink-0" />
               <span className="truncate">{t("nav_gallery")}</span>
@@ -227,7 +264,11 @@ export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: Header
             <a
               href="#coverage"
               onClick={(e) => handleScrollTo(e, "coverage")}
-              className="flex items-center gap-2 p-3 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 transition-colors"
+              className={`flex items-center gap-2 p-3 rounded-xl border transition-colors ${
+                activeSection === "coverage"
+                  ? "bg-emerald-50 border-emerald-300 text-emerald-900"
+                  : "bg-slate-50 hover:bg-emerald-50/50 border-slate-200/80 text-slate-800"
+              }`}
             >
               <MapPin className="w-4 h-4 text-emerald-700 shrink-0" />
               <span className="truncate">{t("nav_coverage")}</span>
@@ -236,7 +277,11 @@ export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: Header
             <a
               href="#reviews"
               onClick={(e) => handleScrollTo(e, "reviews")}
-              className="col-span-2 flex items-center justify-center gap-2 p-3 rounded-xl bg-slate-50 hover:bg-emerald-50/50 border border-slate-200/80 transition-colors text-center"
+              className={`col-span-2 flex items-center justify-center gap-2 p-3 rounded-xl border transition-colors text-center ${
+                activeSection === "reviews"
+                  ? "bg-emerald-50 border-emerald-300 text-emerald-900"
+                  : "bg-slate-50 hover:bg-emerald-50/50 border-slate-200/80 text-slate-800"
+              }`}
             >
               <Star className="w-4 h-4 text-amber-500 fill-amber-500 shrink-0" />
               <span>{t("nav_reviews")}</span>

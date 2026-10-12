@@ -6,7 +6,7 @@ export const translations = {
     brand_sub: "Manchester, NH & Surrounding Areas",
     duty_badge: "Dispatch Technicians On Duty",
     avg_arrival: "Avg Arrival: 15–20 Mins across Manchester & NH",
-    licensed_badge: "Licensed, Bonded & Insured (Mobile Locksmith Units)",
+    licensed_badge: "Fully Insured & Registered in NH",
     call_now: "Call 24/7 +1 (603) 290-5554",
     no_dms_badge: "NO DMs • Just Call 24/7 Direct",
     zip_placeholder: "Enter 5-digit NH ZIP",

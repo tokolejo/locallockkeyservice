@@ -135,10 +135,10 @@ export function JsonLdSchema() {
           },
           {
             "@type": "Question",
-            "name": "Why direct phone call instead of Instagram DMs?",
+            "name": "Do you provide upfront pricing before dispatching a mobile technician?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Emergencies cannot wait for social media DMs. Calling directly at +1 (603) 290-5554 immediately assigns the nearest patrolling mobile unit via GPS dispatch.",
+              "text": "Yes, we always provide clear upfront phone estimates based on your vehicle make, year, or lock type before dispatching. No hidden fees or surprise on-site markups.",
             },
           },
         ],

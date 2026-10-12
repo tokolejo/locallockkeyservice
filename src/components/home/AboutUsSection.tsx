@@ -90,7 +90,7 @@ export function AboutUsSection() {
               </div>
               <div className="pt-6 mt-6 border-t border-slate-100 flex items-center gap-2 text-xs font-semibold text-blue-700">
                 <CheckCircle2 className="w-4 h-4 shrink-0" />
-                <span>Licensed, Bonded & Insured</span>
+                <span>Fully Insured &amp; Registered in NH</span>
               </div>
             </div>
           </ScrollReveal>

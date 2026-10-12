@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ShieldCheck, PhoneCall, Clock, CheckCircle2, MessageCircle } from "lucide-react";
+import { ShieldCheck, PhoneCall, Clock, CheckCircle2, MessageCircle, Star } from "lucide-react";
 import { SiteSettings } from "@/types/database.types";
 
 interface FooterProps {
@@ -41,7 +41,7 @@ export function Footer({ siteSettings }: FooterProps) {
               <div className="flex flex-col justify-center border-l border-slate-800 pl-2.5 sm:pl-3 space-y-1 shrink-0 text-[10px] sm:text-[11px]">
                 <div className="flex items-center gap-1.5 text-slate-200 font-semibold">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                  <span className="truncate">Licensed & Insured</span>
+                  <span className="truncate">Fully Insured & Registered in NH</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-emerald-400 font-medium">
                   <Clock className="w-3.5 h-3.5 shrink-0" />
@@ -53,6 +53,25 @@ export function Footer({ siteSettings }: FooterProps) {
             <p className="text-slate-400 leading-relaxed text-[11px] sm:text-xs">
               Local Lock & Key Service provides 24/7 fast, reliable, and professional mobile locksmith solutions across Manchester, NH & surrounding towns. 100% damage-free entry guarantee.
             </p>
+
+            {/* Prominent Clickable Google Review Link */}
+            <div className="pt-1">
+              <a
+                href="https://maps.app.goo.gl/j9Zvw9xhNKP5Rgk29"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700/80 hover:border-amber-400/60 text-slate-200 transition-all group/review shadow-xs"
+                title="Google Rating • Verified Profile"
+              >
+                <div className="flex items-center gap-1 text-amber-400">
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400 group-hover/review:scale-110 transition-transform shrink-0" />
+                  <span className="font-bold text-xs text-white">5.0 ★</span>
+                </div>
+                <span className="text-[11px] text-slate-300 group-hover/review:text-amber-300 transition-colors font-medium">
+                  Google Rating • Verified Profile ↗
+                </span>
+              </a>
+            </div>
           </div>
 
           {/* Core Services */}
@@ -163,7 +182,16 @@ export function Footer({ siteSettings }: FooterProps) {
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-slate-800/90 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
           <p>© {new Date().getFullYear()} Local Lock & Key Service. All rights reserved.</p>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-wrap">
+            <a
+              href="https://maps.app.goo.gl/j9Zvw9xhNKP5Rgk29"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 font-semibold transition"
+            >
+              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+              <span>5.0 ★ Google Rating • Verified Profile</span>
+            </a>
             <Link href="#about" className="hover:text-slate-200 transition">About Us</Link>
             <Link href="#services" className="hover:text-slate-200 transition">Services</Link>
             <Link href="#coverage" className="hover:text-slate-200 transition">Coverage</Link>
