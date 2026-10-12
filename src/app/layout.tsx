@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { JsonLdSchema } from "@/components/seo/JsonLdSchema";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -88,6 +90,8 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-[#faf9f6] text-slate-800 font-sans selection:bg-emerald-600 selection:text-white overflow-x-clip w-full">
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
