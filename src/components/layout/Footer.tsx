@@ -180,22 +180,26 @@ export function Footer({ siteSettings }: FooterProps) {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-6 border-t border-slate-800/90 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-400">
+        <div className="pt-6 border-t border-slate-800/90 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-slate-400 text-center md:text-left">
           <p>© {new Date().getFullYear()} Local Lock & Key Service. All rights reserved.</p>
-          <div className="flex items-center gap-4 flex-wrap">
+          <div className="flex items-center justify-center gap-2.5 sm:gap-3 flex-wrap text-slate-400">
+            <Link href="#about" className="hover:text-slate-200 transition">About Us</Link>
+            <span className="text-slate-700">•</span>
+            <Link href="#services" className="hover:text-slate-200 transition">Services</Link>
+            <span className="text-slate-700">•</span>
+            <Link href="#coverage" className="hover:text-slate-200 transition">Coverage</Link>
+            <span className="text-slate-700">•</span>
             <a
               href="https://maps.app.goo.gl/j9Zvw9xhNKP5Rgk29"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-amber-400 hover:text-amber-300 font-semibold transition"
+              className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 font-semibold transition"
             >
-              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-              <span>5.0 ★ Google Rating • Verified Profile</span>
+              <Star className="w-3 h-3 fill-amber-400 text-amber-400 shrink-0" />
+              <span>5.0 ★ Reviews</span>
             </a>
-            <Link href="#about" className="hover:text-slate-200 transition">About Us</Link>
-            <Link href="#services" className="hover:text-slate-200 transition">Services</Link>
-            <Link href="#coverage" className="hover:text-slate-200 transition">Coverage</Link>
-            <span className="text-emerald-400 font-medium">100% Damage-Free Entry</span>
+            <span className="text-slate-700 hidden sm:inline">•</span>
+            <span className="text-emerald-400 font-medium hidden sm:inline">100% Damage-Free Entry</span>
           </div>
         </div>
       </div>

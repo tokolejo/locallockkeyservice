@@ -242,7 +242,7 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
                       <div className="flex items-center gap-1.5 text-amber-500">
                         <Star className="w-4 h-4 fill-amber-400 text-amber-400 group-hover/rating:scale-110 transition-transform shrink-0" />
                         <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-600 truncate group-hover/rating:text-slate-900 transition-colors">
-                          Google Reviews
+                          Reviews
                         </span>
                       </div>
                       <span className="text-[11px] font-bold text-amber-600 group-hover/rating:translate-x-0.5 group-hover/rating:-translate-y-0.5 transition-transform">
@@ -250,10 +250,10 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
                       </span>
                     </div>
                     <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 group-hover/rating:text-amber-600 transition-colors leading-tight">
-                      5.0 ★ Google Rating
+                      5.0 ★
                     </div>
                     <p className="text-[10px] sm:text-[11px] text-slate-500 group-hover/rating:text-slate-700 mt-1 hidden sm:block leading-snug">
-                      Verified Business Profile
+                      Google Verified
                     </p>
                   </a>
                 </div>
