@@ -6,10 +6,10 @@ export function JsonLdSchema() {
     "@graph": [
       {
         "@type": "Locksmith",
-        "@id": "https://locallockservice.com/#locksmith",
+        "@id": "https://www.locallockkeyservice.com/#locksmith",
         "name": "Local Lock & Key Service",
-        "image": "https://locallockservice.com/gallery/hero-banner.png",
-        "url": "https://locallockservice.com",
+        "image": "https://www.locallockkeyservice.com/og-image.jpg",
+        "url": "https://www.locallockkeyservice.com",
         "telephone": "+1-603-290-5554",
         "priceRange": "$$",
         "address": {
@@ -107,7 +107,7 @@ export function JsonLdSchema() {
       },
       {
         "@type": "FAQPage",
-        "@id": "https://locallockservice.com/#faq",
+        "@id": "https://www.locallockkeyservice.com/#faq",
         "mainEntity": [
           {
             "@type": "Question",
