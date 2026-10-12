@@ -43,124 +43,74 @@ export interface GallerySectionProps {
 
 const GALLERY_ITEMS: GalleryItem[] = [
   {
-    id: "g-ford",
-    order: 9,
-    title: "Ford Smart Key Fob & OBD-II Programming",
+    id: "g-1",
+    order: 4,
+    title: "Smart Key Programming & Transponder Fob Origination",
     category: "auto",
     categoryLabel: "Car Keys & Fobs",
     location: "Manchester, NH",
     images: [
       "/gallery/jobs/ford-smart-fob-1.jpg",
-      "/gallery/jobs/ford-smart-fob-2.jpg"
+      "/gallery/jobs/ford-smart-fob-2.jpg",
+      "/gallery/jobs/nissan-key-programming.jpg",
+      "/gallery/toyota-car-key.jpg",
     ],
-    description: "Push-to-start smart key fob generation and immobilizer programming for Ford Explorer using our Autel MaxiIM diagnostic tablet on-site.",
-    dateBadge: "Today"
+    cover_image: "/gallery/jobs/ford-smart-fob-1.jpg",
+    description: "All-keys-lost roadside rescue: precision blade cutting, immobilizer pairing, and push-to-start smart key fob generation using Autel diagnostic tablet on-site.",
+    dateBadge: "Today",
   },
   {
-    id: "g-storefront",
-    order: 8,
-    title: "Storefront Glass Door Mortise Lock & Lever",
+    id: "g-2",
+    order: 3,
+    title: "Storefront Glass Door Mortise Lock & Commercial Hardware",
     category: "commercial",
     categoryLabel: "Commercial Doors",
     location: "Manchester, NH",
     images: [
       "/gallery/jobs/storefront-mortise-lock-1.jpg",
-      "/gallery/jobs/storefront-mortise-lock-2.jpg"
+      "/gallery/jobs/storefront-mortise-lock-2.jpg",
+      "/gallery/jobs/commercial-steel-door-mortise.jpg",
+      "/gallery/jobs/securitech-multipoint-lock.jpg",
+      "/gallery/jobs/commercial-panic-bar-exit.jpg",
     ],
-    description: "Complete storefront aluminum entrance door lock installation: high-security mortise cylinder, latch mechanism, and commercial lever handle.",
-    dateBadge: "Yesterday"
+    cover_image: "/gallery/jobs/storefront-mortise-lock-1.jpg",
+    description: "Complete commercial entrance door lock installation: high-security mortise cylinder, latch mechanism, commercial lever handle, and multi-point exit hardware.",
+    dateBadge: "Yesterday",
   },
   {
-    id: "g-nissan",
-    order: 7,
-    title: "Nissan Transponder Keys & Remote Pairing",
-    category: "auto",
-    categoryLabel: "Car Keys & Fobs",
-    location: "Bedford, NH",
-    images: [
-      "/gallery/jobs/nissan-key-programming.jpg"
-    ],
-    description: "All-keys-lost roadside rescue: precision blade cutting for two chip keys and remote programming via XTool X100 PAD2 tablet.",
-    dateBadge: "2 days ago"
-  },
-  {
-    id: "g-multlock",
-    order: 6,
-    title: "Mul-T-Lock MTL 800 High-Security Cylinder",
-    category: "locks",
-    categoryLabel: "Residential Locks",
-    location: "Manchester, NH",
-    images: [
-      "/gallery/jobs/multlock-high-security-cylinder.jpg"
-    ],
-    description: "Home security upgrade: drill-resistant, pick-proof Mul-T-Lock MTL 800 interactive cylinder system and duplicate security keys.",
-    dateBadge: "3 days ago"
-  },
-  {
-    id: "g-subaru",
-    order: 5,
-    title: "Subaru Laser Cut Keys & Chip Sync",
-    category: "auto",
-    categoryLabel: "Car Keys & Fobs",
-    location: "Merrimack, NH",
-    images: [
-      "/gallery/jobs/subaru-laser-key-programming.jpg"
-    ],
-    description: "High-security laser side-mill key duplication with integrated remote heads programmed via OBD-II diagnostic computer.",
-    dateBadge: "4 days ago"
-  },
-  {
-    id: "g-electric-strike",
-    order: 4,
-    title: "Access Control Electric Strike Frame Retrofit",
-    category: "commercial",
-    categoryLabel: "Commercial & Access",
-    location: "Manchester, NH",
-    images: [
-      "/gallery/jobs/commercial-electric-strike.jpg"
-    ],
-    description: "Precision steel frame cutout and low-voltage electric strike installation for building intercom buzzer integration.",
-    dateBadge: "5 days ago"
-  },
-  {
-    id: "g-panic-bar",
-    order: 3,
-    title: "Heavy-Duty Emergency Panic Bar Installation",
-    category: "commercial",
-    categoryLabel: "Commercial Doors",
-    location: "Concord, NH",
-    images: [
-      "/gallery/jobs/commercial-panic-bar-exit.jpg"
-    ],
-    description: "Fire-code compliant commercial panic exit push bar and exterior rim cylinder trim installed on heavy steel exit door.",
-    dateBadge: "1 week ago"
-  },
-  {
-    id: "g-securitech",
+    id: "g-3",
     order: 2,
-    title: "Securitech Multi-Point Lever Lock Service",
-    category: "commercial",
-    categoryLabel: "Commercial Doors",
-    location: "Manchester, NH",
-    images: [
-      "/gallery/jobs/securitech-multipoint-lock.jpg"
-    ],
-    description: "Multi-point deadlocking security mechanism and heavy-duty architectural lever set installed on commercial entrance door.",
-    dateBadge: "1 week ago"
-  },
-  {
-    id: "g-steel-mortise",
-    order: 1,
-    title: "Commercial Steel Door Mortise Lock Replacement",
-    category: "commercial",
-    categoryLabel: "Commercial Doors",
+    title: "Emergency Vehicle Lockout - 100% Zero Damage Entry",
+    category: "auto",
+    categoryLabel: "Lockout Rescue",
     location: "Nashua, NH",
     images: [
-      "/gallery/jobs/commercial-steel-door-mortise.jpg"
+      "/gallery/technician-work-1.jpg",
+      "/gallery/technician-work-2.jpg",
+      "/gallery/technician-work-3.jpg",
+      "/gallery/van-work.jpg",
     ],
-    description: "Heavy-duty brass mortise cylinder installation, deadlocking latch service, and exterior handle alignment on warehouse door.",
-    dateBadge: "2 weeks ago"
-  }
+    cover_image: "/gallery/technician-work-1.jpg",
+    description: "Rapid emergency lockout rescue: non-destructive entry using automotive air-wedge bypass tools and long-reach equipment. Arrived on-site in 18 minutes.",
+    dateBadge: "2 days ago",
+  },
+  {
+    id: "g-4",
+    order: 1,
+    title: "High-Security Cylinder Upgrade & Precision Laser Key Cutting",
+    category: "locks",
+    categoryLabel: "Residential Locks",
+    location: "Bedford, NH",
+    images: [
+      "/gallery/jobs/multlock-high-security-cylinder.jpg",
+      "/gallery/key-cutting-machine.jpg",
+      "/gallery/jobs/subaru-laser-key-programming.jpg",
+      "/gallery/lock-repair-door.jpg",
+    ],
+    cover_image: "/gallery/jobs/multlock-high-security-cylinder.jpg",
+    description: "Home security upgrade: drill-resistant Mul-T-Lock interactive cylinder installation, deadbolt rekeying, and precision laser key origination inside mobile van.",
+    dateBadge: "3 days ago",
+  },
 ];
 
 export function GallerySection({ items, siteSettings }: GallerySectionProps) {
