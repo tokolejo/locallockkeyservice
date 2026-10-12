@@ -250,10 +250,13 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
                       </span>
                     </div>
                     <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 group-hover/rating:text-amber-600 transition-colors leading-tight">
-                      5.0 ★
+                      <span>5.0 ★ Stars</span>
+                      <span className="block text-[11px] sm:text-xs font-bold text-slate-600 group-hover/rating:text-slate-800 transition-colors mt-0.5">
+                        Top Rated NH
+                      </span>
                     </div>
                     <p className="text-[10px] sm:text-[11px] text-slate-500 group-hover/rating:text-slate-700 mt-1 hidden sm:block leading-snug">
-                      Google Verified
+                      100% Customer Proof
                     </p>
                   </a>
                 </div>
