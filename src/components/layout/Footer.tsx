@@ -23,30 +23,30 @@ export function Footer({ siteSettings }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 mb-8">
           {/* Brand & Assurance */}
           <div className="space-y-3">
-            {/* Logo + Side Trust Highlights (fills horizontal width nicely) */}
-            <div className="flex items-center justify-between gap-3">
+            {/* Logo */}
+            <div>
               <Link
                 href="/"
-                className="inline-flex items-center group transition-transform duration-200 hover:scale-[1.02] shrink-0"
+                className="inline-flex items-center group transition-transform duration-200 hover:scale-[1.02]"
                 aria-label="Local Lock & Key Service Homepage"
               >
                 <img
                   src="/gallery/logo-light.png"
                   alt="Local Lock & Key Service Logo"
-                  className="h-10 sm:h-12 w-auto max-w-[190px] sm:max-w-[220px] object-contain drop-shadow-sm"
+                  className="h-10 sm:h-11 w-auto max-w-[190px] sm:max-w-[210px] object-contain drop-shadow-sm"
                 />
               </Link>
+            </div>
 
-              {/* Side Trust Badges immediately right of logo */}
-              <div className="flex flex-col justify-center border-l border-slate-800 pl-2.5 sm:pl-3 space-y-1 shrink-0 text-[10px] sm:text-[11px]">
-                <div className="flex items-center gap-1.5 text-slate-200 font-semibold">
-                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                  <span className="truncate">Fully Insured & Registered in NH</span>
-                </div>
-                <div className="flex items-center gap-1.5 text-emerald-400 font-medium">
-                  <Clock className="w-3.5 h-3.5 shrink-0" />
-                  <span className="truncate">15–20 Min Arrival</span>
-                </div>
+            {/* Trust Badges below logo */}
+            <div className="space-y-1.5 text-[11px]">
+              <div className="flex items-center gap-1.5 text-slate-200 font-semibold">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                <span>Fully Insured & Registered in NH</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-emerald-400 font-medium">
+                <Clock className="w-3.5 h-3.5 shrink-0" />
+                <span>15–20 Min Arrival</span>
               </div>
             </div>
 
