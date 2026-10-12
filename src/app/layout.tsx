@@ -29,6 +29,16 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://locallockservice.com",
   },
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   openGraph: {
     title: "Local Lock & Key Service | 24/7 Locksmith Manchester NH",
     description: "24/7 Emergency locksmith service in Manchester, NH and surrounding areas. Fast 15-30 min dispatch.",

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Brand Emerald Squircle Badge -->
+  <rect x="40" y="40" width="432" height="432" rx="110" fill="#16a34a"/>
+  
+  <!-- Padlock Shackle -->
+  <path d="M196 245V175C196 141.863 222.863 115 256 115C289.137 115 316 141.863 316 175V245" 
+        stroke="#FFFFFF" 
+        stroke-width="40" 
+        stroke-linecap="round"/>
+        
+  <!-- Padlock Body -->
+  <rect x="121" y="245" width="270" height="200" rx="42" fill="#FFFFFF"/>
+  
+  <!-- Keyhole in Brand Emerald Green -->
+  <circle cx="256" cy="327" r="24" fill="#16a34a"/>
+  <path d="M243 333L232 381H280L269 333Z" fill="#16a34a"/>
+</svg>
