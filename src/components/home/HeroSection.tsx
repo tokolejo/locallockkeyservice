@@ -212,7 +212,7 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
                       {t("hero_stat_1_title")}
                     </div>
                     <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 hidden sm:block leading-snug">
-                      Fully Insured &amp; Registered in NH
+                      Fully Insured & Registered in NH
                     </p>
                   </div>
 
