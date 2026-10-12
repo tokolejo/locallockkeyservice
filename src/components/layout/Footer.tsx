@@ -20,33 +20,33 @@ export function Footer({ siteSettings }: FooterProps) {
   return (
     <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 text-xs pb-20 md:pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-7 lg:gap-8 mb-8">
           {/* Brand & Assurance */}
-          <div className="space-y-3">
-            {/* Logo */}
-            <div>
+          <div className="lg:col-span-5 space-y-3">
+            {/* Logo + Side Trust Badges (Side-by-side on all screens) */}
+            <div className="flex items-center gap-3">
               <Link
                 href="/"
-                className="inline-flex items-center group transition-transform duration-200 hover:scale-[1.02]"
+                className="inline-flex items-center group transition-transform duration-200 hover:scale-[1.02] shrink-0"
                 aria-label="Local Lock & Key Service Homepage"
               >
                 <img
                   src="/gallery/logo-light.png"
                   alt="Local Lock & Key Service Logo"
-                  className="h-10 sm:h-11 w-auto max-w-[190px] sm:max-w-[210px] object-contain drop-shadow-sm"
+                  className="h-10 sm:h-11 w-auto max-w-[170px] sm:max-w-[185px] object-contain drop-shadow-sm"
                 />
               </Link>
-            </div>
 
-            {/* Trust Badges below logo */}
-            <div className="space-y-1.5 text-[11px]">
-              <div className="flex items-center gap-1.5 text-slate-200 font-semibold">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span>Fully Insured & Registered in NH</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-emerald-400 font-medium">
-                <Clock className="w-3.5 h-3.5 shrink-0" />
-                <span>15–20 Min Arrival</span>
+              {/* Side Trust Badges immediately right of logo */}
+              <div className="flex flex-col justify-center border-l border-slate-800 pl-3 space-y-1 shrink-0 text-[10px] sm:text-[11px]">
+                <div className="flex items-center gap-1.5 text-slate-200 font-semibold whitespace-nowrap">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <span>Fully Insured & Registered in NH</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-emerald-400 font-medium whitespace-nowrap">
+                  <Clock className="w-3.5 h-3.5 shrink-0" />
+                  <span>15–20 Min Arrival</span>
+                </div>
               </div>
             </div>
 
@@ -75,7 +75,7 @@ export function Footer({ siteSettings }: FooterProps) {
           </div>
 
           {/* Core Services */}
-          <div className="space-y-2.5">
+          <div className="lg:col-span-2 space-y-2.5">
             <h4 className="text-xs font-bold text-white uppercase tracking-wider">
               Core Services
             </h4>
@@ -114,7 +114,7 @@ export function Footer({ siteSettings }: FooterProps) {
           </div>
 
           {/* Manchester & NH Service Areas */}
-          <div className="space-y-2.5">
+          <div className="lg:col-span-2 space-y-2.5">
             <h4 className="text-xs font-bold text-white uppercase tracking-wider">
               NH Service Areas
             </h4>
@@ -143,7 +143,7 @@ export function Footer({ siteSettings }: FooterProps) {
           </div>
 
           {/* Direct 24/7 Call Center & Action Buttons */}
-          <div className="space-y-2.5">
+          <div className="lg:col-span-3 space-y-2.5">
             <h4 className="text-xs font-bold text-white uppercase tracking-wider">
               24/7 Emergency Dispatch
             </h4>
