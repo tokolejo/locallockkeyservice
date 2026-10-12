@@ -201,7 +201,7 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
 
                 {/* 3 Unified Trust Metric Cards */}
                 <div className="grid grid-cols-3 gap-2.5 sm:gap-4 pt-5 sm:pt-6 border-t border-slate-200/90">
-                  <div className="bg-white/95 backdrop-blur-xs border border-slate-200/90 rounded-2xl p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between">
+                  <div className="bg-white/95 backdrop-blur-xs border border-slate-200/90 rounded-2xl p-3 sm:p-4 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between">
                     <div className="flex items-center gap-1.5 text-emerald-700 mb-1.5">
                       <ShieldCheck className="w-4 h-4 shrink-0 text-emerald-600" />
                       <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 truncate">
@@ -212,11 +212,11 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
                       {t("hero_stat_1_title")}
                     </div>
                     <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 hidden sm:block leading-snug">
-                      Fully Insured & Registered in NH
+                      {t("hero_stat_1_sub")}
                     </p>
                   </div>
 
-                  <div className="bg-white/95 backdrop-blur-xs border border-slate-200/90 rounded-2xl p-3.5 sm:p-4 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between">
+                  <div className="bg-white/95 backdrop-blur-xs border border-slate-200/90 rounded-2xl p-3 sm:p-4 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between">
                     <div className="flex items-center gap-1.5 text-emerald-700 mb-1.5">
                       <Clock className="w-4 h-4 shrink-0 text-emerald-600" />
                       <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 truncate">
@@ -236,12 +236,12 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
                     target="_blank"
                     rel="noopener noreferrer"
                     title="View Verified Google Reviews"
-                    className="bg-white/95 backdrop-blur-xs border border-slate-200/90 hover:border-amber-400/80 hover:bg-amber-50/20 rounded-2xl p-3.5 sm:p-4 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col justify-between group/rating cursor-pointer"
+                    className="bg-white/95 backdrop-blur-xs border border-slate-200/90 hover:border-amber-400/80 hover:bg-amber-50/20 rounded-2xl p-3 sm:p-4 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col justify-between group/rating cursor-pointer"
                   >
                     <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center gap-1.5 text-amber-500">
                         <Star className="w-4 h-4 fill-amber-400 text-amber-400 group-hover/rating:scale-110 transition-transform shrink-0" />
-                        <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-600 truncate group-hover/rating:text-slate-900 transition-colors">
+                        <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 group-hover/rating:text-slate-900 transition-colors truncate">
                           Reviews
                         </span>
                       </div>
@@ -250,13 +250,10 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
                       </span>
                     </div>
                     <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 group-hover/rating:text-amber-600 transition-colors leading-tight">
-                      <span>5.0 ★ Stars</span>
-                      <span className="block text-[11px] sm:text-xs font-bold text-slate-600 group-hover/rating:text-slate-800 transition-colors mt-0.5">
-                        Top Rated NH
-                      </span>
+                      {t("hero_stat_3_title")}
                     </div>
                     <p className="text-[10px] sm:text-[11px] text-slate-500 group-hover/rating:text-slate-700 mt-1 hidden sm:block leading-snug">
-                      100% Customer Proof
+                      {t("hero_stat_3_sub")}
                     </p>
                   </a>
                 </div>
