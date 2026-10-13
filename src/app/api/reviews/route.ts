@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { scrapeGoogleReviews, PLACE_CONFIG } from "@/lib/scraper/google-reviews";
 import { saveSyncedGoogleReviews, getAllTestimonials, getGoogleReviewsCacheMeta } from "@/lib/data/store";
 import { revalidatePath } from "next/cache";
+import { requireAdminUser } from "@/lib/supabase/server";
 
 // Fallback reviews in case of network isolation
 const HARD_FALLBACK_REVIEWS = [
@@ -65,8 +66,17 @@ export async function GET(request: NextRequest) {
   };
 
   try {
-    // 1. If explicit refresh is requested, run live scraper
+    // 1. If explicit refresh is requested, require admin authorization then run live scraper
     if (shouldRefresh) {
+      try {
+        await requireAdminUser();
+      } catch {
+        return NextResponse.json(
+          { success: false, error: "Unauthorized access: Admin session required to trigger live scraper" },
+          { status: 401 }
+        );
+      }
+
       const scrapeResult = await scrapeGoogleReviews(5);
       if (scrapeResult.success && scrapeResult.reviews.length > 0) {
         // Save to persistent storage and cache
@@ -147,8 +157,30 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   try {
+    const authHeader = request.headers.get("authorization");
+    const cronSecret = process.env.CRON_SECRET;
+    let isAuthorized = false;
+
+    if (cronSecret && authHeader === `Bearer ${cronSecret}`) {
+      isAuthorized = true;
+    } else {
+      try {
+        const user = await requireAdminUser();
+        if (user) isAuthorized = true;
+      } catch {
+        isAuthorized = false;
+      }
+    }
+
+    if (!isAuthorized) {
+      return NextResponse.json(
+        { success: false, error: "Unauthorized access: Admin or Cron authorization required" },
+        { status: 401 }
+      );
+    }
+
     const scrapeResult = await scrapeGoogleReviews(5);
 
     if (scrapeResult.success && scrapeResult.reviews.length > 0) {
@@ -197,7 +229,7 @@ export async function POST() {
         error: errorMsg,
         reviews: cached
       },
-      { status: 200 } // Keep status 200 with fallback to avoid breaking UI callers
+      { status: 500 }
     );
   }
 }

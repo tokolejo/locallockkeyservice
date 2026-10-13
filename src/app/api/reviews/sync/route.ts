@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { scrapeGoogleReviews, PLACE_CONFIG } from "@/lib/scraper/google-reviews";
 import { saveSyncedGoogleReviews, getAllTestimonials, getGoogleReviewsCacheMeta } from "@/lib/data/store";
 import { revalidatePath } from "next/cache";
+import { requireAdminUser } from "@/lib/supabase/server";
 
 /**
  * Handle manual or cron sync requests for Google Maps reviews
@@ -10,15 +11,27 @@ async function handleSync(request: NextRequest) {
   const startTime = Date.now();
 
   try {
-    // Optional cron secret verification if CRON_SECRET is configured
     const authHeader = request.headers.get("authorization");
     const cronSecret = process.env.CRON_SECRET;
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+    let isAuthorized = false;
+
+    if (cronSecret) {
       const url = new URL(request.url);
       const queryToken = url.searchParams.get("token");
-      if (queryToken !== cronSecret) {
-        return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+      if (authHeader === `Bearer ${cronSecret}` || queryToken === cronSecret) {
+        isAuthorized = true;
       }
+    } else {
+      try {
+        const user = await requireAdminUser();
+        if (user) isAuthorized = true;
+      } catch {
+        isAuthorized = false;
+      }
+    }
+
+    if (!isAuthorized) {
+      return NextResponse.json({ success: false, error: "Unauthorized access: Valid Cron Secret or Admin authentication required" }, { status: 401 });
     }
 
     // Trigger full multi-page BOQ scrape (up to 5 pages = up to 50 reviews)

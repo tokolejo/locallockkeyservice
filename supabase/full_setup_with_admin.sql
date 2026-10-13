@@ -54,7 +54,6 @@ BEGIN
   RETURN (
     auth.role() = 'authenticated' AND (
       COALESCE((auth.jwt() -> 'app_metadata' ->> 'role'), '') = 'admin' OR
-      COALESCE((auth.jwt() -> 'user_metadata' ->> 'role'), '') = 'admin' OR
       COALESCE((auth.jwt() ->> 'email'), '') IN ('tokolejo@gmail.com', 'mikheil75kapanadze@gmail.com') OR
       EXISTS (
         SELECT 1 FROM public.admins

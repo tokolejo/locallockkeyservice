@@ -1,24 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import fs from "fs";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, requireAdminUser } from "@/lib/supabase/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient();
-    if (supabase) {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        return NextResponse.json(
-          { success: false, message: "Unauthorized: Admin session required to upload files" },
-          { status: 401 }
-        );
-      }
+    try {
+      await requireAdminUser();
+    } catch {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized: Admin session required to upload files" },
+        { status: 401 }
+      );
     }
 
+    const supabase = await createClient();
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
 

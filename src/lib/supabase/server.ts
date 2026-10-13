@@ -71,3 +71,50 @@ export async function createClient() {
     },
   });
 }
+
+/**
+ * Strict server-side admin authorization guard.
+ * Validates authenticated session against authorized admin identities and app_metadata.
+ * Throws an Error if unauthenticated or unauthorized.
+ */
+export async function requireAdminUser() {
+  const supabase = await createClient();
+  if (!supabase) {
+    throw new Error("Unauthorized: Supabase client is unavailable");
+  }
+
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+
+  if (error || !user) {
+    throw new Error("Unauthorized: Admin authentication required");
+  }
+
+  const email = user.email?.toLowerCase();
+  const role = (user.app_metadata as Record<string, unknown> | undefined)?.role;
+  const adminEmails = [
+    "tokolejo@gmail.com",
+    "mikheil75kapanadze@gmail.com",
+    process.env.ADMIN_EMAIL?.toLowerCase(),
+  ].filter(Boolean);
+
+  const isRoleAdmin = role === "admin" || role === "super_admin";
+  const isEmailAdmin = email && adminEmails.includes(email);
+
+  if (!isRoleAdmin && !isEmailAdmin) {
+    const { data: adminRecord } = await (supabase as any)
+      .from("admins")
+      .select("user_id")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (!adminRecord) {
+      throw new Error("Forbidden: Admin privileges required");
+    }
+  }
+
+  return user;
+}
+

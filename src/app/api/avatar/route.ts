@@ -6,11 +6,11 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const targetUrl = searchParams.get("url");
 
-  if (!targetUrl || !targetUrl.startsWith("http")) {
-    return new NextResponse("Invalid or missing URL parameter", { status: 400 });
+  if (!targetUrl || !targetUrl.startsWith("https://")) {
+    return new NextResponse("Invalid URL parameter: Only secure HTTPS URLs are permitted", { status: 400 });
   }
 
-  // Security: only allow googleusercontent or trusted avatar CDNs
+  // Security: strictly allow trusted CDN domains only
   const allowedHostnames = [
     "lh3.googleusercontent.com",
     "lh4.googleusercontent.com",
@@ -22,7 +22,13 @@ export async function GET(request: NextRequest) {
 
   try {
     const parsed = new URL(targetUrl);
-    const isAllowed = allowedHostnames.some((host) => parsed.hostname.endsWith(host));
+    if (parsed.protocol !== "https:") {
+      return new NextResponse("Protocol not allowed", { status: 403 });
+    }
+
+    const isAllowed = allowedHostnames.some(
+      (host) => parsed.hostname === host || parsed.hostname.endsWith("." + host)
+    );
     if (!isAllowed) {
       return new NextResponse("Hostname not allowed", { status: 403 });
     }

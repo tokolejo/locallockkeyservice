@@ -52,6 +52,7 @@ import {
   Testimonial,
 } from "@/types/database.types";
 import { isValidUsZip } from "@/lib/utils";
+import { requireAdminUser } from "@/lib/supabase/server";
 
 export interface ActionResponse {
   success: boolean;
@@ -62,6 +63,7 @@ export interface ActionResponse {
 
 export async function getActivityLogsAction(limit: number = 100): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const logs = await getActivityLogs(limit);
     return {
       success: true,
@@ -84,6 +86,7 @@ export async function createServiceCategoryAction(
   payload: Omit<ServiceCategoryItem, "id"> & { id?: string }
 ): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const item = await createServiceCategory(payload);
     revalidatePath("/admin/categories");
     revalidatePath("/admin/services");
@@ -106,6 +109,7 @@ export async function updateServiceCategoryAction(
   updates: Partial<ServiceCategoryItem>
 ): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const updated = await updateServiceCategory(id, updates);
     revalidatePath("/admin/categories");
     revalidatePath("/admin/services");
@@ -125,6 +129,7 @@ export async function updateServiceCategoryAction(
 
 export async function deleteServiceCategoryAction(id: string): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const success = await deleteServiceCategory(id);
     revalidatePath("/admin/categories");
     revalidatePath("/admin/services");
@@ -150,6 +155,7 @@ export async function createServiceScenarioAction(
   payload: Omit<ServiceScenarioItem, "id"> & { id?: string }
 ): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const item = await createServiceScenario(payload);
     revalidatePath("/admin/categories");
     revalidatePath("/admin/services");
@@ -172,6 +178,7 @@ export async function updateServiceScenarioAction(
   updates: Partial<ServiceScenarioItem>
 ): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const updated = await updateServiceScenario(id, updates);
     revalidatePath("/admin/categories");
     revalidatePath("/admin/services");
@@ -191,6 +198,7 @@ export async function updateServiceScenarioAction(
 
 export async function deleteServiceScenarioAction(id: string): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const success = await deleteServiceScenario(id);
     revalidatePath("/admin/categories");
     revalidatePath("/admin/services");
@@ -216,6 +224,7 @@ export async function createServiceAction(
   payload: Omit<ServiceItem, "id">
 ): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const item = await createService(payload);
     revalidatePath("/admin/services");
     revalidatePath("/");
@@ -237,6 +246,7 @@ export async function updateServiceAction(
   updates: Partial<ServiceItem>
 ): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const updated = await updateService(id, updates);
     revalidatePath("/admin/services");
     revalidatePath("/");
@@ -255,6 +265,7 @@ export async function updateServiceAction(
 
 export async function deleteServiceAction(id: string): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const success = await deleteService(id);
     revalidatePath("/admin/services");
     revalidatePath("/");
@@ -277,6 +288,7 @@ export async function createGalleryItemAction(
   payload: Omit<GalleryItem, "id" | "created_at">
 ): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const item = await createGalleryItem(payload);
     revalidatePath("/admin/gallery");
     revalidatePath("/");
@@ -298,6 +310,7 @@ export async function updateGalleryItemAction(
   updates: Partial<GalleryItem>
 ): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const updated = await updateGalleryItem(id, updates);
     revalidatePath("/admin/gallery");
     revalidatePath("/");
@@ -316,6 +329,7 @@ export async function updateGalleryItemAction(
 
 export async function deleteGalleryItemAction(id: string): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const success = await deleteGalleryItem(id);
     revalidatePath("/admin/gallery");
     revalidatePath("/");
@@ -338,6 +352,7 @@ export async function createHeroSlideAction(
   payload: Omit<HeroSlide, "id" | "created_at">
 ): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const item = await createHeroSlide(payload);
     revalidatePath("/admin/slider");
     revalidatePath("/");
@@ -359,6 +374,7 @@ export async function updateHeroSlideAction(
   updates: Partial<HeroSlide>
 ): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const updated = await updateHeroSlide(id, updates);
     revalidatePath("/admin/slider");
     revalidatePath("/");
@@ -377,6 +393,7 @@ export async function updateHeroSlideAction(
 
 export async function deleteHeroSlideAction(id: string): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const success = await deleteHeroSlide(id);
     revalidatePath("/admin/slider");
     revalidatePath("/");
@@ -399,6 +416,7 @@ export async function updateSiteSettingsAction(
   updates: Partial<SiteSettings>
 ): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const settings = await updateSiteSettings(updates);
     revalidatePath("/admin/settings");
     revalidatePath("/");
@@ -422,6 +440,7 @@ export async function createTestimonialAction(
   payload: Omit<Testimonial, "id" | "created_at">
 ): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const item = await createTestimonial(payload);
     revalidatePath("/admin/reviews");
     revalidatePath("/");
@@ -443,6 +462,7 @@ export async function updateTestimonialAction(
   updates: Partial<Testimonial>
 ): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const updated = await updateTestimonial(id, updates);
     revalidatePath("/admin/reviews");
     revalidatePath("/");
@@ -461,6 +481,7 @@ export async function updateTestimonialAction(
 
 export async function deleteTestimonialAction(id: string): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const success = await deleteTestimonial(id);
     revalidatePath("/admin/reviews");
     revalidatePath("/");
@@ -482,6 +503,7 @@ export async function moderateReviewAction(payload: {
   is_featured?: boolean;
 }): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const updated = await toggleTestimonialStatus(
       payload.id,
       payload.is_approved,
@@ -497,6 +519,7 @@ export async function moderateReviewAction(payload: {
   } catch (err: any) {
     return {
       success: false,
+
       message: err?.message || "Failed to update review status.",
     };
   }
@@ -610,6 +633,7 @@ export async function updateLeadStatusAction(payload: {
   final_price?: number;
 }): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const updated = await updateDispatchRequestStatus(
       payload.id,
       payload.status,
@@ -639,9 +663,11 @@ export async function updateCoverageAction(
   updates: Partial<CoverageArea>
 ): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const updated = await updateCoverageArea(id, updates);
     revalidatePath("/admin/coverage");
     revalidatePath("/");
+
     return {
       success: true,
       message: "Coverage area updated successfully.",
@@ -660,8 +686,11 @@ export async function requestCallbackAction(
   formData: FormData
 ): Promise<ActionResponse> {
   const phone = ((formData.get("phone") as string) || "").trim();
-  const service = ((formData.get("service") as string) || "Other").trim();
-  const notes = ((formData.get("notes") as string) || "").trim();
+  const rawService = ((formData.get("service") as string) || "Other").trim();
+  const rawNotes = ((formData.get("notes") as string) || "").trim();
+
+  const service = rawService.slice(0, 100);
+  const notes = rawNotes.slice(0, 500);
 
   const cleanPhone = phone.replace(/[^\d]/g, "");
   if (cleanPhone.length < 10) {
@@ -723,11 +752,13 @@ export async function getResendStatusAction(): Promise<{
   alertEmail: string | null;
   fromEmail: string;
 }> {
+  await requireAdminUser();
   return getResendStatus();
 }
 
 export async function testResendLeadAction(): Promise<ActionResponse> {
   try {
+    await requireAdminUser();
     const result = await sendDispatchLeadNotification({
       id: `test-${Date.now()}`,
       phone: "(603) 290-5554",

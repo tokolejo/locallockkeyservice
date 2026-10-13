@@ -8,7 +8,12 @@ import { createClient } from "@/lib/supabase/client";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectedFrom = searchParams.get("redirectedFrom") || "/admin";
+  const rawRedirect = searchParams.get("redirectedFrom") || "/admin";
+  const isSafeRedirect =
+    rawRedirect.startsWith("/") &&
+    !rawRedirect.startsWith("//") &&
+    !rawRedirect.includes(":");
+  const redirectedFrom = isSafeRedirect ? rawRedirect : "/admin";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

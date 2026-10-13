@@ -21,6 +21,15 @@ export interface ResendNotificationResult {
   emailId?: string;
 }
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export async function sendDispatchLeadNotification(
   payload: DispatchLeadNotificationPayload
 ): Promise<ResendNotificationResult> {
@@ -59,6 +68,12 @@ export async function sendDispatchLeadNotification(
   }
 
   const cleanPhone = payload.phone.replace(/[^\d+]/g, "");
+  const safePhone = escapeHtml(payload.phone);
+  const safeService = escapeHtml(payload.service);
+  const safeId = escapeHtml(payload.id);
+  const safeSource = escapeHtml(payload.source || "Website Callback Modal");
+  const safeNotes = payload.notes ? escapeHtml(payload.notes).replace(/\n/g, "<br>") : "";
+
   const formattedDate = payload.createdAt
     ? new Date(payload.createdAt).toLocaleString("en-US", {
         timeZone: "America/New_York",
@@ -107,7 +122,7 @@ export async function sendDispatchLeadNotification(
     <div class="body">
       <div class="call-box">
         <div class="call-label">Direct Customer Phone</div>
-        <a href="tel:${cleanPhone}" class="phone-number">${payload.phone}</a>
+        <a href="tel:${cleanPhone}" class="phone-number">${safePhone}</a>
         <div style="margin-top: 8px;">
           <a href="tel:${cleanPhone}" class="cta-btn">&#9742; Call Customer Now</a>
         </div>
@@ -116,15 +131,15 @@ export async function sendDispatchLeadNotification(
       <table class="table">
         <tr>
           <td class="label">Requested Service:</td>
-          <td class="value">${payload.service}</td>
+          <td class="value">${safeService}</td>
         </tr>
         <tr>
           <td class="label">Lead ID:</td>
-          <td class="value">#${payload.id}</td>
+          <td class="value">#${safeId}</td>
         </tr>
         <tr>
           <td class="label">Source:</td>
-          <td class="value">${payload.source || "Website Callback Modal"}</td>
+          <td class="value">${safeSource}</td>
         </tr>
         <tr>
           <td class="label">Timestamp:</td>
@@ -134,7 +149,7 @@ export async function sendDispatchLeadNotification(
 
       <div style="font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 6px;">Customer Notes / Location:</div>
       <div class="notes-box">
-        ${payload.notes ? payload.notes.replace(/\n/g, "<br>") : "<em>No additional details provided.</em>"}
+        ${safeNotes ? safeNotes : "<em>No additional details provided.</em>"}
       </div>
     </div>
     <div class="footer">
