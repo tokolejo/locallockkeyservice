@@ -107,11 +107,25 @@ export function DispatchTable({ requests, onDataChanged }: DispatchTableProps) {
               {filtered.map((r) => (
                 <tr key={r.id} className="hover:bg-slate-50/80 transition">
                   <td className="py-3.5 px-4 font-medium text-slate-900">
-                    <div>{r.customer_name}</div>
-                    <div className="text-emerald-700 font-mono text-[11px] flex items-center gap-1 mt-0.5 font-semibold">
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold">{r.customer_name}</span>
+                      {r.source === "callback_modal" ? (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                          Callback
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold text-slate-600 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                          Direct
+                        </span>
+                      )}
+                    </div>
+                    <a
+                      href={`tel:${r.phone.replace(/[^\d+]/g, "")}`}
+                      className="text-emerald-700 hover:text-emerald-900 font-mono text-xs flex items-center gap-1 mt-1 font-bold hover:underline"
+                    >
                       <PhoneCall className="w-3 h-3" />
                       <span>{r.phone}</span>
-                    </div>
+                    </a>
                   </td>
                   <td className="py-3.5 px-4">
                     <span className="font-mono text-slate-800 bg-slate-100 px-1.5 py-0.5 rounded border border-slate-200">
@@ -126,6 +140,11 @@ export function DispatchTable({ requests, onDataChanged }: DispatchTableProps) {
                     {r.vehicle_make && (
                       <div className="text-[11px] text-slate-500">
                         {r.vehicle_year} {r.vehicle_make} {r.vehicle_model}
+                      </div>
+                    )}
+                    {r.internal_notes && (
+                      <div className="text-[11px] text-slate-600 mt-1 max-w-xs bg-slate-100/80 p-1.5 rounded-lg border border-slate-200/60 leading-snug">
+                        <span className="font-semibold text-slate-800">Note:</span> {r.internal_notes}
                       </div>
                     )}
                   </td>
@@ -160,9 +179,18 @@ export function DispatchTable({ requests, onDataChanged }: DispatchTableProps) {
                     )}
                   </td>
                   <td className="py-3.5 px-4 text-right">
-                    <span className="text-[11px] text-slate-400">
-                      {new Date(r.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                    </span>
+                    <div className="flex flex-col items-end gap-1">
+                      <span className="text-[11px] text-slate-400">
+                        {new Date(r.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                      </span>
+                      <a
+                        href={`tel:${r.phone.replace(/[^\d+]/g, "")}`}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] tracking-tight transition active:scale-95 shadow-2xs"
+                      >
+                        <PhoneCall className="w-2.5 h-2.5" />
+                        <span>Call</span>
+                      </a>
+                    </div>
                   </td>
                 </tr>
               ))}

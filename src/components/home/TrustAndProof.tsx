@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { ShieldCheck, Clock, FileCheck, PhoneCall, Star, HelpCircle, ChevronDown, Sparkles, ChevronLeft, ChevronRight, CheckCircle2, ExternalLink } from "lucide-react";
+import { ShieldCheck, Clock, FileCheck, PhoneCall, Star, Sparkles, ChevronLeft, ChevronRight, CheckCircle2, ExternalLink } from "lucide-react";
 import { Testimonial } from "@/types/database.types";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { CountUpNumber } from "@/components/animations/CountUpNumber";
@@ -12,7 +12,6 @@ interface TrustAndProofProps {
 }
 
 export function TrustAndProof({ testimonials = [] }: TrustAndProofProps) {
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [googleStats, setGoogleStats] = useState<{ rating: number; totalReviews: number }>({
     rating: 5.0,
@@ -35,29 +34,6 @@ export function TrustAndProof({ testimonials = [] }: TrustAndProofProps) {
     }
   };
 
-  const faqs = [
-    {
-      question: "Do you guarantee 100% damage-free entry on locked cars and doors?",
-      answer: "Yes. Our technicians use professional locksmith picks and automotive air-wedge bypass tools. We never break car windows or pry door frames."
-    },
-    {
-      question: "Why is ID and proof of ownership legally required before unlocking?",
-      answer: "Under state regulations, professional locksmiths are required to verify photo ID and vehicle registration or property lease to protect owners from unlawful entry."
-    },
-    {
-      question: "What payment methods are accepted on-site by mobile units?",
-      answer: "Every mobile unit carries wireless POS card terminals accepting Visa, MasterCard, Amex, Apple Pay, Google Pay, and Cash with printed receipts."
-    },
-    {
-      question: "Do you provide upfront pricing before dispatching a mobile technician?",
-      answer: "Yes, we always provide clear upfront phone estimates based on your vehicle make, year, or lock type before dispatching. No hidden fees or surprise on-site markups."
-    }
-  ];
-
-  const toggleFaq = (index: number) => {
-    setOpenFaqIndex(openFaqIndex === index ? null : index);
-  };
-
   return (
     <section id="reviews" className="py-6 sm:py-14 md:py-20 bg-white border-b border-slate-200 text-slate-800 scroll-mt-28">
       <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 space-y-6 sm:space-y-12 md:space-y-16">
@@ -68,11 +44,11 @@ export function TrustAndProof({ testimonials = [] }: TrustAndProofProps) {
               <div className="flex items-center justify-center gap-1 text-emerald-400 mb-0.5 sm:mb-1">
                 <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span className="text-lg sm:text-3xl font-black">
-                  <CountUpNumber end={15} suffix=" Min" />
+                  24/7
                 </span>
               </div>
               <p className="text-[9px] sm:text-xs text-slate-400 font-medium truncate">
-                Average Response Time
+                Fast Mobile Patrol
               </p>
             </div>
 
@@ -266,44 +242,6 @@ export function TrustAndProof({ testimonials = [] }: TrustAndProofProps) {
               ← Swipe to view more verified Google reviews →
             </p>
           </ScrollReveal>
-        </div>
-        <div className="max-w-3xl mx-auto">
-          <ScrollReveal direction="up">
-            <div className="text-center mb-4 sm:mb-8">
-              <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900">
-                Frequently Asked Questions
-              </h3>
-            </div>
-          </ScrollReveal>
-
-          <div className="space-y-2 sm:space-y-2.5">
-            {faqs.map((faq, index) => {
-              const isOpen = openFaqIndex === index;
-              return (
-                <ScrollReveal key={index} direction="up" delay={index * 0.05}>
-                  <div className="bg-[#fbfbf9] border border-slate-200 rounded-xl sm:rounded-2xl overflow-hidden transition">
-                    <button
-                      type="button"
-                      onClick={() => toggleFaq(index)}
-                      className="w-full p-3.5 sm:p-5 text-left flex items-center justify-between gap-3 font-bold text-xs sm:text-sm text-slate-900 hover:text-emerald-700 transition cursor-pointer"
-                    >
-                      <span className="leading-snug">{faq.question}</span>
-                      <ChevronDown
-                        className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${
-                          isOpen ? "rotate-180 text-emerald-700" : ""
-                        }`}
-                      />
-                    </button>
-                    {isOpen && (
-                      <div className="px-3.5 pb-3.5 pt-1 sm:px-5 sm:pb-5 text-xs text-slate-600 leading-relaxed border-t border-slate-200/60">
-                        {faq.answer}
-                      </div>
-                    )}
-                  </div>
-                </ScrollReveal>
-              );
-            })}
-          </div>
         </div>
       </div>
     </section>

@@ -19,9 +19,16 @@ import {
   ChevronUp,
   Images,
   ShieldCheck,
-  MessageCircle,
+  Clock,
 } from "lucide-react";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { SiteSettings } from "@/types/database.types";
+
+export interface GallerySectionProps {
+  items?: any[];
+  siteSettings?: SiteSettings;
+  onOpenCallback?: () => void;
+}
 
 interface GalleryItem {
   id: string;
@@ -34,11 +41,6 @@ interface GalleryItem {
   cover_image?: string;
   description: string;
   dateBadge: string;
-}
-
-export interface GallerySectionProps {
-  items?: any[];
-  siteSettings?: any;
 }
 
 const GALLERY_ITEMS: GalleryItem[] = [
@@ -313,7 +315,11 @@ const GALLERY_ITEMS: GalleryItem[] = [
   }
 ];
 
-export function GallerySection({ items, siteSettings }: GallerySectionProps) {
+export function GallerySection({
+  items,
+  siteSettings,
+  onOpenCallback,
+}: GallerySectionProps) {
   const [filter, setFilter] = useState<"all" | "auto" | "locks" | "commercial">("all");
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
   const [selectedJob, setSelectedJob] = useState<GalleryItem | null>(null);
@@ -325,8 +331,6 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
 
   const phone = siteSettings?.phone_display || process.env.NEXT_PUBLIC_DISPATCH_PHONE || "+1 (603) 290-5554";
   const phoneRaw = siteSettings?.phone_raw || process.env.NEXT_PUBLIC_DISPATCH_PHONE_RAW || "tel:+16032905554";
-  const whatsappNumber = siteSettings?.whatsapp_number || process.env.NEXT_PUBLIC_WHATSAPP_PHONE || "+16032905554";
-  const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent("Hello! I need mobile locksmith assistance in Manchester, NH.")}`;
 
   const rawList: GalleryItem[] = useMemo(() => {
     if (items && items.length > 0) {
@@ -441,9 +445,14 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
     setActivePhotoIdx((prev) => (prev - 1 + modalImages.length) % modalImages.length);
   }, [modalImages.length]);
 
-  // Keyboard navigation for lightbox
+  // Lock body scroll and handle keyboard navigation for lightbox
   useEffect(() => {
     if (!selectedJob) return;
+
+    const originalOverflow = document.body.style.overflow;
+    const originalTouchAction = document.body.style.touchAction;
+    document.body.style.overflow = "hidden";
+    document.body.style.touchAction = "none";
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -456,7 +465,11 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      document.body.style.touchAction = originalTouchAction;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [selectedJob, handleNextPhoto, handlePrevPhoto]);
 
   return (
@@ -468,30 +481,14 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
             <div>
               <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold mb-3 shadow-2xs">
                 <Camera className="w-3.5 h-3.5 text-emerald-600" />
-                <span>Real Work Portfolio & Proof</span>
+                <span>Real Work Portfolio &amp; Proof</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-                Recent Jobs Across Manchester & NH
+                Recent Jobs Across Manchester &amp; NH
               </h2>
               <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl">
                 Authentic on-site photos from our certified mobile technicians: precision car key programming, high-security cylinders, and commercial door hardware.
               </p>
-            </div>
-
-            {/* Damage-Free Guarantee Proof Badge */}
-            <div className="flex items-center gap-3.5 bg-gradient-to-br from-white to-emerald-50/50 border border-emerald-200/80 rounded-2xl p-3 sm:p-3.5 shadow-2xs w-full md:w-auto md:shrink-0">
-              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-emerald-600 to-emerald-800 text-white flex items-center justify-center shadow-sm shadow-emerald-700/25 shrink-0 ring-4 ring-emerald-50">
-                <ShieldCheck className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <p className="font-extrabold text-slate-900 text-xs sm:text-sm">Damage-Free Guarantee</p>
-                  <span className="px-1.5 py-0.5 rounded-md bg-emerald-600 text-white text-[10px] font-black leading-none tracking-wide">
-                    100%
-                  </span>
-                </div>
-                <p className="text-slate-500 text-[11px] sm:text-xs mt-0.5">Certified Mobile Technicians</p>
-              </div>
             </div>
           </div>
         </ScrollReveal>
@@ -691,30 +688,25 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
                 Need Fast Lockout or Key Assistance in Manchester & NH?
               </h3>
               <p className="text-slate-300 text-xs sm:text-sm">
-                Call our mobile dispatch hub now for immediate free phone estimates and 15-20 min arrival.
+                Call our mobile dispatch hub now for immediate free phone estimates and fast NH mobile dispatch.
               </p>
             </div>
-            <div className="flex items-center gap-2.5 shrink-0">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 shrink-0 w-full sm:w-auto">
               <a
                 href={phoneRaw}
-                className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-950 hover:bg-black text-white font-bold text-xs sm:text-sm transition-all shadow-sm active:scale-95 border border-slate-700"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm transition-all shadow-md active:scale-98 cursor-pointer text-center"
               >
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                </span>
-                <PhoneCall className="w-4 h-4 text-emerald-400" />
-                <span>CALL</span>
+                <PhoneCall className="w-4 h-4 text-white shrink-0" />
+                <span>Call Dispatch Now</span>
               </a>
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm transition-all shadow-sm active:scale-95"
+              <button
+                type="button"
+                onClick={onOpenCallback}
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-slate-950 hover:bg-black text-white font-bold text-xs sm:text-sm transition-all border border-slate-700 active:scale-98 cursor-pointer text-center"
               >
-                <MessageCircle className="w-4 h-4 fill-white" />
-                <span>WhatsApp</span>
-              </a>
+                <Clock className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>Request Callback</span>
+              </button>
             </div>
           </div>
         </ScrollReveal>
@@ -724,23 +716,25 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
       {selectedJob && (
         <div
           onClick={() => setSelectedJob(null)}
-          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 pb-[calc(5rem+env(safe-area-inset-bottom))] sm:p-6 animate-in fade-in duration-200"
+          role="dialog"
+          aria-modal="true"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative max-w-3xl w-full bg-slate-900 border border-slate-700 rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 text-white flex flex-col max-h-[92vh]"
+            className="relative max-w-3xl w-full bg-slate-900 border border-slate-700 rounded-3xl overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200 text-white flex flex-col max-h-[calc(100dvh-5.5rem)] sm:max-h-[90vh]"
           >
             {/* Close Button */}
             <button
               onClick={() => setSelectedJob(null)}
               aria-label="Close"
-              className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-black/70 hover:bg-black text-white flex items-center justify-center transition cursor-pointer backdrop-blur-sm"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 w-9 h-9 rounded-full bg-black/70 hover:bg-black text-white flex items-center justify-center transition cursor-pointer backdrop-blur-sm shadow-md"
             >
               <X className="w-5 h-5" />
             </button>
 
             {/* Modal Image Frame with Carousel Controls */}
-            <div className="relative aspect-4/3 sm:aspect-16/10 w-full bg-black shrink-0 overflow-hidden group/modal">
+            <div className="relative aspect-4/3 sm:aspect-16/10 max-h-[38vh] sm:max-h-[48vh] w-full bg-black shrink-0 overflow-hidden group/modal">
               {currentModalImage ? (
                 <Image
                   src={currentModalImage}
@@ -792,16 +786,16 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
 
             {/* Interactive Photo Thumbnail Switcher (if multi-photo) */}
             {modalImages.length > 1 && (
-              <div className="bg-slate-950 px-6 py-2.5 border-t border-slate-800 flex items-center justify-center gap-3 shrink-0">
-                <span className="text-[11px] font-semibold text-slate-400 mr-1">
-                  Job Photos:
+              <div className="bg-slate-950 px-4 sm:px-6 py-2 border-t border-slate-800 flex items-center justify-start sm:justify-center gap-2 overflow-x-auto no-scrollbar shrink-0">
+                <span className="text-[11px] font-semibold text-slate-400 mr-1 shrink-0">
+                  Photos:
                 </span>
                 {modalImages.map((img, idx) => (
                   <button
                     key={idx}
                     type="button"
                     onClick={() => setActivePhotoIdx(idx)}
-                    className={`relative w-14 h-11 rounded-lg overflow-hidden border-2 transition cursor-pointer ${
+                    className={`relative w-12 h-10 sm:w-14 sm:h-11 rounded-lg overflow-hidden border-2 transition cursor-pointer shrink-0 ${
                       activePhotoIdx === idx
                         ? "border-emerald-500 scale-105 shadow-md shadow-emerald-500/20"
                         : "border-slate-700 opacity-60 hover:opacity-100"
@@ -819,7 +813,7 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
             )}
 
             {/* Modal Details */}
-            <div className="p-6 bg-slate-900 space-y-3 overflow-y-auto">
+            <div className="p-4 sm:p-6 bg-slate-900 space-y-3 overflow-y-auto overscroll-contain flex-1">
               <div className="flex items-center justify-between gap-4">
                 <span className="px-3 py-1 rounded-full bg-emerald-900/60 border border-emerald-500/50 text-emerald-300 font-bold text-xs">
                   {selectedJob.categoryLabel}
@@ -828,38 +822,37 @@ export function GallerySection({ items, siteSettings }: GallerySectionProps) {
                   {selectedJob.location} • {selectedJob.dateBadge}
                 </span>
               </div>
-              <h3 className="text-xl font-bold">
+              <h3 className="text-lg sm:text-xl font-bold leading-snug">
                 {selectedJob.title}
               </h3>
-              <p className="text-sm text-slate-300 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 {selectedJob.description}
               </p>
 
-              <div className="pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
-                <span className="text-xs text-slate-400">
-                  Instant Dispatch
+              {/* Desktop Only Action Row (Hidden on mobile as floating bottom bar covers CTAs) */}
+              <div className="hidden sm:flex pt-3 border-t border-slate-800 items-center justify-between gap-3 shrink-0">
+                <span className="text-xs text-slate-400 font-medium text-left">
+                  24/7 Mobile Dispatch Across NH
                 </span>
                 <div className="flex items-center gap-2">
                   <a
                     href={phoneRaw}
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition border border-slate-700"
+                    className="flex-initial flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-950 hover:bg-black text-white font-bold text-xs transition border border-slate-700 active:scale-98"
                   >
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                    </span>
                     <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
                     <span>CALL</span>
                   </a>
-                  <a
-                    href={whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition"
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedJob(null);
+                      onOpenCallback?.();
+                    }}
+                    className="flex-initial flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition active:scale-98 cursor-pointer shadow-sm"
                   >
-                    <MessageCircle className="w-3.5 h-3.5 fill-white" />
-                    <span>WhatsApp</span>
-                  </a>
+                    <Clock className="w-3.5 h-3.5 text-emerald-100" />
+                    <span>Request Callback</span>
+                  </button>
                 </div>
               </div>
             </div>

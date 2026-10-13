@@ -21,6 +21,7 @@ import {
   getSiteSettings,
   getAllTestimonials,
   getActivityLogs,
+  getDispatchRequests,
 } from "@/lib/data/store";
 
 export const metadata = {
@@ -29,7 +30,7 @@ export const metadata = {
 };
 
 export default async function AdminOverviewPage() {
-  const [categories, scenarios, galleryItems, heroSlides, siteSettings, testimonials, logs] =
+  const [categories, scenarios, galleryItems, heroSlides, siteSettings, testimonials, logs, dispatchRequests] =
     await Promise.all([
       getServiceCategories(),
       getServiceScenarios(),
@@ -38,13 +39,23 @@ export default async function AdminOverviewPage() {
       getSiteSettings(),
       getAllTestimonials(),
       getActivityLogs(5),
+      getDispatchRequests(),
     ]);
 
   const activeCategoriesCount = categories.filter((c) => c.is_active).length;
   const activeSlidesCount = heroSlides.filter((s) => s.is_active).length;
   const approvedReviewsCount = testimonials.filter((t) => t.is_approved).length;
+  const newLeadsCount = dispatchRequests.filter((r) => r.status === "new").length;
 
   const quickSections = [
+    {
+      title: "Call Dispatch & Callback Leads",
+      count: `${newLeadsCount} New (${dispatchRequests.length} Total)`,
+      description: "Monitor incoming emergency callback requests from the website, dispatch technicians, and manage Resend email alerts.",
+      href: "/admin/dispatch",
+      icon: <PhoneCall className="w-5 h-5 text-emerald-600" />,
+      actionText: "Open Dispatch Queue",
+    },
     {
       title: "Services & Categories",
       count: `${categories.length} Categories (${scenarios.length} Scenarios)`,

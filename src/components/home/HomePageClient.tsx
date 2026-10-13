@@ -28,7 +28,8 @@ import {
   initialGalleryItems,
   initialSiteSettings,
 } from "@/lib/data/mock-data";
-import { FloatingWhatsApp } from "@/components/ui/WhatsAppButton";
+import { CallbackModal } from "@/components/modals/CallbackModal";
+import { EmergencyMobileBar } from "@/components/layout/EmergencyMobileBar";
 
 export interface HomePageInitialData {
   coverageAreas: CoverageArea[];
@@ -62,8 +63,14 @@ function HomeContent({ initialData }: { initialData: HomePageInitialData }) {
   const [serviceScenarios, setServiceScenarios] = useState<ServiceScenarioItem[]>(
     initialData.serviceScenarios || []
   );
+  const [isCallbackOpen, setIsCallbackOpen] = useState(false);
 
-  // Background fallback ONLY if initial pre-rendered data was missing elements
+  // Ensure page always starts at top on fresh load if no URL hash is present
+  useEffect(() => {
+    if (typeof window !== "undefined" && !window.location.hash) {
+      window.scrollTo(0, 0);
+    }
+  }, []);
   useEffect(() => {
     const needsContentFetch =
       !initialData.heroSlides?.length ||
@@ -103,12 +110,19 @@ function HomeContent({ initialData }: { initialData: HomePageInitialData }) {
       <ScrollProgressBar />
 
       {/* Top Header */}
-      <Header siteSettings={siteSettings} />
+      <Header
+        siteSettings={siteSettings}
+        onOpenCallback={() => setIsCallbackOpen(true)}
+      />
 
       {/* Main Page Sections */}
       <main className="flex-1">
         {/* 1. Hero Section with Dynamic Slides & Contacts */}
-        <HeroSection slides={heroSlides} siteSettings={siteSettings} />
+        <HeroSection
+          slides={heroSlides}
+          siteSettings={siteSettings}
+          onOpenCallback={() => setIsCallbackOpen(true)}
+        />
 
         {/* 2. Authentic About Us Section with Image Slider */}
         <AboutUsSection />
@@ -118,23 +132,38 @@ function HomeContent({ initialData }: { initialData: HomePageInitialData }) {
           categories={serviceCategories}
           scenarios={serviceScenarios}
           siteSettings={siteSettings}
+          onOpenCallback={() => setIsCallbackOpen(true)}
         />
 
         {/* 4. Authentic Photo Gallery & Proof of Work with Cover Image selection */}
-        <GallerySection items={galleryItems} siteSettings={siteSettings} />
+        <GallerySection
+          items={galleryItems}
+          siteSettings={siteSettings}
+          onOpenCallback={() => setIsCallbackOpen(true)}
+        />
 
         {/* 5. Streamlined Service Coverage with Instant Direct Call */}
         <CoverageMap coverageAreas={coverageAreas} />
 
-        {/* 6. Trust, Credibility & Security Proof (ID Requirement, Reviews, FAQs) */}
+        {/* 6. Trust, Credibility & Security Proof (ID Requirement, Reviews, Numbers) */}
         <TrustAndProof testimonials={testimonials} />
       </main>
 
       {/* Footer */}
-      <Footer siteSettings={siteSettings} />
+      <Footer
+        siteSettings={siteSettings}
+        onOpenCallback={() => setIsCallbackOpen(true)}
+      />
 
-      {/* Floating WhatsApp Action Button */}
-      <FloatingWhatsApp />
+      {/* Floating Emergency Mobile Bottom Bar */}
+      <EmergencyMobileBar onOpenCallback={() => setIsCallbackOpen(true)} />
+
+      {/* Callback Request Modal */}
+      <CallbackModal
+        isOpen={isCallbackOpen}
+        onClose={() => setIsCallbackOpen(false)}
+        siteSettings={siteSettings}
+      />
     </div>
   );
 }

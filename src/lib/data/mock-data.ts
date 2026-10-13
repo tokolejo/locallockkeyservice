@@ -446,7 +446,7 @@ export const initialServices: ServiceItem[] = [
       "Fresh High-Security Deadbolt Upgrades",
       "New Keys Cut and Tested on the Spot",
       "Grade 1 & Grade 2 Certified Cylinders",
-      "Master Key Setup for NYC Apartments"
+      "Master Key Setup for Manchester & NH Properties"
     ],
     icon_name: "Zap"
   },
@@ -516,6 +516,27 @@ export const initialTestimonials: Testimonial[] =
   ];
 
 export const initialDispatchRequests: DispatchRequest[] = [
+  {
+    id: "req-102",
+    created_at: "2026-10-12T19:30:00Z",
+    updated_at: "2026-10-12T19:30:00Z",
+    customer_name: "Callback Request",
+    phone: "(603) 555-0198",
+    zip_code: "03104",
+    address: "North End, Manchester, NH",
+    service_category: "automotive",
+    service_sub_type: "Car Lockout / Vehicle Key",
+    vehicle_make: "Toyota",
+    vehicle_model: "Camry",
+    vehicle_year: "2021",
+    status: "new",
+    estimated_price_min: 75,
+    estimated_price_max: 120,
+    final_price: null,
+    assigned_technician: null,
+    internal_notes: "Keys locked in trunk at grocery store parking lot. Customer requested immediate callback.",
+    source: "callback_modal"
+  },
   {
     id: "req-101",
     created_at: "2026-10-07T08:45:00Z",

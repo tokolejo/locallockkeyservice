@@ -97,9 +97,18 @@ export function DispatchKanban({ requests, onDataChanged }: DispatchKanbanProps)
                     className="bg-slate-50 border border-slate-200 hover:border-slate-300 rounded-xl p-3.5 space-y-2.5 transition text-xs shadow-xs"
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <h4 className="font-bold text-slate-900 text-sm leading-snug">
-                        {item.customer_name}
-                      </h4>
+                      <div>
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <h4 className="font-bold text-slate-900 text-sm leading-snug">
+                            {item.customer_name}
+                          </h4>
+                          {item.source === "callback_modal" && (
+                            <span className="text-[9px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
+                              Callback
+                            </span>
+                          )}
+                        </div>
+                      </div>
                       <button
                         onClick={() => openEditDrawer(item)}
                         className="p-1 rounded text-slate-400 hover:text-slate-800 hover:bg-slate-100 cursor-pointer"
@@ -110,11 +119,22 @@ export function DispatchKanban({ requests, onDataChanged }: DispatchKanbanProps)
                     </div>
 
                     <div className="space-y-1 text-slate-600">
-                      <div className="flex items-center gap-1.5 text-emerald-700 font-mono font-medium">
-                        <PhoneCall className="w-3 h-3 shrink-0" />
-                        <span>{item.phone}</span>
+                      <div className="flex items-center justify-between gap-1 text-emerald-700 font-mono font-bold text-xs">
+                        <a
+                          href={`tel:${item.phone.replace(/[^\d+]/g, "")}`}
+                          className="flex items-center gap-1.5 hover:underline"
+                        >
+                          <PhoneCall className="w-3 h-3 shrink-0" />
+                          <span>{item.phone}</span>
+                        </a>
+                        <a
+                          href={`tel:${item.phone.replace(/[^\d+]/g, "")}`}
+                          className="text-[10px] bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2 py-0.5 rounded transition"
+                        >
+                          Call
+                        </a>
                       </div>
-                      <div className="flex items-center gap-1.5 text-slate-500">
+                      <div className="flex items-center gap-1.5 text-slate-500 text-[11px]">
                         <MapPin className="w-3 h-3 shrink-0" />
                         <span className="truncate">
                           {item.zip_code} {item.address ? `• ${item.address}` : ""}
@@ -122,11 +142,16 @@ export function DispatchKanban({ requests, onDataChanged }: DispatchKanbanProps)
                       </div>
                     </div>
 
-                    <div className="p-2 rounded bg-white border border-slate-200 text-[11px]">
+                    <div className="p-2 rounded bg-white border border-slate-200 text-[11px] space-y-1">
                       <p className="font-semibold text-slate-800">{item.service_sub_type}</p>
                       {item.vehicle_make && (
-                        <p className="text-slate-500 mt-0.5">
+                        <p className="text-slate-500">
                           {item.vehicle_year} {item.vehicle_make} {item.vehicle_model}
+                        </p>
+                      )}
+                      {item.internal_notes && (
+                        <p className="text-slate-600 bg-slate-50 p-1.5 rounded border border-slate-200/60 text-[10px] leading-tight">
+                          <span className="font-bold text-slate-800">Note:</span> {item.internal_notes}
                         </p>
                       )}
                     </div>

@@ -71,19 +71,19 @@ export function DispatchModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg bg-white border border-slate-200 rounded-3xl shadow-2xl overflow-hidden text-slate-800 max-h-[90vh] flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="relative w-full max-w-lg bg-white border border-slate-200 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden text-slate-800 max-h-[92dvh] sm:max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="bg-slate-50 p-5 border-b border-slate-200 flex items-center justify-between">
+        <div className="bg-slate-50 p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <img src="/gallery/logo.png" alt="Local Lock & Key Service" className="h-7 w-auto object-contain" />
             <div>
-              <h2 className="text-base font-bold text-slate-900 tracking-tight">
+              <h2 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight">
                 Request Immediate Mobile Dispatch
               </h2>
               <p className="text-xs text-slate-500 flex items-center gap-1.5 mt-0.5">
                 <Clock className="w-3.5 h-3.5 text-emerald-700" />
-                <span>Avg Arrival: 15–20 Mins</span>
+                <span>Fast Dispatch</span>
                 <span>•</span>
                 <span>Manchester & NH</span>
               </p>

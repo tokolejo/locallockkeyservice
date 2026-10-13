@@ -486,6 +486,42 @@
   ],
   "activity_logs": [
     {
+      "id": "log-1791841936022-je9jm",
+      "created_at": "2026-10-12T21:52:16.022Z",
+      "action": "dispatch",
+      "entity": "New callback requested for House / Apartment Lockout from (551) 515-1515",
+      "details": "{\"phone\":\"(551) 515-1515\",\"service\":\"House / Apartment Lockout\",\"notes\":\"\"}",
+      "ip_address": null,
+      "status": "success"
+    },
+    {
+      "id": "log-1791841935837-m6hjb",
+      "created_at": "2026-10-12T21:52:15.837Z",
+      "action": "CREATE",
+      "entity": "dispatch_requests",
+      "details": "{\"id\":\"req-1791841935611\",\"customer\":\"Callback Request\"}",
+      "ip_address": null,
+      "status": "success"
+    },
+    {
+      "id": "log-1791841235794-jf4em",
+      "created_at": "2026-10-12T21:40:35.794Z",
+      "action": "dispatch",
+      "entity": "New callback requested for House / Apartment Lockout from (557) 576-0484",
+      "details": "{\"phone\":\"(557) 576-0484\",\"service\":\"House / Apartment Lockout\",\"notes\":\"\"}",
+      "ip_address": null,
+      "status": "success"
+    },
+    {
+      "id": "log-1791841235595-lemy9",
+      "created_at": "2026-10-12T21:40:35.595Z",
+      "action": "CREATE",
+      "entity": "dispatch_requests",
+      "details": "{\"id\":\"req-1791841235242\",\"customer\":\"Callback Request\"}",
+      "ip_address": null,
+      "status": "success"
+    },
+    {
       "id": "log-1791486719397-yu5nl",
       "created_at": "2026-10-08T19:11:59.397Z",
       "action": "UPDATE",

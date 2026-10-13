@@ -17,6 +17,7 @@ import {
   X,
   ShieldCheck,
   LogOut,
+  PhoneCall,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -59,6 +60,11 @@ export function AdminSidebar() {
       href: "/admin",
       icon: <LayoutDashboard className="w-4 h-4 shrink-0" />,
       exact: true,
+    },
+    {
+      label: "Call Dispatch & Leads",
+      href: "/admin/dispatch",
+      icon: <PhoneCall className="w-4 h-4 shrink-0 text-emerald-500" />,
     },
     {
       label: "Services & Categories",

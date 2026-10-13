@@ -15,7 +15,7 @@ import {
   ShieldCheck,
   ChevronRight,
   Camera,
-  MessageCircle,
+  Clock,
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { SiteSettings } from "@/types/database.types";
@@ -24,9 +24,15 @@ interface HeaderProps {
   siteSettings?: SiteSettings;
   onOpenDispatch?: (prefill?: { category?: string; subType?: string }) => void;
   onOpenMapPicker?: () => void;
+  onOpenCallback?: () => void;
 }
 
-export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: HeaderProps) {
+export function Header({
+  siteSettings,
+  onOpenDispatch,
+  onOpenMapPicker,
+  onOpenCallback,
+}: HeaderProps) {
   const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
@@ -76,10 +82,6 @@ export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: Header
 
   const phone = siteSettings?.phone_display || process.env.NEXT_PUBLIC_DISPATCH_PHONE || "+1 (603) 290-5554";
   const phoneRaw = siteSettings?.phone_raw || process.env.NEXT_PUBLIC_DISPATCH_PHONE_RAW || "tel:+16032905554";
-  const rawWa = siteSettings?.whatsapp_number?.replace(/[^0-9]/g, "") || "16032905554";
-  const whatsappUrl = `https://wa.me/${rawWa}?text=${encodeURIComponent(
-    "Hello, I need locksmith service (Local Lock & Key Service)"
-  )}`;
 
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
@@ -177,24 +179,19 @@ export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: Header
 
         {/* Right: Desktop Actions */}
         <div className="hidden md:flex items-center gap-2.5 shrink-0">
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-xs hover:shadow active:scale-[0.98]"
+          <button
+            type="button"
+            onClick={onOpenCallback}
+            className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-xs hover:shadow active:scale-[0.98] cursor-pointer"
           >
-            <MessageCircle className="w-4 h-4 fill-white" />
-            <span>WhatsApp</span>
-          </a>
+            <Clock className="w-4 h-4 text-emerald-100" />
+            <span>Request Callback</span>
+          </button>
 
           <a
             href={phoneRaw}
             className="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-xs hover:shadow active:scale-[0.98]"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
             <PhoneCall className="w-4 h-4 text-emerald-400" />
             <span>CALL</span>
           </a>
@@ -290,26 +287,23 @@ export function Header({ siteSettings, onOpenDispatch, onOpenMapPicker }: Header
 
           {/* Quick Action Buttons in Menu */}
           <div className="flex gap-2 pt-1">
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex-1 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-2xs"
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenCallback?.();
+              }}
+              className="flex-1 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-2xs cursor-pointer"
             >
-              <MessageCircle className="w-3.5 h-3.5 fill-white" />
-              <span>WhatsApp 24/7</span>
-            </a>
+              <Clock className="w-3.5 h-3.5 text-emerald-100" />
+              <span>Request Callback</span>
+            </button>
 
             <a
               href={phoneRaw}
               onClick={() => setMobileMenuOpen(false)}
               className="flex-1 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-2xs"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
               <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
               <span>CALL</span>
             </a>

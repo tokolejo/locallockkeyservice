@@ -1,15 +1,17 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { PhoneCall, MessageCircle } from "lucide-react";
+import { PhoneCall, Clock } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-export function EmergencyMobileBar() {
+
+interface EmergencyMobileBarProps {
+  onOpenCallback?: () => void;
+}
+
+export function EmergencyMobileBar({ onOpenCallback }: EmergencyMobileBarProps) {
   const [isVisible, setIsVisible] = useState(false);
   const phone = process.env.NEXT_PUBLIC_DISPATCH_PHONE || "+1 (603) 290-5554";
   const phoneRaw = process.env.NEXT_PUBLIC_DISPATCH_PHONE_RAW || "tel:+16032905554";
-  const whatsappUrl = `https://wa.me/16032905554?text=${encodeURIComponent(
-    "Hello, I need locksmith assistance (Local Lock & Key Service)"
-  )}`;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,26 +39,21 @@ export function EmergencyMobileBar() {
           className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200/90 px-3 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] shadow-xl"
         >
           <div className="flex items-center gap-2 max-w-sm mx-auto">
-            {/* WhatsApp Action */}
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs tracking-tight shadow-xs transition active:scale-[0.98]"
+            {/* Request Callback Action */}
+            <button
+              type="button"
+              onClick={onOpenCallback}
+              className="flex-1 flex items-center justify-center gap-1.5 py-3 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs tracking-tight shadow-xs transition active:scale-[0.98] cursor-pointer"
             >
-              <MessageCircle className="w-4 h-4 fill-white shrink-0" />
-              <span className="truncate">WhatsApp</span>
-            </a>
+              <Clock className="w-4 h-4 text-emerald-100 shrink-0" />
+              <span className="truncate">Request Callback</span>
+            </button>
 
             {/* Direct Phone Call */}
             <a
               href={phoneRaw}
               className="flex-1 flex items-center justify-center gap-2 py-3 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs tracking-tight shadow-xs transition active:scale-[0.98]"
             >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
               <PhoneCall className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
               <span className="truncate">CALL</span>
             </a>

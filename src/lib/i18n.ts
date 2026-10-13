@@ -5,7 +5,7 @@ export const translations = {
     // Header & Badges
     brand_sub: "Manchester, NH & Surrounding Areas",
     duty_badge: "Dispatch Technicians On Duty",
-    avg_arrival: "Avg Arrival: 15–20 Mins across Manchester & NH",
+    avg_arrival: "Fast, Reliable Mobile Dispatch Across NH",
     licensed_badge: "Fully Insured & Registered in NH",
     call_now: "Call 24/7 +1 (603) 290-5554",
     no_dms_badge: "NO DMs • Just Call 24/7 Direct",
@@ -22,7 +22,7 @@ export const translations = {
     nav_reviews: "Reviews",
 
     // Mobile Bar
-    mob_whatsapp: "WhatsApp",
+    mob_whatsapp: "Request Callback",
     mob_call_now: "Call 24/7",
     mob_quick_form: "Fast GPS Dispatch",
 
@@ -31,13 +31,13 @@ export const translations = {
     hero_title_1: "24 Hours Locksmith",
     hero_title_2: "Manchester, NH & Surrounding Areas",
     hero_title_3: "Fast • Professional • Reliable",
-    hero_desc: "24/7 emergency car lockout, house & apartment doors, lock change, rekeying and smart car keys across Manchester, NH and surrounding communities. 100% damage-free entry guarantee with 15–20 minute rapid mobile arrival.",
+    hero_desc: "24/7 emergency car lockout, house & apartment doors, lock change, rekeying and smart car keys across Manchester, NH and surrounding communities. 100% damage-free entry guarantee with fast, reliable mobile dispatch across NH.",
     hero_call_cta: "Call +1 (603) 290-5554",
-    hero_whatsapp_cta: "WhatsApp 24/7",
+    hero_whatsapp_cta: "Request Callback",
     hero_form_cta: "Fast GPS Dispatch Form",
     hero_stat_1_title: "100% Damage-Free",
     hero_stat_1_sub: "Zero lock or vehicle damage",
-    hero_stat_2_title: "15–20 Min Arrival",
+    hero_stat_2_title: "Fast Mobile Dispatch",
     hero_stat_2_sub: "Mobile units stationed in NH",
     hero_stat_3_title: "5.0 ★ Top Rated",
     hero_stat_3_sub: "Verified Google local reviews",
@@ -62,7 +62,7 @@ export const translations = {
     // Estimator / Service Selector
     est_badge: "Rapid Emergency Response",
     est_title: "Select Service & Request Dispatch",
-    est_desc: "Choose your lockout or key situation below for rapid 15-20 min mobile technician dispatch and free phone estimate.",
+    est_desc: "Choose your lockout or key situation below for fast, reliable mobile technician dispatch across NH and free phone estimate.",
     est_live_title: "Immediate Roadside & Residential Service",
     est_confirm_btn: "Request Immediate Dispatch & Free Estimate",
 

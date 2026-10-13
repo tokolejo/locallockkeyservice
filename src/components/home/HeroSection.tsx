@@ -9,7 +9,6 @@ import {
   Star,
   CheckCircle2,
   Car,
-  MessageCircle,
   KeyRound,
   Wrench,
   Sparkles,
@@ -29,6 +28,7 @@ interface HeroSectionProps {
     subType?: string;
   }) => void;
   onOpenMapPicker?: () => void;
+  onOpenCallback?: () => void;
 }
 
 const HERO_SLIDES = [
@@ -64,38 +64,38 @@ const HERO_SLIDES = [
   },
   {
     src: "/gallery/van-work.jpg",
-    title: "15–20 Min Rapid Mobile Units",
+    title: "Fast, Reliable Mobile Dispatch",
     badge: "Manchester & Surrounding NH",
     location: "Nashua, NH",
   },
 ];
 
 const POPULAR_CAR_MAKES = [
-  { name: "BMW", badge: "Smart Key & Fob", sub: "All Series" },
-  { name: "Mercedes-Benz", badge: "Laser Cut & EIS", sub: "All Classes" },
-  { name: "Audi", badge: "Keyless / Transponder", sub: "A/Q/S Models" },
-  { name: "Toyota", badge: "Keys in Trunk / Lockout", sub: "Camry, RAV4+" },
-  { name: "Honda", badge: "Damage-Free Opening", badgeStyle: "emerald", sub: "Civic, Accord+" },
   { name: "Ford", badge: "Key Code Cutting", sub: "F-150, Explorer+" },
-  { name: "Lexus", badge: "Proximity Smart Remote", sub: "RX, ES, IS+" },
-  { name: "Jeep", badge: "Roadside Rescue", sub: "Grand Cherokee+" },
-  { name: "Nissan", badge: "Intelligent Key", sub: "Rogue, Altima+" },
-  { name: "Porsche", badge: "High-Security Entry", sub: "Cayenne, 911+" },
-  { name: "Hyundai", badge: "Push-Start & Fob", sub: "Elantra, Tucson+" },
-  { name: "Subaru", badge: "Laser Cut & Immo", sub: "Outback, Forester+" },
   { name: "Chevrolet", badge: "Trunk & Door Lockout", sub: "Silverado, Malibu+" },
-  { name: "Tesla", badge: "Emergency 12V / Entry", sub: "Model 3/Y/S/X" },
-  { name: "Dodge", badge: "Key Fob Replacement", sub: "Charger, RAM+" },
-  { name: "Volkswagen", badge: "Flip Key & Coding", sub: "Jetta, Golf, Atlas+" },
+  { name: "GMC", badge: "Damage-Free Entry", sub: "Sierra, Yukon+" },
+  { name: "Dodge", badge: "Key Fob Replacement", sub: "Charger, Challenger+" },
+  { name: "Jeep", badge: "Roadside Rescue", sub: "Grand Cherokee, Wrangler+" },
+  { name: "RAM", badge: "Truck Keyless & Lockout", sub: "1500, 2500+" },
+  { name: "Toyota", badge: "Keys in Trunk / Lockout", sub: "Camry, RAV4, Tacoma+" },
+  { name: "Honda", badge: "Damage-Free Opening", sub: "Civic, Accord, CR-V+" },
+  { name: "Nissan", badge: "Intelligent Key", sub: "Rogue, Altima, Pathfinder+" },
+  { name: "Subaru", badge: "Laser Cut & Immo", sub: "Outback, Forester, Crosstrek+" },
+  { name: "Lexus", badge: "Proximity Smart Remote", sub: "RX, ES, GX+" },
+  { name: "Hyundai", badge: "Push-Start & Fob", sub: "Elantra, Tucson, Santa Fe+" },
+  { name: "Kia", badge: "Transponder & Key Fob", sub: "Sportage, Forte, Telluride+" },
 ];
 
-export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroSectionProps) {
+export function HeroSection({
+  slides,
+  siteSettings,
+  onOpenDispatchModal,
+  onOpenCallback,
+}: HeroSectionProps) {
   const { t } = useLanguage();
 
   const phoneDisplay = siteSettings?.phone_display || process.env.NEXT_PUBLIC_DISPATCH_PHONE || "+1 (603) 290-5554";
   const phoneRaw = siteSettings?.phone_raw || process.env.NEXT_PUBLIC_DISPATCH_PHONE_RAW || "tel:+16032905554";
-  const rawWa = siteSettings?.whatsapp_number?.replace(/[^0-9]/g, "") || "16032905554";
-  const whatsappUrl = `https://wa.me/${rawWa}?text=Hello%2C%20I%20need%20locksmith%20service%20(Local%20Lock%20%26%20Key%20Service)`;
 
   const activeSlides = (slides && slides.length > 0
     ? slides.filter((s) => s.is_active).map((s) => ({
@@ -133,7 +133,7 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#faf9f6] text-slate-800 pt-6 pb-8 sm:pt-12 sm:pb-16 lg:pt-16 lg:pb-20 border-b border-slate-200">
+    <section className="relative overflow-hidden bg-[#faf9f6] text-slate-800 pt-5 pb-8 sm:pt-9 sm:pb-16 lg:pt-10 lg:pb-20 border-b border-slate-200">
       {/* Subtle modern background grid & dot texture */}
       <div className="absolute inset-0 bg-hero-dots opacity-40 pointer-events-none [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_85%)]" />
 
@@ -143,20 +143,31 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
       <div className="absolute top-1/2 left-1/3 w-80 h-80 bg-teal-100/25 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          {/* Left Column: Headline, Description & ONLY Call + WhatsApp CTAs */}
-          <div className="lg:col-span-7 space-y-5 sm:space-y-6">
+        {/* Prominent Centered Brand Header directly below the menu */}
+        <div className="mb-6 sm:mb-8 md:mb-10 flex items-center justify-center text-center w-full">
+          <div className="inline-flex items-center justify-center gap-2.5 sm:gap-3.5 px-5 py-2.5 sm:px-8 sm:py-3.5 rounded-2xl sm:rounded-3xl bg-slate-950 border border-emerald-500/40 text-white shadow-xl shadow-slate-950/20 max-w-full">
+            <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-400 animate-pulse shrink-0 shadow-xs" />
+            <span className="text-sm sm:text-lg md:text-xl lg:text-2xl font-black tracking-wide uppercase text-white leading-tight">
+              LOCAL LOCK &amp; KEY SERVICE • 24/7 Mobile Dispatch
+            </span>
+          </div>
+        </div>
+
+        {/* Main Content Grid: Texts on Left, Slider on Right (Top-aligned in the same horizontal plane!) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          {/* Left Column: Headline, Description & ONLY Call + Callback CTAs */}
+          <div className="lg:col-span-7 space-y-4 sm:space-y-5">
             <ScrollReveal direction="up">
               <div className="space-y-4 sm:space-y-5">
-                {/* Live Trust & Service Badges */}
-                <div className="flex flex-wrap items-center gap-2">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-emerald-800 shadow-2xs">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>{t("hero_badge")}</span>
-                  </div>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-slate-200/90 text-xs font-bold text-slate-700 shadow-2xs">
+                {/* Trust Badges */}
+                <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-slate-700">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-slate-200 shadow-2xs">
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                    <span>Fully Insured & Registered in NH</span>
+                    <span>Fully Insured &amp; Registered in NH</span>
+                  </div>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 shadow-2xs">
+                    <Clock className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span>Fast, Reliable Mobile Dispatch Across NH</span>
                   </div>
                 </div>
 
@@ -187,75 +198,15 @@ export function HeroSection({ slides, siteSettings, onOpenDispatchModal }: HeroS
                     <span>{phoneDisplay}</span>
                   </a>
 
-                  {/* 2. Secondary WhatsApp CTA */}
-                  <a
-                    href={whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-2xl font-bold text-base tracking-wide shadow-lg shadow-emerald-600/20 transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer"
+                  {/* 2. Secondary Request Callback CTA */}
+                  <button
+                    type="button"
+                    onClick={onOpenCallback}
+                    className="flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white px-8 py-4 rounded-2xl font-bold text-base tracking-wide shadow-lg shadow-emerald-600/20 transition-all duration-200 hover:-translate-y-0.5 cursor-pointer border border-emerald-500/40"
                   >
-                    <MessageCircle className="w-5 h-5 fill-white text-white shrink-0" />
-                    <span>WhatsApp</span>
-                  </a>
-                </div>
-
-                {/* 3 Unified Trust Metric Cards */}
-                <div className="grid grid-cols-3 gap-2.5 sm:gap-4 pt-5 sm:pt-6 border-t border-slate-200/90">
-                  <div className="bg-white/95 backdrop-blur-xs border border-slate-200/90 rounded-2xl p-3 sm:p-4 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between">
-                    <div className="flex items-center gap-1.5 text-emerald-700 mb-1.5">
-                      <ShieldCheck className="w-4 h-4 shrink-0 text-emerald-600" />
-                      <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 truncate">
-                        Guarantee
-                      </span>
-                    </div>
-                    <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 leading-tight">
-                      {t("hero_stat_1_title")}
-                    </div>
-                    <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 hidden sm:block leading-snug">
-                      {t("hero_stat_1_sub")}
-                    </p>
-                  </div>
-
-                  <div className="bg-white/95 backdrop-blur-xs border border-slate-200/90 rounded-2xl p-3 sm:p-4 shadow-2xs hover:shadow-xs transition-all flex flex-col justify-between">
-                    <div className="flex items-center gap-1.5 text-emerald-700 mb-1.5">
-                      <Clock className="w-4 h-4 shrink-0 text-emerald-600" />
-                      <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 truncate">
-                        Arrival
-                      </span>
-                    </div>
-                    <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 leading-tight">
-                      {t("hero_stat_2_title")}
-                    </div>
-                    <p className="text-[10px] sm:text-[11px] text-slate-500 mt-1 hidden sm:block leading-snug">
-                      {t("hero_stat_2_sub")}
-                    </p>
-                  </div>
-
-                  <a
-                    href="https://maps.app.goo.gl/j9Zvw9xhNKP5Rgk29"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="View Verified Google Reviews"
-                    className="bg-white/95 backdrop-blur-xs border border-slate-200/90 hover:border-amber-400/80 hover:bg-amber-50/20 rounded-2xl p-3 sm:p-4 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col justify-between group/rating cursor-pointer"
-                  >
-                    <div className="flex items-center justify-between mb-1.5">
-                      <div className="flex items-center gap-1.5 text-amber-500">
-                        <Star className="w-4 h-4 fill-amber-400 text-amber-400 group-hover/rating:scale-110 transition-transform shrink-0" />
-                        <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 group-hover/rating:text-slate-900 transition-colors truncate">
-                          Reviews
-                        </span>
-                      </div>
-                      <span className="text-[11px] font-bold text-amber-600 group-hover/rating:translate-x-0.5 group-hover/rating:-translate-y-0.5 transition-transform">
-                        ↗
-                      </span>
-                    </div>
-                    <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 group-hover/rating:text-amber-600 transition-colors leading-tight">
-                      {t("hero_stat_3_title")}
-                    </div>
-                    <p className="text-[10px] sm:text-[11px] text-slate-500 group-hover/rating:text-slate-700 mt-1 hidden sm:block leading-snug">
-                      {t("hero_stat_3_sub")}
-                    </p>
-                  </a>
+                    <Clock className="w-5 h-5 text-emerald-100 shrink-0" />
+                    <span>Request a Callback</span>
+                  </button>
                 </div>
               </div>
             </ScrollReveal>

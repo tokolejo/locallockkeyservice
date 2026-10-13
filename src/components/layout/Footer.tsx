@@ -2,20 +2,17 @@
 
 import React from "react";
 import Link from "next/link";
-import { ShieldCheck, PhoneCall, Clock, CheckCircle2, MessageCircle, Star } from "lucide-react";
+import { ShieldCheck, PhoneCall, Clock, CheckCircle2, Star } from "lucide-react";
 import { SiteSettings } from "@/types/database.types";
 
 interface FooterProps {
   siteSettings?: SiteSettings;
+  onOpenCallback?: () => void;
 }
 
-export function Footer({ siteSettings }: FooterProps) {
+export function Footer({ siteSettings, onOpenCallback }: FooterProps) {
   const phoneDisplay = siteSettings?.phone_display || process.env.NEXT_PUBLIC_DISPATCH_PHONE || "+1 (603) 290-5554";
   const phoneRaw = siteSettings?.phone_raw || process.env.NEXT_PUBLIC_DISPATCH_PHONE_RAW || "tel:+16032905554";
-  const rawWa = siteSettings?.whatsapp_number?.replace(/[^0-9]/g, "") || "16032905554";
-  const whatsappUrl = `https://wa.me/${rawWa}?text=${encodeURIComponent(
-    "Hello, I need locksmith service (Local Lock & Key Service)"
-  )}`;
 
   return (
     <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 text-xs pb-20 md:pb-8">
@@ -45,7 +42,7 @@ export function Footer({ siteSettings }: FooterProps) {
                 </div>
                 <div className="flex items-center gap-1.5 text-emerald-400 font-medium whitespace-nowrap">
                   <Clock className="w-3.5 h-3.5 shrink-0" />
-                  <span>15–20 Min Arrival</span>
+                  <span>Fast NH Mobile Dispatch</span>
                 </div>
               </div>
             </div>
@@ -161,19 +158,18 @@ export function Footer({ siteSettings }: FooterProps) {
                 <span>{phoneDisplay}</span>
               </a>
 
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full flex items-center justify-center gap-2 py-2.5 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white border border-emerald-500 font-bold text-xs shadow-xs transition-all active:scale-[0.99]"
+              <button
+                type="button"
+                onClick={onOpenCallback}
+                className="w-full flex items-center justify-center gap-2 py-2.5 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white border border-emerald-500 font-bold text-xs shadow-xs transition-all active:scale-[0.99] cursor-pointer"
               >
-                <MessageCircle className="w-4 h-4 fill-white shrink-0" />
-                <span>WhatsApp</span>
-              </a>
+                <Clock className="w-4 h-4 text-emerald-100 shrink-0" />
+                <span>Request a Callback</span>
+              </button>
             </div>
 
             <div className="text-[10px] text-slate-500 space-y-0.5 pt-0.5">
-              <p>• 15–20 min average dispatch arrival</p>
+              <p>• Fast, reliable mobile dispatch across NH</p>
               <p>• Local GPS tracked mobile patrol units</p>
             </div>
           </div>

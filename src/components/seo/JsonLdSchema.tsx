@@ -105,44 +105,6 @@ export function JsonLdSchema() {
           ],
         },
       },
-      {
-        "@type": "FAQPage",
-        "@id": "https://www.locallockkeyservice.com/#faq",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Do you guarantee 100% damage-free entry on locked cars and doors?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes. Our technicians use professional locksmith picks and automotive air-wedge bypass tools. We never break car windows or pry door frames.",
-            },
-          },
-          {
-            "@type": "Question",
-            "name": "Why is ID and proof of ownership legally required before unlocking?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Under state regulations, professional locksmiths are required to verify photo ID and vehicle registration or property lease to protect owners from unlawful entry.",
-            },
-          },
-          {
-            "@type": "Question",
-            "name": "What payment methods are accepted on-site by mobile units?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Every mobile unit carries wireless POS card terminals accepting Visa, MasterCard, Amex, Apple Pay, Google Pay, and Cash with printed receipts.",
-            },
-          },
-          {
-            "@type": "Question",
-            "name": "Do you provide upfront pricing before dispatching a mobile technician?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Yes, we always provide clear upfront phone estimates based on your vehicle make, year, or lock type before dispatching. No hidden fees or surprise on-site markups.",
-            },
-          },
-        ],
-      },
     ],
   };
 

@@ -36,6 +36,10 @@ import {
   getActivityLogs,
 } from "@/lib/data/store";
 import {
+  sendDispatchLeadNotification,
+  getResendStatus,
+} from "@/lib/services/resendService";
+import {
   DispatchStatus,
   ServiceCategory,
   ServiceItem,
@@ -647,6 +651,101 @@ export async function updateCoverageAction(
     return {
       success: false,
       message: err?.message || "Failed to update coverage area.",
+    };
+  }
+}
+
+export async function requestCallbackAction(
+  _prevState: ActionResponse | null,
+  formData: FormData
+): Promise<ActionResponse> {
+  const phone = ((formData.get("phone") as string) || "").trim();
+  const service = ((formData.get("service") as string) || "Other").trim();
+  const notes = ((formData.get("notes") as string) || "").trim();
+
+  const cleanPhone = phone.replace(/[^\d]/g, "");
+  if (cleanPhone.length < 10) {
+    return {
+      success: false,
+      message: "Please enter a valid 10-digit US phone number.",
+    };
+  }
+
+  try {
+    const record = await createDispatchRequest({
+      customer_name: "Callback Request",
+      phone,
+      zip_code: "03101",
+      service_sub_type: service,
+      internal_notes: `[Callback Request] Service: ${service}. Notes: ${notes || "None"}`,
+      source: "callback_modal",
+    });
+
+    await logActivity(
+      "dispatch",
+      `New callback requested for ${service} from ${phone}`,
+      { phone, service, notes }
+    );
+
+    // Trigger Resend email notification in the background
+    try {
+      await sendDispatchLeadNotification({
+        id: record.id,
+        phone,
+        service,
+        notes,
+        createdAt: record.created_at,
+        source: "Website Callback Modal",
+      });
+    } catch (emailErr) {
+      console.warn("Resend email dispatch notice:", emailErr);
+    }
+
+    revalidatePath("/");
+    revalidatePath("/admin/dispatch");
+    revalidatePath("/admin");
+
+    return {
+      success: true,
+      message: "Thank you! We received your callback request. A mobile dispatch specialist will call you shortly.",
+      data: record,
+    };
+  } catch (err: any) {
+    return {
+      success: false,
+      message: err instanceof Error ? err.message : "Failed to submit callback request.",
+    };
+  }
+}
+
+export async function getResendStatusAction(): Promise<{
+  isConfigured: boolean;
+  alertEmail: string | null;
+  fromEmail: string;
+}> {
+  return getResendStatus();
+}
+
+export async function testResendLeadAction(): Promise<ActionResponse> {
+  try {
+    const result = await sendDispatchLeadNotification({
+      id: `test-${Date.now()}`,
+      phone: "(603) 290-5554",
+      service: "Test Notification (Automotive Lockout)",
+      notes: "This is a test notification from Local Lock & Key Service Admin to verify Resend email delivery.",
+      createdAt: new Date().toISOString(),
+      source: "Admin Test Trigger",
+    });
+
+    return {
+      success: result.success,
+      message: result.message,
+      data: result,
+    };
+  } catch (err: any) {
+    return {
+      success: false,
+      message: err?.message || "Failed to execute Resend test notification.",
     };
   }
 }

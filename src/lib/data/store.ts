@@ -1071,7 +1071,7 @@ export function getGoogleReviewsCacheMeta() {
 // ---------------------------------------------------------------------------
 export async function getDispatchRequests(): Promise<DispatchRequest[]> {
   try {
-    const supabase = await createServerSupabase();
+    const supabase = createAdminClient() || (await createServerSupabase());
     if (supabase) {
       const { data, error } = await (supabase as any)
         .from("dispatch_requests")
@@ -1102,8 +1102,9 @@ export async function createDispatchRequest(payload: {
   internal_notes?: string;
   source?: string;
 }): Promise<DispatchRequest> {
+  const newId = typeof crypto !== "undefined" && crypto.randomUUID ? crypto.randomUUID() : `00000000-0000-4000-8000-${Date.now().toString(16).padStart(12, "0")}`;
   const newRecord: DispatchRequest = {
-    id: `req-${Date.now()}`,
+    id: newId,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
     customer_name: payload.customer_name,
@@ -1125,7 +1126,7 @@ export async function createDispatchRequest(payload: {
   };
 
   try {
-    const supabase = createPublicClient();
+    const supabase = createAdminClient() || createPublicClient();
     if (supabase) {
       const { data, error } = await (supabase as any)
         .from("dispatch_requests")
@@ -1135,6 +1136,9 @@ export async function createDispatchRequest(payload: {
       if (!error && data) {
         await logActivity("CREATE", "dispatch_requests", { id: data.id, customer: data.customer_name });
         return data as DispatchRequest;
+      }
+      if (error) {
+        console.warn("Notice: createDispatchRequest Supabase insert error:", error);
       }
     }
   } catch {
@@ -1153,15 +1157,37 @@ export async function updateDispatchRequestStatus(
   internal_notes?: string,
   final_price?: number
 ): Promise<DispatchRequest | null> {
+  const updates: Partial<DispatchRequest> = {
+    status,
+    updated_at: new Date().toISOString(),
+    ...(assigned_technician !== undefined ? { assigned_technician } : {}),
+    ...(internal_notes !== undefined ? { internal_notes } : {}),
+    ...(final_price !== undefined ? { final_price } : {}),
+  };
+
+  try {
+    const supabase = createAdminClient() || (await createServerSupabase());
+    if (supabase) {
+      const { data, error } = await (supabase as any)
+        .from("dispatch_requests")
+        .update(updates)
+        .eq("id", id)
+        .select()
+        .single();
+      if (!error && data) {
+        await logActivity("UPDATE_STATUS", "dispatch_requests", { id, status });
+        return data as DispatchRequest;
+      }
+    }
+  } catch {
+    // Continue to fallback
+  }
+
   const index = fallbackRequests.findIndex((r) => r.id === id);
   if (index !== -1) {
     fallbackRequests[index] = {
       ...fallbackRequests[index],
-      status,
-      updated_at: new Date().toISOString(),
-      ...(assigned_technician !== undefined ? { assigned_technician } : {}),
-      ...(internal_notes !== undefined ? { internal_notes } : {}),
-      ...(final_price !== undefined ? { final_price } : {}),
+      ...updates,
     };
     await logActivity("UPDATE_STATUS", "dispatch_requests", { id, status });
     return fallbackRequests[index];
