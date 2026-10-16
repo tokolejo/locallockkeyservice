@@ -386,12 +386,13 @@ export function ServicesSection({ siteSettings, onOpenCallback }: ServicesSectio
                 return (
                   <div
                     key={scenario.id}
-                    className="w-[280px] sm:w-[320px] lg:w-auto shrink-0 snap-start bg-slate-50/80 hover:bg-white rounded-2xl sm:rounded-3xl p-5 border border-slate-200/90 hover:border-emerald-500/50 hover:shadow-lg transition-all duration-200 flex flex-col justify-between"
+                    onClick={() => handleOpenDetails(scenario.categoryId)}
+                    className="w-[280px] sm:w-[320px] lg:w-auto shrink-0 snap-start bg-slate-50/80 hover:bg-white rounded-2xl sm:rounded-3xl p-5 border border-slate-200/90 hover:border-emerald-500/50 hover:shadow-lg transition-all duration-200 flex flex-col justify-between cursor-pointer group select-none"
                   >
                     <div>
                       {/* Card Header */}
                       <div className="flex items-center justify-between gap-2 mb-3">
-                        <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-900 shadow-2xs">
+                        <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-900 shadow-2xs group-hover:border-emerald-300 group-hover:bg-emerald-50/50 transition-colors">
                           <Icon className="w-5 h-5 text-emerald-700" />
                         </div>
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800">
@@ -399,7 +400,7 @@ export function ServicesSection({ siteSettings, onOpenCallback }: ServicesSectio
                         </span>
                       </div>
 
-                      <h4 className="text-base font-bold text-slate-900 leading-snug mb-2">
+                      <h4 className="text-base font-bold text-slate-900 group-hover:text-emerald-700 leading-snug mb-2 transition-colors">
                         {scenario.title}
                       </h4>
                       <p className="text-xs text-slate-600 leading-relaxed mb-3">
@@ -407,28 +408,31 @@ export function ServicesSection({ siteSettings, onOpenCallback }: ServicesSectio
                       </p>
 
                       {/* Read More Modal Trigger on Card */}
-                      <button
-                        type="button"
-                        onClick={() => handleOpenDetails(scenario.categoryId)}
-                        className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-900 transition cursor-pointer mb-2"
-                      >
+                      <div className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 group-hover:text-emerald-800 transition mb-2">
                         <span>Read More</span>
-                        <ChevronRight className="w-3.5 h-3.5" />
-                      </button>
+                        <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                      </div>
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="pt-3 border-t border-slate-200/80 flex items-center gap-2">
+                    <div
+                      className="pt-3 border-t border-slate-200/80 flex items-center gap-2 cursor-default"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <a
                         href={phoneRaw}
-                        className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-slate-950 hover:bg-black text-white font-bold text-xs transition active:scale-98 shadow-2xs"
+                        onClick={(e) => e.stopPropagation()}
+                        className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-slate-950 hover:bg-black text-white font-bold text-xs transition active:scale-98 shadow-2xs cursor-pointer"
                       >
                         <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
                         <span>CALL</span>
                       </a>
                       <button
                         type="button"
-                        onClick={onOpenCallback}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onOpenCallback?.();
+                        }}
                         className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition cursor-pointer active:scale-98 shadow-2xs"
                       >
                         <Clock className="w-3.5 h-3.5 text-emerald-100" />
