@@ -484,7 +484,7 @@ export function GallerySection({
                 <span>Real Work Portfolio &amp; Proof</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-                Recent Jobs Across Manchester &amp; NH
+                Recent Jobs Across Our Service Area
               </h2>
               <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl">
                 Authentic on-site photos from our certified mobile technicians: precision car key programming, high-security cylinders, and commercial door hardware.

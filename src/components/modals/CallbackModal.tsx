@@ -25,12 +25,11 @@ interface CallbackModalProps {
 }
 
 const SERVICE_OPTIONS = [
-  { id: "Car Lockout / Vehicle Key", label: "Car Lockout / Key", icon: Car },
-  { id: "House / Apartment Lockout", label: "House / Apt Lockout", icon: Home },
-  { id: "Lock Change / Rekeying", label: "Lock Change / Rekey", icon: KeyRound },
-  { id: "Commercial Locksmith", label: "Commercial Service", icon: Building2 },
-  { id: "Safe Lockout / Opening", label: "Safe Opening / Lock", icon: Vault },
-  { id: "Other", label: "Other / Consultation", icon: HelpCircle },
+  { id: "Residential Locksmith", label: "Residential Locksmith", icon: Home },
+  { id: "Commercial Locksmith", label: "Commercial Locksmith", icon: Building2 },
+  { id: "Car/Truck Locksmith", label: "Car/Truck Locksmith", icon: Car },
+  { id: "Emergency Locksmith", label: "Emergency Locksmith", icon: ShieldCheck },
+  { id: "Safe Locksmith", label: "Safe Locksmith", icon: Vault },
 ];
 
 function formatUsPhoneNumber(value: string): string {
@@ -148,7 +147,7 @@ export function CallbackModal({ isOpen, onClose, siteSettings }: CallbackModalPr
             <span>Request a Callback</span>
           </h3>
           <p className="text-xs sm:text-sm text-slate-300 mt-1">
-            Leave your number below and a mobile dispatch technician will call you back right away.
+            Leave Your Cellphone Number Below and Our Locksmith Technician Will be Calling You Back.
           </p>
         </div>
 
@@ -246,14 +245,14 @@ export function CallbackModal({ isOpen, onClose, siteSettings }: CallbackModalPr
                   htmlFor="callback-notes"
                   className="block text-xs font-bold text-slate-900 uppercase tracking-wider"
                 >
-                  Notes / Location / ZIP Code <span className="text-slate-400 font-normal">(Optional)</span>
+                  Location/Zip code <span className="text-slate-400 font-normal">(Optional)</span>
                 </label>
                 <input
                   id="callback-notes"
                   type="text"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="e.g. 2021 Toyota Camry trunk lockout, or Manchester 03104"
+                  placeholder="e.g. Manchester, NH or 03104"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-800 text-xs focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition shadow-2xs"
                 />
               </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import { ChevronLeft, ChevronRight, MapPin } from "lucide-react";
+import { ChevronLeft, ChevronRight, MapPin, PhoneCall } from "lucide-react";
 import { CoverageArea } from "@/types/database.types";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 
@@ -52,6 +52,96 @@ const NH_AREAS: AreaInfo[] = [
     name: "Amherst & Milford",
     badge: "Route 101A Unit",
     neighborhoods: "Amherst Village • Oval District • Route 101A",
+  },
+];
+
+const NH_REGIONS_TOWNS = [
+  {
+    title: "Manchester",
+    towns: ["Manchester"],
+  },
+  {
+    title: "Greater Manchester",
+    towns: [
+      "Auburn",
+      "Bedford",
+      "Candia",
+      "Chester",
+      "Deerfield",
+      "Dunbarton",
+      "Fremont",
+      "Goffstown",
+      "Hooksett",
+      "New Boston",
+      "Raymond",
+      "Weare",
+    ],
+  },
+  {
+    title: "Greater Nashua",
+    towns: [
+      "Amherst",
+      "Brookline",
+      "Hollis",
+      "Hudson",
+      "Litchfield",
+      "Merrimack",
+      "Milford",
+      "Mont Vernon",
+      "Nashua",
+    ],
+  },
+  {
+    title: "Greater Salem/Derry",
+    towns: [
+      "Derry",
+      "Hampstead",
+      "Londonderry",
+      "Pelham",
+      "Salem",
+      "Sandown",
+      "Windham",
+    ],
+  },
+  {
+    title: "Greater Concord",
+    towns: [
+      "Allenstown",
+      "Bow",
+      "Chichester",
+      "Concord",
+      "Epsom",
+      "Henniker",
+      "Hopkinton",
+      "Pembroke",
+      "Penacook",
+      "Loudon",
+      "Canterbury",
+      "Contoocook",
+      "Boscawen",
+      "Pittsfield",
+    ],
+  },
+  {
+    title: "Greater Laconia",
+    towns: [
+      "Laconia",
+      "Belmont",
+      "Tilton",
+      "Franklin",
+      "Gilmanton",
+      "Gilford",
+      "Bristol",
+      "Meredith",
+      "Wolfeboro",
+      "Alton",
+      "Moultonborough",
+      "Ashland",
+      "Andover",
+      "Webster",
+      "New London",
+      "Warner",
+    ],
   },
 ];
 
@@ -159,6 +249,55 @@ export function CoverageMap({}: CoverageMapProps) {
               <p className="text-[11px] text-slate-400 mt-2 block sm:hidden text-center">
                 ← Swipe to explore all service areas • Tap to call →
               </p>
+            </div>
+
+            {/* All New Hampshire Service Areas & Towns by Region (Exact 6 Regions, No Zip Codes) */}
+            <div className="pt-8 border-t border-slate-200/90 mt-8">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-bold mb-1.5 shadow-2xs">
+                    <MapPin className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>Complete Regional Directory</span>
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                    New Hampshire Service Areas &amp; Towns
+                  </h3>
+                  <p className="text-slate-600 text-xs sm:text-sm mt-0.5">
+                    Fast, professional 24/7 mobile locksmith dispatch available across all listed communities:
+                  </p>
+                </div>
+                <a
+                  href={phoneRaw}
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-slate-950 hover:bg-black text-white text-xs font-bold transition shadow-xs cursor-pointer shrink-0"
+                >
+                  <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Call Dispatch: +1 (603) 290-5554</span>
+                </a>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+                {NH_REGIONS_TOWNS.map((region) => (
+                  <div
+                    key={region.title}
+                    className="bg-slate-50/90 hover:bg-white border border-slate-200/90 hover:border-emerald-500/40 rounded-2xl p-4 flex flex-col transition-all shadow-2xs hover:shadow-xs"
+                  >
+                    <h4 className="text-xs font-black uppercase tracking-wider text-slate-900 pb-2 mb-2.5 border-b border-slate-200/80 flex items-center justify-between">
+                      <span className="truncate">{region.title}</span>
+                      <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100/70 px-1.5 py-0.5 rounded-md shrink-0 ml-1">
+                        {region.towns.length}
+                      </span>
+                    </h4>
+                    <ul className="space-y-1.5 text-xs text-slate-600 font-medium flex-1">
+                      {region.towns.map((town) => (
+                        <li key={town} className="hover:text-emerald-700 transition-colors flex items-center gap-1.5">
+                          <span className="w-1 h-1 rounded-full bg-emerald-500 shrink-0" />
+                          <span>{town}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </ScrollReveal>

@@ -33,40 +33,34 @@ interface HeroSectionProps {
 
 const HERO_SLIDES = [
   {
-    src: "/gallery/hero-banner.png",
-    title: "24/7 Mobile Locksmith Service",
-    badge: "Active Mobile Fleet",
-    location: "Manchester, NH",
-  },
-  {
     src: "/gallery/lock-repair-door.jpg",
-    title: "High-Security Deadbolts & Hardware",
-    badge: "Residential Entry",
-    location: "Manchester, NH",
-  },
-  {
-    src: "/gallery/toyota-car-key.jpg",
-    title: "Smart Key & Proximity Fobs",
-    badge: "Automotive Rescue",
-    location: "Bedford, NH",
+    title: "Residential Locksmith",
+    badge: "Residential Locksmith",
+    location: "Manchester & Surrounding NH",
   },
   {
     src: "/gallery/technician-work-1.jpg",
-    title: "Commercial Mortise & Lock Upgrades",
-    badge: "100% Damage-Free",
-    location: "Concord, NH",
+    title: "Commercial Locksmith",
+    badge: "Commercial Locksmith",
+    location: "Manchester & Surrounding NH",
+  },
+  {
+    src: "/gallery/toyota-car-key.jpg",
+    title: "Car/Truck Locksmith",
+    badge: "Car/Truck Locksmith",
+    location: "Manchester & Surrounding NH",
+  },
+  {
+    src: "/gallery/hero-banner.png",
+    title: "Emergency Locksmith",
+    badge: "Emergency Locksmith",
+    location: "Manchester & Surrounding NH",
   },
   {
     src: "/gallery/key-cutting-machine.jpg",
-    title: "Computerized Laser Key Cutting",
-    badge: "Mobile Equipment",
-    location: "Manchester, NH",
-  },
-  {
-    src: "/gallery/van-work.jpg",
-    title: "Fast, Reliable Mobile Dispatch",
-    badge: "Manchester & Surrounding NH",
-    location: "Nashua, NH",
+    title: "Safe Locksmith",
+    badge: "Safe Locksmith",
+    location: "Manchester & Surrounding NH",
   },
 ];
 
@@ -148,7 +142,7 @@ export function HeroSection({
           <div className="inline-flex items-center justify-center gap-2.5 sm:gap-3.5 px-5 py-2.5 sm:px-8 sm:py-3.5 rounded-2xl sm:rounded-3xl bg-slate-950 border border-emerald-500/40 text-white shadow-xl shadow-slate-950/20 max-w-full">
             <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-400 animate-pulse shrink-0 shadow-xs" />
             <span className="text-sm sm:text-lg md:text-xl lg:text-2xl font-black tracking-wide uppercase text-white leading-tight">
-              LOCAL LOCK &amp; KEY SERVICE • 24/7 Mobile Dispatch
+              LOCAL LOCK &amp; KEY SERVICE • 24/7 Mobile Service
             </span>
           </div>
         </div>
@@ -159,18 +153,6 @@ export function HeroSection({
           <div className="lg:col-span-7 space-y-4 sm:space-y-5">
             <ScrollReveal direction="up">
               <div className="space-y-4 sm:space-y-5">
-                {/* Trust Badges */}
-                <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-slate-700">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-slate-200 shadow-2xs">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                    <span>Fully Insured &amp; Registered in NH</span>
-                  </div>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 shadow-2xs">
-                    <Clock className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                    <span>Fast, Reliable Mobile Dispatch Across NH</span>
-                  </div>
-                </div>
-
                 {/* Primary Headline with Harmonized Hierarchy */}
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.75rem] font-black tracking-tight text-slate-950 leading-[1.12]">
                   <span className="block">{t("hero_title_1")}</span>
@@ -182,10 +164,21 @@ export function HeroSection({
                   </span>
                 </h1>
 
-                {/* Subheadline with exact services */}
-                <p className="text-sm sm:text-base md:text-lg text-slate-600 max-w-2xl leading-relaxed font-normal">
-                  {t("hero_desc")}
-                </p>
+                {/* New Hampshire Service Areas Overview & Anchor */}
+                <div className="space-y-2">
+                  <p className="text-sm sm:text-base md:text-lg text-slate-700 leading-relaxed font-normal">
+                    <strong className="font-extrabold text-slate-950">New Hampshire Service Areas:</strong> Serving Greater Manchester, Nashua, Concord, Salem, Derry, Laconia &amp; 45+ surrounding communities across Southern &amp; Central NH. Fast, reliable 24/7 mobile locksmith service with 100% damage-free entry guarantee.
+                  </p>
+                  <div>
+                    <a
+                      href="#coverage"
+                      className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-emerald-700 hover:text-emerald-900 transition cursor-pointer"
+                    >
+                      <MapPin className="w-3.5 h-3.5" />
+                      <span>View All 50+ Communities We Serve ↓</span>
+                    </a>
+                  </div>
+                </div>
 
                 {/* High-Impact Action Buttons */}
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
@@ -212,7 +205,7 @@ export function HeroSection({
             </ScrollReveal>
           </div>
 
-          {/* Right Column: Interactive Real-Work Image Slider Showcase */}
+          {/* Right Column: Clean Interactive Real-Work 5-Service Image Slider */}
           <div className="lg:col-span-5">
             <ScrollReveal direction="up" delay={0.15}>
               <div className="relative rounded-3xl overflow-hidden border border-slate-200/90 shadow-2xl bg-slate-900 group">
@@ -238,38 +231,17 @@ export function HeroSection({
                     </div>
                   ))}
 
-                  {/* Clean Decoupled Top Badges (No ghosting / text overlap) */}
-                  <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between pointer-events-none">
-                    <div className="px-3 py-1.5 rounded-xl bg-slate-900/85 backdrop-blur-md border border-white/20 text-white flex items-center gap-2 text-xs font-bold shadow-lg">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                      <span key={`badge-${currentHeroSlide}`}>
-                        {activeSlides[currentHeroSlide]?.badge}
-                      </span>
-                    </div>
-                    <div className="px-2.5 py-1 rounded-lg bg-emerald-950/90 border border-emerald-500/40 text-emerald-300 font-bold text-xs shadow-md">
-                      <span key={`loc-${currentHeroSlide}`}>
-                        {activeSlides[currentHeroSlide]?.location}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Clean Decoupled Bottom Caption (No ghosting / text overlap) */}
-                  <div className="absolute bottom-5 left-5 right-5 z-20 text-white space-y-2 pointer-events-none">
-                    <h4
+                  {/* Center/Bottom Highlighted Service Title (Clean, no corner badges) */}
+                  <div className="absolute inset-x-0 bottom-7 sm:bottom-9 z-20 px-6 text-center pointer-events-none">
+                    <h3
                       key={`title-${currentHeroSlide}`}
-                      className="font-extrabold text-base sm:text-lg leading-snug drop-shadow-md"
+                      className="font-black text-xl sm:text-2xl md:text-3xl text-white drop-shadow-xl tracking-tight leading-tight"
                     >
                       {activeSlides[currentHeroSlide]?.title}
-                    </h4>
-                    <div className="flex items-center justify-between pt-1 text-xs text-slate-300">
-                      <span className="flex items-center gap-1.5 text-emerald-400 font-semibold">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        Active Dispatch Unit
-                      </span>
-                      <span className="text-[11px] font-mono text-slate-400">
-                        {currentHeroSlide + 1} / {activeSlides.length}
-                      </span>
-                    </div>
+                    </h3>
+                    <p className="text-xs sm:text-sm text-emerald-300 font-bold tracking-wide mt-1.5 drop-shadow-md">
+                      24/7 Mobile Service • Manchester &amp; Surrounding NH
+                    </p>
                   </div>
 
                   {/* Slider Prev / Next Controls */}
@@ -287,31 +259,9 @@ export function HeroSection({
                   >
                     <ChevronRight className="w-5 h-5" />
                   </button>
-                </div>
 
-                {/* Sub-card feature list & Dots (NO Hotline / Call button) */}
-                <div className="p-4 sm:p-5 bg-white space-y-3.5">
-                  <div className="grid grid-cols-2 gap-2 text-xs text-slate-700 font-semibold">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      <span>Car & Trunk Lockouts</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      <span>Smart Fob Programming</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      <span>House Deadbolts & Rekey</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      <span>Storefront & Panic Bars</span>
-                    </div>
-                  </div>
-
-                  {/* Slider Dots */}
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-center gap-1.5">
+                  {/* Clean Slider Dots inside card */}
+                  <div className="absolute bottom-2.5 inset-x-0 z-20 flex items-center justify-center gap-1.5 pointer-events-auto">
                     {activeSlides.map((_, dotIdx) => (
                       <button
                         key={dotIdx}
@@ -319,8 +269,8 @@ export function HeroSection({
                         aria-label={`Go to slide ${dotIdx + 1}`}
                         className={`h-1.5 rounded-full transition-all cursor-pointer ${
                           dotIdx === currentHeroSlide
-                            ? "w-6 bg-emerald-600"
-                            : "w-2 bg-slate-300 hover:bg-slate-400"
+                            ? "w-6 bg-emerald-400 shadow-xs"
+                            : "w-2 bg-white/60 hover:bg-white"
                         }`}
                       />
                     ))}
