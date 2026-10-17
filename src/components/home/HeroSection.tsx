@@ -19,6 +19,7 @@ import {
 import { useLanguage } from "@/context/LanguageContext";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { HeroSlide, SiteSettings } from "@/types/database.types";
+import { CarBrandIcon } from "@/components/icons/CarBrandIcons";
 
 interface HeroSectionProps {
   slides?: HeroSlide[];
@@ -65,19 +66,23 @@ const HERO_SLIDES = [
 ];
 
 const POPULAR_CAR_MAKES = [
-  { name: "Ford", badge: "Key Code Cutting", sub: "F-150, Explorer+" },
-  { name: "Chevrolet", badge: "Trunk & Door Lockout", sub: "Silverado, Malibu+" },
-  { name: "GMC", badge: "Damage-Free Entry", sub: "Sierra, Yukon+" },
-  { name: "Dodge", badge: "Key Fob Replacement", sub: "Charger, Challenger+" },
-  { name: "Jeep", badge: "Roadside Rescue", sub: "Grand Cherokee, Wrangler+" },
-  { name: "RAM", badge: "Truck Keyless & Lockout", sub: "1500, 2500+" },
-  { name: "Toyota", badge: "Keys in Trunk / Lockout", sub: "Camry, RAV4, Tacoma+" },
-  { name: "Honda", badge: "Damage-Free Opening", sub: "Civic, Accord, CR-V+" },
-  { name: "Nissan", badge: "Intelligent Key", sub: "Rogue, Altima, Pathfinder+" },
-  { name: "Subaru", badge: "Laser Cut & Immo", sub: "Outback, Forester, Crosstrek+" },
-  { name: "Lexus", badge: "Proximity Smart Remote", sub: "RX, ES, GX+" },
-  { name: "Hyundai", badge: "Push-Start & Fob", sub: "Elantra, Tucson, Santa Fe+" },
-  { name: "Kia", badge: "Transponder & Key Fob", sub: "Sportage, Forte, Telluride+" },
+  "Ford",
+  "Chevrolet",
+  "GMC",
+  "Dodge",
+  "Jeep",
+  "RAM",
+  "Toyota",
+  "Honda",
+  "Nissan",
+  "Subaru",
+  "Lexus",
+  "Hyundai",
+  "Kia",
+  "BMW",
+  "Mercedes-Benz",
+  "Audi",
+  "Volkswagen",
 ];
 
 export function HeroSection({
@@ -285,43 +290,32 @@ export function HeroSection({
         <ScrollReveal direction="up" delay={0.2}>
           <div className="mt-8 sm:mt-12 pt-6 border-t border-slate-200/90 w-full max-w-full overflow-hidden">
             <div className="flex items-center justify-between mb-3 px-1">
-              <div>
-                <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
-                  <Car className="w-4 h-4 text-emerald-700" />
-                  <span>{t("hero_brands_title")}</span>
-                </h3>
-                <p className="text-xs text-slate-500 mt-0.5 hidden sm:block">
-                  {t("hero_brands_sub")}
-                </p>
-              </div>
-              <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 shrink-0">
-                100% Non-Destructive
-              </span>
+              <h3 className="text-xs sm:text-sm font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+                <Car className="w-4 h-4 text-emerald-700" />
+                <span>{t("hero_brands_title")}</span>
+              </h3>
             </div>
 
             {/* Continuous Marquee Track on a single line */}
             <div className="relative w-full max-w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent_0%,black_5%,black_95%,transparent_100%)] py-1">
               <div className="animate-marquee flex items-center gap-2.5">
-                {[...POPULAR_CAR_MAKES, ...POPULAR_CAR_MAKES].map((car, idx) => (
+                {[...POPULAR_CAR_MAKES, ...POPULAR_CAR_MAKES].map((carName, idx) => (
                   <button
-                    key={`${car.name}-${idx}`}
+                    key={`${carName}-${idx}`}
                     type="button"
                     onClick={() => {
                       if (onOpenDispatchModal) {
                         onOpenDispatchModal({
                           category: "automotive",
-                          subType: `Car Lockout - ${car.name}`,
+                          subType: `Car Lockout - ${carName}`,
                         });
                       }
                     }}
-                    className="group/brand inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-400 text-slate-800 hover:text-emerald-950 shadow-2xs hover:shadow-xs transition cursor-pointer shrink-0"
+                    className="group/brand inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-400 text-slate-800 hover:text-emerald-950 shadow-2xs hover:shadow-xs transition cursor-pointer shrink-0"
                   >
-                    <Car className="w-3.5 h-3.5 text-slate-400 group-hover/brand:text-emerald-700 transition-colors shrink-0" />
+                    <CarBrandIcon brand={carName} className="w-4 h-4 text-slate-500 group-hover/brand:text-emerald-700 transition-colors shrink-0" />
                     <span className="text-xs font-bold tracking-tight text-slate-900 group-hover/brand:text-emerald-950">
-                      {car.name}
-                    </span>
-                    <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 group-hover/brand:bg-emerald-100 px-1.5 py-0.5 rounded-md transition-colors shrink-0">
-                      {car.badge}
+                      {carName}
                     </span>
                   </button>
                 ))}
