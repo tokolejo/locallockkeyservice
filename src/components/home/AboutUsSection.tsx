@@ -5,7 +5,6 @@ import {
   Home,
   Car,
   Building2,
-  Award,
   CheckCircle2,
   ShieldCheck,
   Lock,
@@ -69,11 +68,7 @@ export function AboutUsSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Tag & Title */}
         <ScrollReveal direction="up">
-          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold mb-3 shadow-2xs">
-              <Award className="w-3.5 h-3.5 text-amber-600" />
-              <span>About Local Lock &amp; Key Service</span>
-            </div>
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
               Trusted &amp; Professional Locksmith Solutions in Manchester, NH
             </h2>

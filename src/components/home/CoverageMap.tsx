@@ -142,13 +142,6 @@ export function CoverageMap({}: CoverageMapProps) {
             {/* Header: Title & Description on Left, Direct Dispatch Call Button on Right */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold mb-2 shadow-2xs">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-                  </span>
-                  <span>Mobile Service Fleet</span>
-                </div>
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
                   New Hampshire Service Area
                 </h2>
