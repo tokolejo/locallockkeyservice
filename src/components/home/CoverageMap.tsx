@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { MapPin, PhoneCall, Search, ChevronRight } from "lucide-react";
+import React, { useState, useMemo, useRef } from "react";
+import { MapPin, PhoneCall, Search, ChevronLeft, ChevronRight } from "lucide-react";
 import { CoverageArea } from "@/types/database.types";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 
@@ -122,6 +122,15 @@ export function CoverageMap({}: CoverageMapProps) {
 
   const activeRegion = NH_REGIONS_TOWNS[selectedRegionIndex] || NH_REGIONS_TOWNS[0];
 
+  const tabsScrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollTabs = (direction: "left" | "right") => {
+    if (tabsScrollRef.current) {
+      const scrollAmount = direction === "left" ? -200 : 200;
+      tabsScrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
+
   return (
     <section
       id="coverage"
@@ -158,39 +167,62 @@ export function CoverageMap({}: CoverageMapProps) {
               </a>
             </div>
 
-            {/* Filter Controls: Regional Tabs + Instant Town Search */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-2">
-              {/* Regional Tabs Pills */}
-              <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
-                {NH_REGIONS_TOWNS.map((region, idx) => {
-                  const isActive = selectedRegionIndex === idx && !searchQuery;
-                  return (
-                    <button
-                      key={region.title}
-                      type="button"
-                      onClick={() => {
-                        setSelectedRegionIndex(idx);
-                        setSearchQuery("");
-                      }}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 ${
-                        isActive
-                          ? "bg-slate-900 text-white shadow-xs"
-                          : "bg-slate-100 hover:bg-slate-200/80 text-slate-700 border border-transparent"
-                      }`}
-                    >
-                      <span>{region.title}</span>
-                      <span
-                        className={`text-[10px] font-extrabold px-1.5 py-0.2 rounded-md ${
+            {/* Filter Controls: Regional Tabs with Left/Right Scroll Arrows + Instant Town Search */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pt-2">
+              {/* Regional Tabs with Navigation Arrows */}
+              <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                <button
+                  type="button"
+                  onClick={() => scrollTabs("left")}
+                  aria-label="Scroll regions left"
+                  className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 flex items-center justify-center shrink-0 transition active:scale-95 shadow-2xs cursor-pointer"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+
+                <div
+                  ref={tabsScrollRef}
+                  className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth flex-1 min-w-0 py-0.5"
+                >
+                  {NH_REGIONS_TOWNS.map((region, idx) => {
+                    const isActive = selectedRegionIndex === idx && !searchQuery;
+                    return (
+                      <button
+                        key={region.title}
+                        type="button"
+                        onClick={() => {
+                          setSelectedRegionIndex(idx);
+                          setSearchQuery("");
+                        }}
+                        className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 whitespace-nowrap ${
                           isActive
-                            ? "bg-white/20 text-white"
-                            : "bg-slate-200 text-slate-600"
+                            ? "bg-slate-900 text-white shadow-xs"
+                            : "bg-slate-100 hover:bg-slate-200/80 text-slate-700 border border-transparent"
                         }`}
                       >
-                        {region.towns.length}
-                      </span>
-                    </button>
-                  );
-                })}
+                        <span>{region.title}</span>
+                        <span
+                          className={`text-[10px] font-extrabold px-1.5 py-0.2 rounded-md ${
+                            isActive
+                              ? "bg-white/20 text-white"
+                              : "bg-slate-200 text-slate-600"
+                          }`}
+                        >
+                          {region.towns.length}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => scrollTabs("right")}
+                  aria-label="Scroll regions right"
+                  className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 flex items-center justify-center shrink-0 transition active:scale-95 shadow-2xs cursor-pointer"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
               </div>
 
               {/* Instant Search Bar */}
