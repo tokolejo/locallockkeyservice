@@ -184,7 +184,7 @@ export function DispatchModal({
                     className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-emerald-600 shadow-2xs cursor-pointer"
                   >
                     <optgroup label="Automotive & Car Lockout">
-                      <option value="24/7 Car Lockout Rescue">24/7 Car Lockout Rescue (Damage-Free Air Wedge)</option>
+                      <option value="24/7 Car Lockout Rescue">24/7 Car Lockout Rescue</option>
                       <option value="Car Key Cutting & Fob Programming">Car Key Cutting & Fob Programming</option>
                       <option value="All Car Keys Lost (On-Site Origination)">All Car Keys Lost (On-Site Origination)</option>
                       <option value="Broken Key Extracted from Door / Ignition">Broken Key Extraction</option>
@@ -337,7 +337,7 @@ export function DispatchModal({
                 <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                 <p>
                   <strong>Security Compliance:</strong>{" "}
-                  Valid photo ID and registration/lease match required prior to opening. 100% damage-free entry guarantee.
+                  Valid photo ID and registration/lease match required prior to opening.
                 </p>
               </div>
 

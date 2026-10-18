@@ -55,14 +55,14 @@ const SERVICES_DATA: Record<string, ServiceData> = {
     title: "Automotive Locksmith Services",
     subtitle: "24/7 Car Lockout Rescue, On-Site Laser Key Cutting & Smart Key Fob Programming",
     icon: Car,
-    badge: "100% Non-Destructive Guarantee • Roadside OBD-II Diagnostics",
+    badge: "Roadside Key Cutting • On-Site OBD-II Diagnostics",
     description: [
       "Locked your keys in the trunk at a grocery store in Manchester, or lost your only car key while commuting along I-93? Skip the costly flatbed tow truck and long dealership delays. Local Lock & Key Service operates mobile roadside locksmith vans equipped with computerized CNC laser key-cutting machines and advanced OBD-II diagnostic programming tablets.",
-      "We unlock vehicles with zero damage—using precision automotive air wedges and coated stainless bypass reach tools to safely operate interior lock latches without bending window frames, tearing weatherstripping, or scratching paint. When all keys are lost, we originate new high-security sidewinder keys by reading mechanical door lock wafers with Lishi tools, then program transponder chips and push-to-start smart fobs directly into your vehicle's ECU immobilizer.",
+      "We unlock vehicles safely using precision automotive air wedges and coated stainless bypass reach tools to safely operate interior lock latches without bending window frames, tearing weatherstripping, or scratching paint. When all keys are lost, we originate new high-security sidewinder keys by reading mechanical door lock wafers with Lishi tools, then program transponder chips and push-to-start smart fobs directly into your vehicle's ECU immobilizer.",
     ],
     coreCapabilities: [
       {
-        title: "Damage-Free Car & Trunk Unlocking",
+        title: "Vehicle & Locked Trunk Opening",
         description:
           "Our technicians use scratch-free air jacks and linkage bypass tools to unlock foreign and domestic cars, pickup trucks, and commercial vans. No blown airbags, no bent doors, and no scratched window tint.",
       },
@@ -83,7 +83,7 @@ const SERVICES_DATA: Record<string, ServiceData> = {
       },
     ],
     servicesList: [
-      "24/7 Damage-free car door and locked trunk opening",
+      "24/7 Car door and locked trunk opening",
       "Push-to-start smart proximity key fob programming on-site",
       "All-keys-lost origination roadside (no dealership towing needed)",
       "Computer-guided laser & high-security sidewinder key cutting",
@@ -107,7 +107,7 @@ const SERVICES_DATA: Record<string, ServiceData> = {
   residential: {
     id: "residential",
     title: "Residential Locksmith Services",
-    subtitle: "Lock Changes, Rekeying, Precision Door Prep & Zero-Damage Lockout Rescue",
+    subtitle: "Lock Changes, Rekeying, Precision Door Prep & Lockout Assistance",
     icon: Home,
     badge: "Same-Day Mobile Van • Greater Manchester & NH",
     description: [
@@ -131,7 +131,7 @@ const SERVICES_DATA: Record<string, ServiceData> = {
           "Upgrade standard builder-grade locks to bump-proof, drill-resistant deadbolts with hardened steel pins, or install standalone digital touchscreen keypads for keyless family entry.",
       },
       {
-        title: "100% Zero-Damage Lockout Entry",
+        title: "Safe Non-Destructive Lockout Entry",
         description:
           "Locked outside your house or apartment? We bypass locks using specialized pin-picking tools, bump keys, and latch shims. We never drill out a functioning lock unless catastrophic internal failure has occurred.",
       },
@@ -140,7 +140,7 @@ const SERVICES_DATA: Record<string, ServiceData> = {
       "Lock rekeying per cylinder (keyed alike or master keyed setups)",
       "Complete exterior lockset changes (deadbolts, knobs & levers)",
       "Fresh door preparation: boring 2-1/8\" holes & strike mortising",
-      "100% Damage-free house, apartment & condominium lockout entry",
+      "House, apartment & condominium lockout entry",
       "Heavy-duty Grade 1 & Grade 2 deadbolt installation & upgrades",
       "Electronic digital keypad & smart lock retrofit installations",
       "Snapped key extraction from deadbolts & cylinder plug servicing",
@@ -220,7 +220,7 @@ const SERVICES_DATA: Record<string, ServiceData> = {
     badge: "24/7 On-Duty Dispatch • Upfront Quotes Before Arrival",
     description: [
       "Lockouts and lost keys happen without warning—early in the morning, late at night, or in the middle of a New England winter blizzard. When you are stranded outside your house on the West Side or locked out of your running vehicle in a parking lot, Local Lock & Key Service is on duty around the clock. Our mobile patrol units are stationed across Greater Manchester and Southern New Hampshire for rapid priority dispatch.",
-      "We treat every lockout as an urgent emergency. Our vans carry specialized non-destructive picking tools, computerized key cutters, and fresh replacement deadbolts. We provide clear, transparent upfront quotes directly over the phone before our technician heads your way—no surprise travel surcharges, no nighttime price gouging, and no bait-and-switch fees. Our priority is always 100% damage-free entry to protect your property.",
+      "We treat every lockout as an urgent emergency. Our vans carry specialized non-destructive picking tools, computerized key cutters, and fresh replacement deadbolts. We provide clear, transparent upfront quotes directly over the phone before our technician heads your way—no surprise travel surcharges, no nighttime price gouging, and no bait-and-switch fees. Our priority is always non-destructive entry to protect your property.",
     ],
     coreCapabilities: [
       {
@@ -229,7 +229,7 @@ const SERVICES_DATA: Record<string, ServiceData> = {
           "Our mobile locksmith patrol units operate 24 hours a day, 7 days a week, 365 days a year across Manchester, Bedford, Concord, and Nashua, ready to roll at a moment's notice.",
       },
       {
-        title: "100% Damage-Free Entry Priority",
+        title: "Safe Non-Destructive Entry Priority",
         description:
           "We bypass locked deadbolts, car doors, and commercial entrances using professional pin picking, bump tools, and air-shim bypass techniques. We only drill if hardware has suffered catastrophic internal mechanical failure.",
       },
@@ -256,7 +256,7 @@ const SERVICES_DATA: Record<string, ServiceData> = {
     ],
     tradeTip: {
       title: "Tradesman Field Tip: What to Do While You Wait",
-      text: "If you are locked out, wait in a warm, secure location (such as a neighbor's porch or nearby business). Never attempt to pry door frames with screwdrivers or butter knives—doing so bends latch bolts, ruins weatherstripping, and splits wooden jambs, costing hundreds in carpentry repairs. A skilled technician picks the lock open in minutes without damage.",
+      text: "If you are locked out, wait in a warm, secure location (such as a neighbor's porch or nearby business). Never attempt to pry door frames with screwdrivers or butter knives—doing so bends latch bolts, ruins weatherstripping, and splits wooden jambs, costing hundreds in carpentry repairs. A skilled technician picks the lock open smoothly in minutes.",
     },
     extraDetails: {
       label: "Upfront Pricing & Dispatch Policy",
@@ -274,7 +274,7 @@ const SERVICES_DATA: Record<string, ServiceData> = {
     badge: "Certified Safe Technicians • Discreet & Insured Service",
     description: [
       "Being locked out of a heavy gun safe, fireproof document container, commercial drop safe, or vault is stressful. Brute-force drilling or prying with power tools will destroy an expensive safe and can permanently ruin irreplaceable contents. Local Lock & Key Service provides certified, discreet safe opening and vault maintenance across Manchester and throughout New Hampshire.",
-      "Our safe technicians focus on non-destructive entry methods. We utilize precision mechanical dial manipulation—reading wheel pack contact points and gate alignment by sound and feel—and electronic diagnostic override tools to resolve dead keypad solenoids and recover forgotten combinations. If mechanical damage forces a surgical opening, we use precision optical scope drilling and restore the safe with hardened ball-bearing hardplate plugs to preserve its UL fire and burglary rating.",
+      "Our safe technicians focus on non-destructive entry methods. We utilize precision mechanical dial manipulation—reading wheel pack contact points and gate alignment by sound and feel—and electronic diagnostic override tools to resolve dead keypad solenoids and recover forgotten combinations. If internal mechanical failure forces a surgical opening, we use precision optical scope drilling and restore the safe with hardened ball-bearing hardplate plugs to preserve its UL fire and burglary rating.",
     ],
     coreCapabilities: [
       {
@@ -354,11 +354,11 @@ export function ServiceDetailModal({
   const Icon = currentService.icon;
 
   const categoriesList = [
-    { id: "automotive", label: "Automotive", icon: Car },
     { id: "residential", label: "Residential", icon: Home },
+    { id: "automotive", label: "Automotive", icon: Car },
     { id: "commercial", label: "Commercial", icon: Building2 },
     { id: "emergency", label: "Emergency", icon: ShieldCheck },
-    { id: "safe", label: "Safe & Vault", icon: Lock },
+    { id: "safe", label: "Safe Locksmith", icon: Lock },
   ];
 
   return (
@@ -427,12 +427,12 @@ export function ServiceDetailModal({
 
         {/* Modal Scrollable Body */}
         <div className="p-4 sm:p-6 pb-8 sm:pb-6 overflow-y-auto space-y-6 text-slate-700 text-sm leading-relaxed overscroll-contain">
-          {/* Subtitle & Narrative Description */}
+          {/* Subtitle & Concise Narrative Description */}
           <div className="space-y-2">
             <h3 className="text-sm sm:text-base font-bold text-emerald-800">
               {currentService.subtitle}
             </h3>
-            {currentService.description.map((paragraph, pIdx) => (
+            {currentService.description.slice(0, 1).map((paragraph, pIdx) => (
               <p key={pIdx} className="text-slate-600 text-xs sm:text-sm leading-relaxed">
                 {paragraph}
               </p>
@@ -475,42 +475,6 @@ export function ServiceDetailModal({
                   <span className="leading-snug">{item}</span>
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* Tradesman Field Tip Callout */}
-          <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs space-y-1">
-            <div className="flex items-center gap-1.5 font-bold text-amber-950 text-xs sm:text-sm">
-              <Wrench className="w-4 h-4 text-amber-700 shrink-0" />
-              <span>{currentService.tradeTip.title}</span>
-            </div>
-            <p className="text-amber-900/90 leading-relaxed text-xs">
-              {currentService.tradeTip.text}
-            </p>
-          </div>
-
-          {/* Extra Details (Hardware Brands / Makes / Compliance) */}
-          {currentService.extraDetails && (
-            <div className="p-3.5 sm:p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1">
-              <span className="font-bold text-slate-950">
-                {currentService.extraDetails.label}:
-              </span>
-              <p className="text-slate-600 leading-relaxed">
-                {currentService.extraDetails.items}
-              </p>
-            </div>
-          )}
-
-          {/* Guarantee & Coverage Banner */}
-          <div className="flex items-start gap-3 p-3.5 sm:p-4 rounded-xl bg-emerald-50/80 border border-emerald-200 text-xs text-emerald-950">
-            <MapPin className="w-5 h-5 text-emerald-700 shrink-0 mt-0.5" />
-            <div>
-              <span className="font-bold block text-emerald-950 text-xs sm:text-sm">
-                Fast Mobile Patrol Dispatch Across NH:
-              </span>
-              <p className="mt-0.5 text-emerald-900 leading-relaxed">
-                {currentService.coverageNote}
-              </p>
             </div>
           </div>
         </div>

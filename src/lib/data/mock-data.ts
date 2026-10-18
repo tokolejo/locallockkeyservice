@@ -60,7 +60,7 @@ export const initialHeroSlides: HeroSlide[] = [
     id: "slide-4",
     image_url: "/gallery/technician-work-1.jpg",
     title: "Commercial Mortise & Lock Upgrades",
-    badge: "100% Damage-Free",
+    badge: "Commercial Entry",
     location: "Concord, NH",
     display_order: 4,
     is_active: true,
@@ -404,12 +404,12 @@ export const initialServices: ServiceItem[] = [
     category: "emergency",
     title: "24/7 Car Lockout Rescue",
     slug: "car-lockout",
-    description: "Keys locked inside sedan, SUV, pickup, or trunk. Rapid 15-20 min arrival across Manchester & surrounding NH with 100% damage-free air-wedge entry.",
+    description: "Keys locked inside sedan, SUV, pickup, or trunk. Rapid arrival across Manchester & surrounding NH with specialized air-wedge entry.",
     estimated_duration_min: 15,
     is_active: true,
     display_order: 1,
     features: [
-      "100% Damage-Free Guarantee",
+      "Upfront Price Guarantee",
       "No Broken Windows or Scratched Frames",
       "Mobile Locksmith Units in Manchester & Surrounding NH",
       "Direct Call Dispatch +1 (603) 290-5554"
@@ -566,7 +566,7 @@ export const estimatorCategories = [
     name: "Car Lockout & Keys",
     icon: "Car",
     scenarios: [
-      { id: "auto-lockout", label: "Car Door / Trunk Lockout Rescue", eta: "15-20 mins", notes: "100% Non-destructive air-wedge & specialized reach tools" },
+      { id: "auto-lockout", label: "Car Door / Trunk Lockout Rescue", eta: "15-20 mins", notes: "Non-destructive air-wedge & specialized reach tools" },
       { id: "auto-lost-key", label: "All Car Keys Lost (On-Site Origination)", eta: "25-35 mins", notes: "Laser cut & OBD-II ECU computer pairing on the street" },
       { id: "auto-duplicate-fob", label: "Spare Key Fob Duplication", eta: "20-30 mins", notes: "Push-to-start smart proximity remote blanks" },
       { id: "auto-broken-key", label: "Broken Key Extracted from Door / Ignition", eta: "15-20 mins", notes: "Precision extraction tools, no lock replacement required" }
@@ -577,7 +577,7 @@ export const estimatorCategories = [
     name: "House & Apartment",
     icon: "Home",
     scenarios: [
-      { id: "res-lockout", label: "Locked Out of Apartment / House", eta: "15-20 mins", notes: "Damage-free cylinder picking for deadbolts & mortise locks" },
+      { id: "res-lockout", label: "Locked Out of Apartment / House", eta: "15-20 mins", notes: "Precision cylinder picking for deadbolts & mortise locks" },
       { id: "res-lock-change", label: "Lock Change / New Cylinder Installation", eta: "Same-Day / Scheduled", notes: "Fresh high-security locks + keys cut on-site" },
       { id: "res-rekey", label: "Lock Re-Keying (Per Cylinder)", eta: "Same-Day", notes: "Keep current locks, change internal pins for new keys" },
       { id: "res-broken-key", label: "Key Snapped in Deadbolt Cylinder", eta: "15-20 mins", notes: "Non-destructive extraction + fresh key duplicate" }

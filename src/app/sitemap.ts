@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1.0,
+      images: [`${baseUrl}/og-image.jpg`],
     },
   ];
 }

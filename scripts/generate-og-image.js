@@ -76,7 +76,7 @@ async function createOgImage() {
 
       <g transform="translate(800, 380)">
         <rect x="0" y="0" width="330" height="100" rx="16" fill="#1e293b" stroke="#334155" stroke-width="1.5" />
-        <text x="24" y="45" font-family="Arial, sans-serif" font-size="24" font-weight="800" fill="#34d399">100% Damage-Free</text>
+        <text x="24" y="45" font-family="Arial, sans-serif" font-size="24" font-weight="800" fill="#34d399">Non-Destructive Entry</text>
         <text x="24" y="76" font-family="Arial, sans-serif" font-size="15" font-weight="500" fill="#cbd5e1">Fully Insured &amp; Registered in NH</text>
       </g>
     </svg>

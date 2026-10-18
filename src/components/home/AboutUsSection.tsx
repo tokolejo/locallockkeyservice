@@ -19,8 +19,8 @@ const ABOUT_SERVICES = [
     iconBg: "bg-amber-50 border-amber-100",
     badgeColor: "text-amber-700",
     title: "Automotive Roadside Rescue & Keys",
-    desc: "Damage-free emergency vehicle lockouts, smart transponder key fob programming, laser key origination, duplicate remotes, and ignition lock cylinder repairs on-site across NH.",
-    badge: "100% Damage-Free Vehicle Opening",
+    desc: "Emergency vehicle lockouts, smart transponder key fob programming, laser key origination, duplicate remotes, and ignition lock cylinder repairs on-site across NH.",
+    badge: "Professional Vehicle Opening",
   },
   {
     icon: Home,
@@ -28,7 +28,7 @@ const ABOUT_SERVICES = [
     iconBg: "bg-emerald-50 border-emerald-100",
     badgeColor: "text-emerald-700",
     title: "Residential Lock & Rekey Services",
-    desc: "Complete home security solutions: damage-free house lockouts, deadbolt lock change, precision cylinder rekeying, high-security hardware, and keyless keypad upgrades.",
+    desc: "Complete home security solutions: house lockouts, deadbolt lock change, precision cylinder rekeying, high-security hardware, and keyless keypad upgrades.",
     badge: "Precision Rekeying & Lock Replacement",
   },
   {

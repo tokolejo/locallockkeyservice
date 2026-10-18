@@ -5,7 +5,7 @@ export const translations = {
     // Header & Badges
     brand_sub: "Manchester, NH & Surrounding Areas",
     duty_badge: "Dispatch Technicians On Duty",
-    avg_arrival: "Fast, Reliable Mobile Dispatch Across NH",
+    avg_arrival: "Fast 24/7 Mobile Service Across NH",
     licensed_badge: "Fully Insured & Registered in NH",
     call_now: "Call 24/7 +1 (603) 290-5554",
     no_dms_badge: "NO DMs • Just Call 24/7 Direct",
@@ -27,26 +27,26 @@ export const translations = {
     mob_quick_form: "Fast GPS Dispatch",
 
     // Hero
-    hero_badge: "LOCAL LOCK & KEY SERVICE • 24/7 Mobile Dispatch",
+    hero_badge: "LOCAL LOCK & KEY SERVICE • Fast 24/7 Mobile Service",
     hero_title_1: "24 Hours Locksmith",
     hero_title_2: "Manchester, NH & Surrounding Areas",
     hero_title_3: "Fast • Professional • Reliable",
-    hero_desc: "24/7 emergency car lockout, house & apartment doors, lock change, rekeying and smart car keys across Manchester, NH and surrounding communities. 100% damage-free entry guarantee with fast, reliable mobile dispatch across NH.",
+    hero_desc: "24/7 emergency car lockout, house & apartment doors, lock change, rekeying and smart car keys across Manchester, NH and surrounding communities with fast 24/7 mobile service across NH.",
     hero_call_cta: "Call +1 (603) 290-5554",
     hero_whatsapp_cta: "Request Callback",
     hero_form_cta: "Fast GPS Dispatch Form",
-    hero_stat_1_title: "100% Damage-Free",
-    hero_stat_1_sub: "Zero lock or vehicle damage",
-    hero_stat_2_title: "Fast Mobile Dispatch",
+    hero_stat_1_title: "Professional Service",
+    hero_stat_1_sub: "Fully insured mobile locksmith",
+    hero_stat_2_title: "Fast 24/7 Mobile Service",
     hero_stat_2_sub: "Mobile units stationed in NH",
     hero_stat_3_title: "5.0 ★ Top Rated",
     hero_stat_3_sub: "Verified Google local reviews",
     hero_live_dispatch_badge: "Live Dispatch Ready • Patrol Units Active",
     hero_brands_title: "All Auto Makes Serviced Roadside 24/7",
-    hero_brands_sub: "Damage-Free Door Unlocking • Smart Key Programming • Trunk Access",
+    hero_brands_sub: "Door Unlocking • Smart Key Programming • Trunk Access",
 
     // GPS & Fast Form
-    form_card_title: "15-Second Emergency Dispatch",
+    form_card_title: "Emergency Mobile Dispatch",
     form_card_sub: "Automatic GPS detection or map pin point",
     gps_btn: "Use My GPS Location",
     gps_loading: "Acquiring GPS...",
@@ -57,7 +57,7 @@ export const translations = {
     scenario_label: "Lockout Emergency Scenario *",
     submit_dispatch: "Dispatch Nearest Mobile Unit",
     submitting: "Contacting On-Duty Unit...",
-    trust_guarantee: "Free Phone Estimate • 100% Damage-Free Guarantee",
+    trust_guarantee: "Free Phone Estimate • Upfront Pricing",
 
     // Estimator / Service Selector
     est_badge: "Rapid Emergency Response",

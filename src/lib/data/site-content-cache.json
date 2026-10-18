@@ -46,7 +46,7 @@
       "id": "slide-4",
       "image_url": "/gallery/technician-work-1.jpg",
       "title": "Commercial Mortise & Lock Upgrades",
-      "badge": "100% Damage-Free",
+      "badge": "Commercial Entry",
       "location": "Concord, NH",
       "display_order": 4,
       "is_active": true
@@ -388,7 +388,7 @@
       "id": "auto-lockout",
       "category_id": "automotive",
       "label": "Car Door / Trunk Lockout Rescue",
-      "notes": "100% Non-destructive air-wedge & specialized reach tools",
+      "notes": "Non-destructive air-wedge & specialized reach tools",
       "eta": "15-20 mins",
       "display_order": 1,
       "is_active": true
@@ -424,7 +424,7 @@
       "id": "res-lockout",
       "category_id": "residential",
       "label": "Locked Out of Apartment / House",
-      "notes": "Damage-free cylinder picking for deadbolts & mortise locks",
+      "notes": "Precision cylinder picking for deadbolts & mortise locks",
       "eta": "15-20 mins",
       "display_order": 1,
       "is_active": true
@@ -571,7 +571,7 @@
       "created_at": "2026-10-08T19:11:11.533Z",
       "action": "UPDATE",
       "entity": "service_scenarios",
-      "details": "{\"id\":\"auto-lockout\",\"updates\":{\"category_id\":\"automotive\",\"label\":\"Car Door / Trunk Lockout Rescue\",\"notes\":\"100% Non-destructive air-wedge & specialized reach tools\",\"eta\":\"15-20 mins\",\"display_order\":1,\"is_active\":true}}",
+      "details": "{\"id\":\"auto-lockout\",\"updates\":{\"category_id\":\"automotive\",\"label\":\"Car Door / Trunk Lockout Rescue\",\"notes\":\"Non-destructive air-wedge & specialized reach tools\",\"eta\":\"15-20 mins\",\"display_order\":1,\"is_active\":true}}",
       "ip_address": null,
       "status": "success"
     },

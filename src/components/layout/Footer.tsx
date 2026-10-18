@@ -14,6 +14,36 @@ export function Footer({ siteSettings, onOpenCallback }: FooterProps) {
   const phoneDisplay = siteSettings?.phone_display || process.env.NEXT_PUBLIC_DISPATCH_PHONE || "+1 (603) 290-5554";
   const phoneRaw = siteSettings?.phone_raw || process.env.NEXT_PUBLIC_DISPATCH_PHONE_RAW || "tel:+16032905554";
 
+  const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    if (typeof window === "undefined") return;
+
+    if (window.location.pathname !== "/") {
+      window.location.href = `/#${targetId}`;
+      return;
+    }
+
+    const element = document.getElementById(targetId);
+    if (element) {
+      let actualTop = 0;
+      let curr: HTMLElement | null = element;
+      while (curr) {
+        actualTop += curr.offsetTop;
+        curr = curr.offsetParent as HTMLElement | null;
+      }
+
+      const headerOffset = window.innerWidth >= 768 ? 115 : 95;
+      const targetScroll = Math.max(0, actualTop - headerOffset);
+
+      window.scrollTo({
+        top: targetScroll,
+        behavior: "smooth",
+      });
+
+      window.history.pushState(null, "", `#${targetId}`);
+    }
+  };
+
   return (
     <footer className="bg-slate-900 text-slate-300 border-t border-slate-800 text-xs pb-20 md:pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12 pb-8">
@@ -42,13 +72,13 @@ export function Footer({ siteSettings, onOpenCallback }: FooterProps) {
                 </div>
                 <div className="flex items-center gap-1.5 text-emerald-400 font-medium whitespace-nowrap">
                   <Clock className="w-3.5 h-3.5 shrink-0" />
-                  <span>Fast NH Mobile Dispatch</span>
+                  <span>Fast 24/7 Mobile Service</span>
                 </div>
               </div>
             </div>
 
             <p className="text-slate-400 leading-relaxed text-[11px] sm:text-xs">
-              Local Lock & Key Service provides 24/7 fast, reliable, and professional mobile locksmith solutions across Manchester, NH & surrounding towns. 100% damage-free entry guarantee.
+              Local Lock & Key Service provides 24/7 fast, reliable, and professional mobile locksmith solutions across Manchester, NH &amp; surrounding towns.
             </p>
 
             {/* Prominent Clickable Google Review Link */}
@@ -71,41 +101,61 @@ export function Footer({ siteSettings, onOpenCallback }: FooterProps) {
             </div>
           </div>
 
-          {/* Core Services */}
+          {/* Core Services (Updated to match all 5 categories) */}
           <div className="lg:col-span-2 space-y-2.5">
             <h4 className="text-xs font-bold text-white uppercase tracking-wider">
               Core Services
             </h4>
             <ul className="space-y-2 text-slate-400 text-[11px] sm:text-xs">
               <li>
-                <Link href="#services" className="hover:text-emerald-400 transition flex items-center gap-1.5">
+                <a
+                  href="#services"
+                  onClick={(e) => handleScrollTo(e, "services")}
+                  className="hover:text-emerald-400 transition flex items-center gap-1.5 cursor-pointer"
+                >
                   <CheckCircle2 className="w-3 h-3 text-emerald-500/80 shrink-0" />
-                  <span>24/7 Car Lockout Rescue</span>
-                </Link>
+                  <span>Residential Locksmith</span>
+                </a>
               </li>
               <li>
-                <Link href="#services" className="hover:text-emerald-400 transition flex items-center gap-1.5">
+                <a
+                  href="#services"
+                  onClick={(e) => handleScrollTo(e, "services")}
+                  className="hover:text-emerald-400 transition flex items-center gap-1.5 cursor-pointer"
+                >
                   <CheckCircle2 className="w-3 h-3 text-emerald-500/80 shrink-0" />
-                  <span>House & Apartment Lockout</span>
-                </Link>
+                  <span>Automotive Locksmith</span>
+                </a>
               </li>
               <li>
-                <Link href="#services" className="hover:text-emerald-400 transition flex items-center gap-1.5">
+                <a
+                  href="#services"
+                  onClick={(e) => handleScrollTo(e, "services")}
+                  className="hover:text-emerald-400 transition flex items-center gap-1.5 cursor-pointer"
+                >
                   <CheckCircle2 className="w-3 h-3 text-emerald-500/80 shrink-0" />
-                  <span>Lock Change & Rekeying</span>
-                </Link>
+                  <span>Commercial Locksmith</span>
+                </a>
               </li>
               <li>
-                <Link href="#services" className="hover:text-emerald-400 transition flex items-center gap-1.5">
+                <a
+                  href="#services"
+                  onClick={(e) => handleScrollTo(e, "services")}
+                  className="hover:text-emerald-400 transition flex items-center gap-1.5 cursor-pointer"
+                >
                   <CheckCircle2 className="w-3 h-3 text-emerald-500/80 shrink-0" />
-                  <span>Smart Key & Fob Programming</span>
-                </Link>
+                  <span>Emergency Lockout</span>
+                </a>
               </li>
               <li>
-                <Link href="#services" className="hover:text-emerald-400 transition flex items-center gap-1.5">
+                <a
+                  href="#services"
+                  onClick={(e) => handleScrollTo(e, "services")}
+                  className="hover:text-emerald-400 transition flex items-center gap-1.5 cursor-pointer"
+                >
                   <CheckCircle2 className="w-3 h-3 text-emerald-500/80 shrink-0" />
-                  <span>Commercial Master Key Systems</span>
-                </Link>
+                  <span>Safe &amp; Vault Services</span>
+                </a>
               </li>
             </ul>
           </div>
@@ -116,25 +166,55 @@ export function Footer({ siteSettings, onOpenCallback }: FooterProps) {
               NH Service Areas
             </h4>
             <ul className="space-y-2 text-slate-400 text-[11px] sm:text-xs">
-              <li className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                <span>Manchester, NH (All Neighborhoods)</span>
+              <li>
+                <a
+                  href="#coverage"
+                  onClick={(e) => handleScrollTo(e, "coverage")}
+                  className="hover:text-emerald-400 transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+                  <span>Greater Manchester, NH</span>
+                </a>
               </li>
-              <li className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                <span>Bedford & Merrimack, NH</span>
+              <li>
+                <a
+                  href="#coverage"
+                  onClick={(e) => handleScrollTo(e, "coverage")}
+                  className="hover:text-emerald-400 transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+                  <span>Greater Nashua, NH</span>
+                </a>
               </li>
-              <li className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                <span>Concord & Hooksett, NH</span>
+              <li>
+                <a
+                  href="#coverage"
+                  onClick={(e) => handleScrollTo(e, "coverage")}
+                  className="hover:text-emerald-400 transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+                  <span>Greater Concord, NH</span>
+                </a>
               </li>
-              <li className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                <span>Nashua & Derry, NH</span>
+              <li>
+                <a
+                  href="#coverage"
+                  onClick={(e) => handleScrollTo(e, "coverage")}
+                  className="hover:text-emerald-400 transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+                  <span>Salem &amp; Derry, NH</span>
+                </a>
               </li>
-              <li className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
-                <span>Londonderry & Salem, NH</span>
+              <li>
+                <a
+                  href="#coverage"
+                  onClick={(e) => handleScrollTo(e, "coverage")}
+                  className="hover:text-emerald-400 transition flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+                  <span>Greater Laconia (63+ Towns)</span>
+                </a>
               </li>
             </ul>
           </div>
@@ -142,10 +222,10 @@ export function Footer({ siteSettings, onOpenCallback }: FooterProps) {
           {/* Direct 24/7 Call Center & Action Buttons */}
           <div className="lg:col-span-3 space-y-2.5">
             <h4 className="text-xs font-bold text-white uppercase tracking-wider">
-              24/7 Emergency Dispatch
+              24/7 Mobile Service
             </h4>
             <p className="text-slate-400 text-[11px]">
-              Fast roadside & residential response across Greater Manchester:
+              Fast roadside &amp; residential mobile service across Southern NH:
             </p>
 
             {/* Twin Equal-Sized Action Buttons */}
@@ -169,21 +249,47 @@ export function Footer({ siteSettings, onOpenCallback }: FooterProps) {
             </div>
 
             <div className="text-[10px] text-slate-500 space-y-0.5 pt-0.5">
-              <p>• Fast, reliable mobile dispatch across NH</p>
-              <p>• Local GPS tracked mobile patrol units</p>
+              <p>• Fast 24/7 mobile service across NH</p>
+              <p>• Local GPS tracked mobile service vans</p>
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-slate-800/90 flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-slate-400 text-center md:text-left">
-          <p>© {new Date().getFullYear()} Local Lock & Key Service. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Local Lock &amp; Key Service. All rights reserved.</p>
           <div className="flex items-center justify-center gap-2.5 sm:gap-3 flex-wrap text-slate-400">
-            <Link href="#about" className="hover:text-slate-200 transition">About Us</Link>
+            <a
+              href="#services"
+              onClick={(e) => handleScrollTo(e, "services")}
+              className="hover:text-slate-200 transition cursor-pointer"
+            >
+              Services
+            </a>
             <span className="text-slate-700">•</span>
-            <Link href="#services" className="hover:text-slate-200 transition">Services</Link>
+            <a
+              href="#gallery"
+              onClick={(e) => handleScrollTo(e, "gallery")}
+              className="hover:text-slate-200 transition cursor-pointer"
+            >
+              Our Work
+            </a>
             <span className="text-slate-700">•</span>
-            <Link href="#coverage" className="hover:text-slate-200 transition">Coverage</Link>
+            <a
+              href="#reviews"
+              onClick={(e) => handleScrollTo(e, "reviews")}
+              className="hover:text-slate-200 transition cursor-pointer"
+            >
+              Reviews
+            </a>
+            <span className="text-slate-700">•</span>
+            <a
+              href="#coverage"
+              onClick={(e) => handleScrollTo(e, "coverage")}
+              className="hover:text-slate-200 transition cursor-pointer"
+            >
+              Service Areas
+            </a>
             <span className="text-slate-700">•</span>
             <a
               href="https://maps.app.goo.gl/j9Zvw9xhNKP5Rgk29"
@@ -192,10 +298,8 @@ export function Footer({ siteSettings, onOpenCallback }: FooterProps) {
               className="inline-flex items-center gap-1 text-amber-400 hover:text-amber-300 font-semibold transition"
             >
               <Star className="w-3 h-3 fill-amber-400 text-amber-400 shrink-0" />
-              <span>5.0 ★ Reviews</span>
+              <span>5.0 ★ Google</span>
             </a>
-            <span className="text-slate-700 hidden sm:inline">•</span>
-            <span className="text-emerald-400 font-medium hidden sm:inline">100% Damage-Free Entry</span>
           </div>
         </div>
       </div>

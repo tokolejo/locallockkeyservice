@@ -38,7 +38,7 @@ export function Header({
   const [activeSection, setActiveSection] = useState<string>("");
 
   useEffect(() => {
-    const sectionIds = ["about", "services", "gallery", "coverage", "reviews"];
+    const sectionIds = ["services", "gallery", "reviews", "coverage"];
 
     const handleScroll = () => {
       const headerOffset = 140;
@@ -47,7 +47,7 @@ export function Header({
         window.innerHeight + window.scrollY >=
         document.documentElement.scrollHeight - 60
       ) {
-        setActiveSection("reviews");
+        setActiveSection("coverage");
         return;
       }
 
@@ -73,11 +73,10 @@ export function Header({
   }, []);
 
   const navLinks = [
-    { id: "about", label: "About Us" },
     { id: "services", label: t("nav_services") },
     { id: "gallery", label: t("nav_gallery") },
-    { id: "coverage", label: t("nav_coverage") },
     { id: "reviews", label: t("nav_reviews") },
+    { id: "coverage", label: t("nav_coverage") },
   ];
 
   const phone = siteSettings?.phone_display || process.env.NEXT_PUBLIC_DISPATCH_PHONE || "+1 (603) 290-5554";
@@ -220,19 +219,6 @@ export function Header({
           {/* Nav Links with Clear Icons & Scrollspy Sync */}
           <div className="grid grid-cols-2 gap-2 text-xs font-bold text-slate-800 pt-1">
             <a
-              href="#about"
-              onClick={(e) => handleScrollTo(e, "about")}
-              className={`flex items-center gap-2 p-3 rounded-xl border transition-colors ${
-                activeSection === "about"
-                  ? "bg-emerald-50 border-emerald-300 text-emerald-900"
-                  : "bg-slate-50 hover:bg-emerald-50/50 border-slate-200/80 text-slate-800"
-              }`}
-            >
-              <ShieldCheck className="w-4 h-4 text-emerald-700 shrink-0" />
-              <span className="truncate">About Us</span>
-            </a>
-
-            <a
               href="#services"
               onClick={(e) => handleScrollTo(e, "services")}
               className={`flex items-center gap-2 p-3 rounded-xl border transition-colors ${
@@ -259,6 +245,19 @@ export function Header({
             </a>
 
             <a
+              href="#reviews"
+              onClick={(e) => handleScrollTo(e, "reviews")}
+              className={`flex items-center gap-2 p-3 rounded-xl border transition-colors ${
+                activeSection === "reviews"
+                  ? "bg-emerald-50 border-emerald-300 text-emerald-900"
+                  : "bg-slate-50 hover:bg-emerald-50/50 border-slate-200/80 text-slate-800"
+              }`}
+            >
+              <Star className="w-4 h-4 text-amber-500 fill-amber-500 shrink-0" />
+              <span className="truncate">{t("nav_reviews")}</span>
+            </a>
+
+            <a
               href="#coverage"
               onClick={(e) => handleScrollTo(e, "coverage")}
               className={`flex items-center gap-2 p-3 rounded-xl border transition-colors ${
@@ -269,19 +268,6 @@ export function Header({
             >
               <MapPin className="w-4 h-4 text-emerald-700 shrink-0" />
               <span className="truncate">{t("nav_coverage")}</span>
-            </a>
-
-            <a
-              href="#reviews"
-              onClick={(e) => handleScrollTo(e, "reviews")}
-              className={`col-span-2 flex items-center justify-center gap-2 p-3 rounded-xl border transition-colors text-center ${
-                activeSection === "reviews"
-                  ? "bg-emerald-50 border-emerald-300 text-emerald-900"
-                  : "bg-slate-50 hover:bg-emerald-50/50 border-slate-200/80 text-slate-800"
-              }`}
-            >
-              <Star className="w-4 h-4 text-amber-500 fill-amber-500 shrink-0" />
-              <span>{t("nav_reviews")}</span>
             </a>
           </div>
 

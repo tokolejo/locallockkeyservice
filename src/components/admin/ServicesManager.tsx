@@ -809,7 +809,7 @@ export function ServicesManager({
                   onChange={(e) =>
                     setScenarioFormData({ ...scenarioFormData, notes: e.target.value })
                   }
-                  placeholder="e.g. 100% Non-destructive air-wedge & specialized reach tools"
+                  placeholder="e.g. Non-destructive air-wedge & specialized reach tools"
                   className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 resize-none"
                 />
               </div>

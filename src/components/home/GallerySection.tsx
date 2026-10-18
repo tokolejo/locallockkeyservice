@@ -377,6 +377,8 @@ export function GallerySection({
     return list;
   }, [filter, sortOrder, rawList]);
 
+  const [mobileActiveIdx, setMobileActiveIdx] = useState<number>(0);
+
   const displayedItems = processedItems.slice(0, visibleCount);
   const hasMore = visibleCount < processedItems.length;
 
@@ -392,6 +394,7 @@ export function GallerySection({
   const handleFilterChange = (newFilter: "all" | "auto" | "locks" | "commercial") => {
     setFilter(newFilter);
     setVisibleCount(INITIAL_COUNT);
+    setMobileActiveIdx(0);
   };
 
   const handlePrevCategory = () => {
@@ -414,6 +417,46 @@ export function GallerySection({
 
   const toggleSort = () => {
     setSortOrder((prev) => (prev === "newest" ? "oldest" : "newest"));
+    setMobileActiveIdx(0);
+  };
+
+  const handlePrevMobileJob = () => {
+    if (processedItems.length <= 1) return;
+    setMobileActiveIdx((prev) => (prev > 0 ? prev - 1 : processedItems.length - 1));
+  };
+
+  const handleNextMobileJob = () => {
+    if (processedItems.length <= 1) return;
+    setMobileActiveIdx((prev) => (prev < processedItems.length - 1 ? prev + 1 : 0));
+  };
+
+  // Touch Swipe state for mobile card
+  const touchStartXRef = useRef<number | null>(null);
+  const touchEndXRef = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartXRef.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndXRef.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartXRef.current || !touchEndXRef.current) return;
+    const distance = touchStartXRef.current - touchEndXRef.current;
+    const minSwipeDistance = 45; // px threshold
+
+    if (distance > minSwipeDistance) {
+      // Swiped Left -> Next Job
+      handleNextMobileJob();
+    } else if (distance < -minSwipeDistance) {
+      // Swiped Right -> Prev Job
+      handlePrevMobileJob();
+    }
+
+    touchStartXRef.current = null;
+    touchEndXRef.current = null;
   };
 
   const handleOpenJobModal = (job: GalleryItem) => {
@@ -473,11 +516,11 @@ export function GallerySection({
   }, [selectedJob, handleNextPhoto, handlePrevPhoto]);
 
   return (
-    <section id="gallery" className="py-16 sm:py-24 bg-white border-b border-slate-200 scroll-mt-28">
+    <section id="gallery" className="py-10 sm:py-14 md:py-16 bg-white border-b border-slate-200 scroll-mt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <ScrollReveal direction="up">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6 sm:mb-8">
             <div>
               <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
                 Recent Jobs Across Our Service Area
@@ -543,9 +586,9 @@ export function GallerySection({
               </button>
             </div>
 
-            {/* Sort Toggle Button */}
+            {/* Sort & Jobs Counter */}
             <div className="flex items-center justify-between sm:justify-end gap-2 shrink-0">
-              <span className="text-xs font-semibold text-slate-500 sm:hidden">
+              <span className="sm:hidden flex items-center px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-semibold shadow-2xs">
                 {processedItems.length} {processedItems.length === 1 ? "job" : "jobs"}
               </span>
               <button
@@ -566,8 +609,130 @@ export function GallerySection({
           </div>
         </ScrollReveal>
 
-        {/* Gallery Grid: 3 Columns on desktop = Exactly 2 Rows for 6 items initially */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* ---------------- MOBILE ONLY CAROUSEL (1 Card with Overlay Arrows & Swipe) ---------------- */}
+        <div className="block sm:hidden">
+          {processedItems.length > 0 && (
+            <div className="relative select-none">
+              {/* Single Active Card on Mobile with Touch Events */}
+              {(() => {
+                const item = processedItems[mobileActiveIdx] || processedItems[0];
+                const photoCount = item.images.length;
+
+                return (
+                  <div
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
+                    className="group relative bg-slate-50 border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:border-emerald-300 transition-all duration-300 flex flex-col"
+                  >
+                    {/* Photo Frame */}
+                    <div
+                      onClick={() => handleOpenJobModal(item)}
+                      className="relative aspect-4/3 w-full bg-slate-900 overflow-hidden cursor-pointer"
+                    >
+                      <Image
+                        src={
+                          (typeof item.cover_image === "string" && item.cover_image.trim()) ||
+                          (typeof item.images?.[0] === "string" && item.images[0].trim()) ||
+                          "/gallery/hero-banner.png"
+                        }
+                        alt={item.title || "Locksmith Work"}
+                        fill
+                        sizes="(max-width: 640px) 94vw, 480px"
+                        className="object-cover"
+                        priority
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-75" />
+
+                      {/* Top Left: Category & Multi-photo Indicator Badge */}
+                      <div className="absolute top-3 left-3 flex items-center gap-1.5 z-10">
+                        <span className="px-2.5 py-1 rounded-lg bg-slate-900/85 backdrop-blur-md text-[11px] font-bold text-white border border-white/20">
+                          {item.categoryLabel}
+                        </span>
+                        {photoCount > 1 && (
+                          <span className="px-2 py-1 rounded-lg bg-emerald-950/90 backdrop-blur-md text-[11px] font-bold text-emerald-300 border border-emerald-500/40 flex items-center gap-1 shadow-sm">
+                            <Images className="w-3.5 h-3.5 text-emerald-400" />
+                            <span>{photoCount}</span>
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Top Right Date & Index Indicator */}
+                      <div className="absolute top-3 right-3 flex items-center gap-1.5 z-10">
+                        <span className="px-2 py-0.5 rounded-md bg-slate-900/85 backdrop-blur-md text-[10px] font-bold text-white border border-white/20">
+                          {mobileActiveIdx + 1} / {processedItems.length}
+                        </span>
+                      </div>
+
+                      {/* Left Arrow Button (Directly on Image Card) */}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handlePrevMobileJob();
+                        }}
+                        aria-label="Previous Job"
+                        className="absolute left-2.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md text-white border border-white/30 flex items-center justify-center transition active:scale-90 shadow-md cursor-pointer z-20"
+                      >
+                        <ChevronLeft className="w-5 h-5 text-white" />
+                      </button>
+
+                      {/* Right Arrow Button (Directly on Image Card) */}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleNextMobileJob();
+                        }}
+                        aria-label="Next Job"
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md text-white border border-white/30 flex items-center justify-center transition active:scale-90 shadow-md cursor-pointer z-20"
+                      >
+                        <ChevronRight className="w-5 h-5 text-white" />
+                      </button>
+
+                      {/* Bottom Location & View Details */}
+                      <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white z-10">
+                        <span className="text-xs font-semibold drop-shadow-sm flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                          {item.location}
+                        </span>
+                        <span className="text-[11px] font-semibold text-emerald-300 bg-emerald-950/85 px-2 py-0.5 rounded-lg border border-emerald-500/40 flex items-center gap-1">
+                          <Camera className="w-3 h-3" />
+                          <span>View Details</span>
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Text Content */}
+                    <div
+                      onClick={() => handleOpenJobModal(item)}
+                      className="p-4 flex-1 flex flex-col justify-between bg-white cursor-pointer"
+                    >
+                      <div>
+                        <h3 className="font-bold text-slate-900 text-base leading-snug group-hover:text-emerald-800 transition-colors">
+                          {item.title}
+                        </h3>
+                        <p className="text-xs text-slate-500 mt-1.5 line-clamp-2 leading-relaxed">
+                          {item.description}
+                        </p>
+                      </div>
+                      <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                        <span className="flex items-center gap-1 text-emerald-700 font-bold">
+                          <CheckCircle2 className="w-4 h-4" />
+                          Verified Job
+                        </span>
+                        <span className="font-medium text-slate-500">Manchester Metro</span>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+          )}
+        </div>
+
+        {/* ---------------- TABLET & DESKTOP GRID (Hidden on Mobile) ---------------- */}
+        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {displayedItems.map((item, idx) => {
             const photoCount = item.images.length;
 
@@ -649,8 +814,8 @@ export function GallerySection({
           })}
         </div>
 
-        {/* Load More / Show Less Button */}
-        <div className="mt-10 flex justify-center">
+        {/* Load More / Show Less Button (Desktop/Tablet Only) */}
+        <div className="mt-10 hidden sm:flex justify-center">
           {hasMore ? (
             <button
               onClick={() => setVisibleCount((prev) => prev + 3)}
@@ -675,37 +840,6 @@ export function GallerySection({
             </button>
           ) : null}
         </div>
-
-        {/* Bottom Call Banner */}
-        <ScrollReveal direction="up" delay={0.2}>
-          <div className="mt-14 bg-linear-to-r from-slate-900 to-slate-800 text-white rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md border border-slate-700">
-            <div className="space-y-1 text-center md:text-left">
-              <h3 className="text-xl sm:text-2xl font-black tracking-tight">
-                Need Fast Lockout or Key Assistance in Manchester & NH?
-              </h3>
-              <p className="text-slate-300 text-xs sm:text-sm">
-                Call our mobile dispatch hub now for immediate free phone estimates and fast NH mobile dispatch.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 shrink-0 w-full sm:w-auto">
-              <a
-                href={phoneRaw}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm transition-all shadow-md active:scale-98 cursor-pointer text-center"
-              >
-                <PhoneCall className="w-4 h-4 text-white shrink-0" />
-                <span>Call Dispatch Now</span>
-              </a>
-              <button
-                type="button"
-                onClick={onOpenCallback}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-slate-950 hover:bg-black text-white font-bold text-xs sm:text-sm transition-all border border-slate-700 active:scale-98 cursor-pointer text-center"
-              >
-                <Clock className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Request Callback</span>
-              </button>
-            </div>
-          </div>
-        </ScrollReveal>
       </div>
 
       {/* Lightbox Modal with Multi-Photo Switcher */}
@@ -736,6 +870,7 @@ export function GallerySection({
                   src={currentModalImage}
                   alt={selectedJob.title}
                   fill
+                  sizes="(max-width: 768px) 96vw, 768px"
                   priority
                   className="object-contain"
                 />
@@ -801,6 +936,7 @@ export function GallerySection({
                       src={img}
                       alt={`Thumbnail ${idx + 1}`}
                       fill
+                      sizes="64px"
                       className="object-cover"
                     />
                   </button>

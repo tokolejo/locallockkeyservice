@@ -50,7 +50,7 @@ export function AnalyticsCards({ requests }: AnalyticsCardsProps) {
           </div>
           <div className="text-2xl font-bold tracking-tight text-slate-900 tabular-nums">{completedJobs}</div>
           <p className="text-[11px] text-slate-500 mt-1 flex items-center gap-1">
-            <span className="text-emerald-700 font-semibold">100%</span> damage-free verified
+            <span className="text-emerald-700 font-semibold">100%</span> service verified
           </p>
         </div>
 

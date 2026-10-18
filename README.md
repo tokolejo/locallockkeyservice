@@ -1,26 +1,33 @@
 # 🔑 Local Lock & Key Service — 24/7 Mobile Locksmith & Dispatch Platform
 
-A production-ready, high-performance web platform and administrative dispatch system for emergency locksmith services in Manchester, NH and surrounding areas. Built with **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS v4**, and **Supabase (PostgreSQL + Auth + Storage)**.
+A production-ready, ultra-fast web platform and administrative dispatch system for emergency and scheduled mobile locksmith services in Manchester, NH and throughout Southern New Hampshire. Built with **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS v4**, and **Supabase (PostgreSQL + Auth + Storage)**.
 
 ---
 
 ## 🌟 Key Features
 
 ### 🚀 Public Experience
-- **24/7 Emergency Dispatch:** Instant call-to-action buttons, emergency hotline integration, and quick dispatch request modal with live price estimation.
-- **Service Catalog:** Detailed coverage of Automotive (car lockouts, key duplication, transponders), Residential (rekeying, deadbolt install, emergency lockouts), and Commercial lock systems.
-- **Dynamic Work Gallery:** Showcase completed locksmith jobs with multi-photo support, category filtering, and modal photo viewers.
-- **Social Proof & Reviews:** Live rating displays, customer testimonials, and automated Google Reviews sync.
-- **Local SEO & Schema.org:** Pre-configured JSON-LD Structured Data (`LocalBusiness` / `Locksmith`), OpenGraph tags, dynamic `sitemap.xml`, and search engine `robots.txt`.
+- **24/7 Mobile Dispatch:** Instant call-to-action triggers, direct phone dialer integration, and interactive on-demand callback request flow.
+- **Compact & High-Converting Service Grid:**
+  - **Automotive Locksmith:** Car lockouts, laser key cutting, smart key fob programming roadside.
+  - **Residential Locksmith:** Rekeying, lock replacement, fresh deadbolt boring, kick-in reinforcement.
+  - **Commercial Security:** ADA panic exit bars, master key systems, Grade 1 mortise & storefront locks.
+  - **Safe & Vault:** Non-destructive dial manipulation, electronic keypad diagnostics, combination resets.
+- **Detailed Service Modal:** Fast, focused popup displaying service scope, procedures, and capabilities with one-click category switching.
+- **Dynamic Recent Jobs Gallery:** Clean visual showcase of completed field work across New Hampshire with tag filtering and full-screen image preview.
+- **Verified Customer Reviews:** Google Reviews integration with 5.0-star rating summary and real client feedback.
+- **Collapsible NH Coverage Directory:** Comprehensive directory covering 63+ towns and ZIP codes across 6 key regions (Manchester, Greater Manchester, Nashua, Concord, Salem/Derry, and Laconia) with live search and collapsible accordions.
+- **Local SEO & Schema.org:** Pre-configured JSON-LD Structured Data (`Locksmith` / `LocalBusiness`), OpenGraph tags, dynamic `sitemap.xml`, and clean search engine indexing.
 
 ### 🛡️ Secure Admin Portal (`/admin`)
-- **Interactive Dispatch Kanban & Table:** Real-time job tracking (`pending` ➔ `assigned` ➔ `in_progress` ➔ `completed` ➔ `cancelled`).
-- **CMS Content Management:** Easily update services, emergency hero slides, gallery portfolio, and coverage areas without redeploying.
-- **Audit Logs:** Automated tracking of all admin actions and critical system events.
-- **Robust Security:**
+- **Interactive Dispatch Kanban & Table:** Real-time job lifecycle tracking (`pending` ➔ `assigned` ➔ `in_progress` ➔ `completed` ➔ `cancelled`).
+- **CMS Content Management:** Manage site copy, service categories, job portfolio, and service area data without redeploying.
+- **Audit Logs:** Automated tracking of all admin actions and critical system security events.
+- **Enterprise-Grade Database Security:**
   - Supabase SSR Cookie-based authentication.
   - Protected API routes and page-level middleware guards.
   - PostgreSQL Row-Level Security (RLS) policies.
+  - Search path hardening (`SET search_path = ''` / `public, auth`) and isolated private schemas (`app_private`) to prevent search path hijacking.
 
 ---
 
@@ -61,7 +68,7 @@ Fill in your configuration:
 | `NEXT_PUBLIC_WHATSAPP_PHONE` | WhatsApp number with country code |
 | `NEXT_PUBLIC_APP_NAME` | Business brand name |
 | `NEXT_PUBLIC_CITY_REGION` | Operating service region |
-| `NEXT_PUBLIC_SITE_URL` | Production website URL (e.g. `https://yourdomain.com`) |
+| `NEXT_PUBLIC_SITE_URL` | Production website URL (e.g. `https://locallockkeyservice.com`) |
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon public API key |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role secret key |

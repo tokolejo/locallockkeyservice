@@ -1,232 +1,93 @@
 "use client";
 
-import React, { useState, useMemo, useRef } from "react";
-import { MapPin, PhoneCall, Search, ChevronLeft, ChevronRight } from "lucide-react";
-import { CoverageArea } from "@/types/database.types";
+import React, { useState, useMemo } from "react";
+import { Search, ChevronDown, ChevronUp, ChevronsUpDown } from "lucide-react";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 
-interface CoverageMapProps {
-  coverageAreas?: CoverageArea[];
-  onSelectArea?: (area: CoverageArea) => void;
-  onOpenMapPicker?: () => void;
-}
+import {
+  LocationItem,
+  RegionGroup,
+  NH_SERVICE_AREAS_DATA,
+} from "@/lib/data/coverage-areas";
 
-const NH_REGIONS_TOWNS = [
-  {
-    title: "Manchester",
-    towns: ["Manchester"],
-  },
-  {
-    title: "Greater Manchester",
-    towns: [
-      "Auburn",
-      "Bedford",
-      "Candia",
-      "Chester",
-      "Deerfield",
-      "Dunbarton",
-      "Fremont",
-      "Goffstown",
-      "Hooksett",
-      "New Boston",
-      "Raymond",
-      "Weare",
-    ],
-  },
-  {
-    title: "Greater Nashua",
-    towns: [
-      "Amherst",
-      "Brookline",
-      "Hollis",
-      "Hudson",
-      "Litchfield",
-      "Merrimack",
-      "Milford",
-      "Mont Vernon",
-      "Nashua",
-    ],
-  },
-  {
-    title: "Greater Salem/Derry",
-    towns: [
-      "Derry",
-      "Hampstead",
-      "Londonderry",
-      "Pelham",
-      "Salem",
-      "Sandown",
-      "Windham",
-    ],
-  },
-  {
-    title: "Greater Concord",
-    towns: [
-      "Allenstown",
-      "Boscawen",
-      "Bow",
-      "Canterbury",
-      "Chichester",
-      "Concord",
-      "Contoocook",
-      "Epsom",
-      "Henniker",
-      "Hopkinton",
-      "Loudon",
-      "Pembroke",
-      "Penacook",
-      "Pittsfield",
-    ],
-  },
-  {
-    title: "Greater Laconia",
-    towns: [
-      "Alton",
-      "Andover",
-      "Ashland",
-      "Belmont",
-      "Bristol",
-      "Franklin",
-      "Gilford",
-      "Gilmanton",
-      "Laconia",
-      "Meredith",
-      "Moultonborough",
-      "New London",
-      "Tilton",
-      "Warner",
-      "Webster",
-      "Wolfeboro",
-    ],
-  },
-];
+export type { LocationItem, RegionGroup };
+export { NH_SERVICE_AREAS_DATA };
 
-export function CoverageMap({}: CoverageMapProps) {
-  const [selectedRegionIndex, setSelectedRegionIndex] = useState<number>(0);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const phoneRaw = process.env.NEXT_PUBLIC_DISPATCH_PHONE_RAW || "tel:+16032905554";
+export function CoverageMap() {
+  const [searchQuery, setSearchQuery] = useState("");
+  // All regions 100% collapsed by default
+  const [expandedRegions, setExpandedRegions] = useState<Record<string, boolean>>({});
 
-  const allTownsWithRegion = useMemo(() => {
-    return NH_REGIONS_TOWNS.flatMap((r) =>
-      r.towns.map((t) => ({ town: t, region: r.title }))
-    );
+  const totalTowns = useMemo(() => {
+    return NH_SERVICE_AREAS_DATA.reduce((acc, curr) => acc + curr.locations.length, 0);
   }, []);
 
-  const searchResults = useMemo(() => {
-    if (!searchQuery.trim()) return null;
-    const q = searchQuery.toLowerCase().trim();
-    return allTownsWithRegion.filter(
-      (item) => item.town.toLowerCase().includes(q) || item.region.toLowerCase().includes(q)
-    );
-  }, [searchQuery, allTownsWithRegion]);
-
-  const activeRegion = NH_REGIONS_TOWNS[selectedRegionIndex] || NH_REGIONS_TOWNS[0];
-
-  const tabsScrollRef = useRef<HTMLDivElement>(null);
-
-  const scrollTabs = (direction: "left" | "right") => {
-    if (tabsScrollRef.current) {
-      const scrollAmount = direction === "left" ? -200 : 200;
-      tabsScrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
-    }
+  const toggleRegion = (regionName: string) => {
+    setExpandedRegions((prev) => ({
+      ...prev,
+      [regionName]: !prev[regionName],
+    }));
   };
+
+  const isAllExpanded = useMemo(() => {
+    return NH_SERVICE_AREAS_DATA.every((g) => expandedRegions[g.region]);
+  }, [expandedRegions]);
+
+  const toggleAll = () => {
+    const nextState = !isAllExpanded;
+    const updated: Record<string, boolean> = {};
+    NH_SERVICE_AREAS_DATA.forEach((g) => {
+      updated[g.region] = nextState;
+    });
+    setExpandedRegions(updated);
+  };
+
+  const filteredAreas = useMemo(() => {
+    if (!searchQuery.trim()) return NH_SERVICE_AREAS_DATA;
+    const q = searchQuery.toLowerCase().trim();
+
+    return NH_SERVICE_AREAS_DATA.map((group) => {
+      const matchingLocations = group.locations.filter(
+        (loc) =>
+          loc.city.toLowerCase().includes(q) ||
+          loc.zip.includes(q) ||
+          group.region.toLowerCase().includes(q)
+      );
+      return {
+        ...group,
+        locations: matchingLocations,
+      };
+    }).filter((group) => group.locations.length > 0);
+  }, [searchQuery]);
 
   return (
     <section
       id="coverage"
-      className="py-8 sm:py-12 bg-[#faf9f6] border-b border-slate-200 text-slate-800 scroll-mt-28"
+      className="py-10 sm:py-14 bg-white border-b border-slate-200 text-slate-800 scroll-mt-24"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ScrollReveal direction="up">
-          <div className="bg-white border border-slate-200 rounded-3xl p-5 sm:p-7 md:p-8 shadow-xs space-y-6">
-            {/* Header: Title & Description on Left, Direct Dispatch Call Button on Right */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="max-w-2xl">
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
-                  New Hampshire Service Area
-                </h2>
-                <p className="text-slate-600 text-xs sm:text-sm mt-1">
-                  Mobile locksmith service dispatched across Greater Manchester and surrounding New Hampshire communities.
-                </p>
-              </div>
-
-              {/* Call Dispatch Button on Right */}
-              <a
-                href={phoneRaw}
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-slate-950 hover:bg-black text-white text-xs font-bold transition shadow-xs cursor-pointer shrink-0"
-              >
-                <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Call Dispatch: +1 (603) 290-5554</span>
-              </a>
+          {/* Header Row: Title & Subtitle + Search & Toggle (Standard full max-w-7xl width) */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-200">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+                New Hampshire Service Area
+              </h2>
+              <p className="text-slate-600 text-xs sm:text-sm mt-1">
+                Serving {totalTowns}+ towns across Greater Manchester, Nashua, Concord, Salem, Derry &amp; Laconia.
+              </p>
             </div>
 
-            {/* Filter Controls: Regional Tabs with Left/Right Scroll Arrows + Instant Town Search */}
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pt-2">
-              {/* Regional Tabs with Navigation Arrows */}
-              <div className="flex items-center gap-1.5 flex-1 min-w-0">
-                <button
-                  type="button"
-                  onClick={() => scrollTabs("left")}
-                  aria-label="Scroll regions left"
-                  className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 flex items-center justify-center shrink-0 transition active:scale-95 shadow-2xs cursor-pointer"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-
-                <div
-                  ref={tabsScrollRef}
-                  className="flex items-center gap-1.5 overflow-x-auto no-scrollbar scroll-smooth flex-1 min-w-0 py-0.5"
-                >
-                  {NH_REGIONS_TOWNS.map((region, idx) => {
-                    const isActive = selectedRegionIndex === idx && !searchQuery;
-                    return (
-                      <button
-                        key={region.title}
-                        type="button"
-                        onClick={() => {
-                          setSelectedRegionIndex(idx);
-                          setSearchQuery("");
-                        }}
-                        className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 whitespace-nowrap ${
-                          isActive
-                            ? "bg-slate-900 text-white shadow-xs"
-                            : "bg-slate-100 hover:bg-slate-200/80 text-slate-700 border border-transparent"
-                        }`}
-                      >
-                        <span>{region.title}</span>
-                        <span
-                          className={`text-[10px] font-extrabold px-1.5 py-0.2 rounded-md ${
-                            isActive
-                              ? "bg-white/20 text-white"
-                              : "bg-slate-200 text-slate-600"
-                          }`}
-                        >
-                          {region.towns.length}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => scrollTabs("right")}
-                  aria-label="Scroll regions right"
-                  className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 flex items-center justify-center shrink-0 transition active:scale-95 shadow-2xs cursor-pointer"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* Instant Search Bar */}
-              <div className="relative w-full md:w-64 shrink-0">
+            {/* Compact Controls */}
+            <div className="flex items-center gap-2.5 shrink-0">
+              <div className="relative w-full sm:w-56">
                 <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search town (e.g. Bedford)..."
-                  className="w-full pl-8 pr-7 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                  placeholder="Search town or ZIP..."
+                  className="w-full pl-8 pr-7 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
                 />
                 {searchQuery && (
                   <button
@@ -238,78 +99,89 @@ export function CoverageMap({}: CoverageMapProps) {
                   </button>
                 )}
               </div>
-            </div>
 
-            {/* Town Chips Container */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-slate-50/70 border border-slate-200/80">
-              {searchResults ? (
-                <div>
-                  <div className="text-xs font-semibold text-slate-500 mb-2.5">
-                    Found {searchResults.length} matching {searchResults.length === 1 ? "town" : "towns"}:
-                  </div>
-                  {searchResults.length > 0 ? (
-                    <div className="flex flex-wrap gap-2">
-                      {searchResults.map((item) => (
-                        <a
-                          key={item.town}
-                          href={phoneRaw}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-emerald-50 border border-slate-200/90 hover:border-emerald-400 text-xs font-bold text-slate-800 hover:text-emerald-950 transition-all shadow-2xs group cursor-pointer"
-                        >
-                          <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                          <span>{item.town}</span>
-                          <span className="text-[10px] text-slate-400 font-normal ml-0.5">
-                            ({item.region})
-                          </span>
-                        </a>
-                      ))}
+              {!searchQuery && (
+                <button
+                  type="button"
+                  onClick={toggleAll}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-bold transition cursor-pointer shrink-0 active:scale-95"
+                >
+                  <ChevronsUpDown className="w-3.5 h-3.5 text-slate-500" />
+                  <span>{isAllExpanded ? "Collapse All" : "Expand All"}</span>
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Harmonized 3-Column Grid across full 7xl layout - items-start ensures collapsed cards don't stretch */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-5 items-start">
+            {filteredAreas.map((group) => {
+              const isSearching = !!searchQuery.trim();
+              const isExpanded = isSearching || !!expandedRegions[group.region];
+
+              return (
+                <div
+                  key={group.region}
+                  className={`rounded-xl border transition-all duration-200 overflow-hidden ${
+                    isExpanded
+                      ? "border-slate-300 bg-white shadow-sm ring-1 ring-slate-200"
+                      : "border-slate-200 bg-slate-50/70 hover:bg-slate-100/80 hover:border-slate-300"
+                  }`}
+                >
+                  {/* Compact Accordion Header */}
+                  <button
+                    type="button"
+                    onClick={() => !isSearching && toggleRegion(group.region)}
+                    className="w-full flex items-center justify-between px-4 py-3 text-left cursor-pointer transition select-none"
+                  >
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="font-bold text-slate-900 text-sm tracking-tight truncate">
+                        {group.region}
+                      </span>
+                      <span className="text-[11px] font-medium text-slate-500 bg-white/80 border border-slate-200/80 px-2 py-0.5 rounded-full shrink-0">
+                        {group.locations.length} {group.region === "Manchester" ? "ZIPs" : "Towns"}
+                      </span>
                     </div>
-                  ) : (
-                    <div className="text-xs text-slate-500 py-2">
-                      No specific town found matching &quot;{searchQuery}&quot;. We cover most surrounding areas — call dispatch directly at{" "}
-                      <a href={phoneRaw} className="text-emerald-700 font-bold underline">
-                        +1 (603) 290-5554
-                      </a>.
+
+                    <div className="w-6 h-6 rounded-md flex items-center justify-center text-slate-400 group-hover:text-slate-700 transition-colors shrink-0">
+                      {isExpanded ? (
+                        <ChevronUp className="w-4 h-4 text-slate-600" />
+                      ) : (
+                        <ChevronDown className="w-4 h-4 text-slate-500" />
+                      )}
+                    </div>
+                  </button>
+
+                  {/* Expanded Town & ZIP Pills Grid */}
+                  {isExpanded && (
+                    <div className="px-3.5 pb-3.5 pt-1 border-t border-slate-100 bg-white">
+                      <div className="grid grid-cols-1 gap-1 max-h-80 overflow-y-auto pr-1">
+                        {group.locations.map((loc) => (
+                          <div
+                            key={loc.full}
+                            className="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-b-0"
+                          >
+                            <span className="text-xs font-medium text-slate-700 truncate">
+                              {loc.city}, {loc.state}
+                            </span>
+                            <span className="text-[11px] font-mono font-semibold text-emerald-700 bg-emerald-50/80 px-1.5 py-0.5 rounded border border-emerald-100 shrink-0">
+                              {loc.zip}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
-              ) : (
-                <div>
-                  <div className="flex items-center justify-between mb-2.5">
-                    <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                      {activeRegion.title} Communities
-                    </span>
-                    <span className="text-xs text-slate-400">
-                      {activeRegion.towns.length} towns
-                    </span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {activeRegion.towns.map((town) => (
-                      <a
-                        key={town}
-                        href={phoneRaw}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-emerald-50 border border-slate-200/90 hover:border-emerald-400 text-xs font-bold text-slate-800 hover:text-emerald-950 transition-all shadow-2xs group cursor-pointer"
-                      >
-                        <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                        <span>{town}</span>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Bottom Reassurance (Clean, No Arrival Times) */}
-              <div className="mt-4 pt-3.5 border-t border-slate-200/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-500 font-medium">
-                <span>Mobile locksmith dispatch available across all listed towns.</span>
-                <a
-                  href={phoneRaw}
-                  className="font-bold text-slate-900 hover:text-emerald-700 inline-flex items-center gap-1 transition-colors"
-                >
-                  <span>Need lockout service? Call (603) 290-5554</span>
-                  <ChevronRight className="w-3.5 h-3.5 text-emerald-600" />
-                </a>
-              </div>
-            </div>
+              );
+            })}
           </div>
+
+          {filteredAreas.length === 0 && (
+            <div className="text-center py-8 text-xs text-slate-500">
+              No towns or ZIP codes found matching &quot;{searchQuery}&quot;.
+            </div>
+          )}
         </ScrollReveal>
       </div>
     </section>

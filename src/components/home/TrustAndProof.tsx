@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import { ShieldCheck, Clock, FileCheck, PhoneCall, Star, Sparkles, ChevronLeft, ChevronRight, CheckCircle2, ExternalLink } from "lucide-react";
+import React, { useRef } from "react";
+import { Star, ChevronLeft, ChevronRight, CheckCircle2, ExternalLink } from "lucide-react";
 import { Testimonial } from "@/types/database.types";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
-import { CountUpNumber } from "@/components/animations/CountUpNumber";
 import { ReviewAvatar } from "@/components/ui/ReviewAvatar";
 
 interface TrustAndProofProps {
@@ -13,19 +12,6 @@ interface TrustAndProofProps {
 
 export function TrustAndProof({ testimonials = [] }: TrustAndProofProps) {
   const carouselRef = useRef<HTMLDivElement>(null);
-  const [googleStats, setGoogleStats] = useState<{ rating: number; totalReviews: number }>({
-    rating: 5.0,
-    totalReviews: testimonials?.length || 35
-  });
-
-  useEffect(() => {
-    if (testimonials?.length) {
-      setGoogleStats((prev) => ({
-        ...prev,
-        totalReviews: testimonials.length,
-      }));
-    }
-  }, [testimonials]);
 
   const scrollCarousel = (direction: "left" | "right") => {
     if (carouselRef.current) {
@@ -35,66 +21,8 @@ export function TrustAndProof({ testimonials = [] }: TrustAndProofProps) {
   };
 
   return (
-    <section id="reviews" className="py-6 sm:py-14 md:py-20 bg-white border-b border-slate-200 text-slate-800 scroll-mt-28">
-      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 space-y-6 sm:space-y-12 md:space-y-16">
-        {/* 0. Live Scroll-Triggered Impact Numbers */}
-        <ScrollReveal direction="up">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4 p-2.5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl bg-radial from-slate-900 to-slate-950 text-white shadow-xl shadow-slate-900/10 border border-slate-800">
-            <div className="text-center p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/5">
-              <div className="flex items-center justify-center gap-1 text-emerald-400 mb-0.5 sm:mb-1">
-                <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span className="text-lg sm:text-3xl font-black">
-                  24/7
-                </span>
-              </div>
-              <p className="text-[9px] sm:text-xs text-slate-400 font-medium truncate">
-                Fast Mobile Patrol
-              </p>
-            </div>
-
-            <div className="text-center p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/5">
-              <div className="flex items-center justify-center gap-1 text-emerald-400 mb-0.5 sm:mb-1">
-                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span className="text-lg sm:text-3xl font-black">
-                  <CountUpNumber end={830} suffix="+" />
-                </span>
-              </div>
-              <p className="text-[9px] sm:text-xs text-slate-400 font-medium truncate">
-                Successful Lockouts
-              </p>
-            </div>
-
-            <div className="text-center p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/5">
-              <div className="flex items-center justify-center gap-1 text-emerald-400 mb-0.5 sm:mb-1">
-                <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                <span className="text-lg sm:text-3xl font-black">
-                  <CountUpNumber end={99.8} decimals={1} suffix="%" />
-                </span>
-              </div>
-              <p className="text-[9px] sm:text-xs text-slate-400 font-medium truncate">
-                Zero Damage Entry Rate
-              </p>
-            </div>
-
-            <a
-              href="https://maps.app.goo.gl/j9Zvw9xhNKP5Rgk29"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-center p-2 sm:p-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/5 hover:border-amber-400/50 hover:bg-white/10 transition group cursor-pointer block"
-              title="View Google Reviews"
-            >
-              <div className="flex items-center justify-center gap-1 text-amber-400 mb-0.5 sm:mb-1">
-                <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-400 group-hover:scale-110 transition-transform" />
-                <span className="text-lg sm:text-3xl font-black">
-                  <CountUpNumber end={googleStats.rating} decimals={1} suffix=" / 5.0" />
-                </span>
-              </div>
-              <p className="text-[9px] sm:text-xs text-slate-400 font-medium truncate group-hover:text-amber-300 transition-colors">
-                {googleStats.totalReviews} Google Reviews
-              </p>
-            </a>
-          </div>
-        </ScrollReveal>
+    <section id="reviews" className="py-10 sm:py-14 bg-white border-b border-slate-200 text-slate-800 scroll-mt-24">
+      <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8">
 
         {/* Google Reviews Showcase Section */}
         <div>

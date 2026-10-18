@@ -7,7 +7,6 @@ import { ScrollProgressBar } from "@/components/animations/ScrollProgressBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { HeroSection } from "@/components/home/HeroSection";
-import { AboutUsSection } from "@/components/home/AboutUsSection";
 import { ServicesSection } from "@/components/home/ServicesSection";
 import { GallerySection } from "@/components/home/GallerySection";
 import { CoverageMap } from "@/components/home/CoverageMap";
@@ -64,6 +63,12 @@ function HomeContent({ initialData }: { initialData: HomePageInitialData }) {
     initialData.serviceScenarios || []
   );
   const [isCallbackOpen, setIsCallbackOpen] = useState(false);
+  const [callbackPrefill, setCallbackPrefill] = useState<{ service?: string; notes?: string }>({});
+
+  const handleOpenCallback = (prefill?: { service?: string; notes?: string }) => {
+    setCallbackPrefill(prefill || {});
+    setIsCallbackOpen(true);
+  };
 
   // Ensure page always starts at top on fresh load if no URL hash is present
   useEffect(() => {
@@ -112,7 +117,7 @@ function HomeContent({ initialData }: { initialData: HomePageInitialData }) {
       {/* Top Header */}
       <Header
         siteSettings={siteSettings}
-        onOpenCallback={() => setIsCallbackOpen(true)}
+        onOpenCallback={() => handleOpenCallback()}
       />
 
       {/* Main Page Sections */}
@@ -121,48 +126,47 @@ function HomeContent({ initialData }: { initialData: HomePageInitialData }) {
         <HeroSection
           slides={heroSlides}
           siteSettings={siteSettings}
-          onOpenCallback={() => setIsCallbackOpen(true)}
+          onOpenCallback={handleOpenCallback}
         />
 
-        {/* 2. Authentic About Us Section with Image Slider */}
-        <AboutUsSection />
-
-        {/* 3. Consolidated Services & Instant Direct Estimate Selection */}
+        {/* 2. Unified Ultra-Compact Services & About Us Section */}
         <ServicesSection
           categories={serviceCategories}
           scenarios={serviceScenarios}
           siteSettings={siteSettings}
-          onOpenCallback={() => setIsCallbackOpen(true)}
+          onOpenCallback={() => handleOpenCallback()}
         />
 
-        {/* 4. Authentic Photo Gallery & Proof of Work with Cover Image selection */}
+        {/* 3. Authentic Photo Gallery & Proof of Work (Recent Jobs - UNCHANGED) */}
         <GallerySection
           items={galleryItems}
           siteSettings={siteSettings}
-          onOpenCallback={() => setIsCallbackOpen(true)}
+          onOpenCallback={() => handleOpenCallback()}
         />
 
-        {/* 5. Streamlined Service Coverage with Instant Direct Call */}
-        <CoverageMap coverageAreas={coverageAreas} />
-
-        {/* 6. Trust, Credibility & Security Proof (ID Requirement, Reviews, Numbers) */}
+        {/* 4. Trust, Credibility & Security Proof (Google Reviews) */}
         <TrustAndProof testimonials={testimonials} />
+
+        {/* 5. New Hampshire Service Area (Directory) */}
+        <CoverageMap />
       </main>
 
       {/* Footer */}
       <Footer
         siteSettings={siteSettings}
-        onOpenCallback={() => setIsCallbackOpen(true)}
+        onOpenCallback={() => handleOpenCallback()}
       />
 
       {/* Floating Emergency Mobile Bottom Bar */}
-      <EmergencyMobileBar onOpenCallback={() => setIsCallbackOpen(true)} />
+      <EmergencyMobileBar onOpenCallback={() => handleOpenCallback()} />
 
       {/* Callback Request Modal */}
       <CallbackModal
         isOpen={isCallbackOpen}
         onClose={() => setIsCallbackOpen(false)}
         siteSettings={siteSettings}
+        initialService={callbackPrefill.service}
+        initialNotes={callbackPrefill.notes}
       />
     </div>
   );

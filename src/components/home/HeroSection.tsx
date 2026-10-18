@@ -29,7 +29,7 @@ interface HeroSectionProps {
     subType?: string;
   }) => void;
   onOpenMapPicker?: () => void;
-  onOpenCallback?: () => void;
+  onOpenCallback?: (prefill?: { service?: string; notes?: string }) => void;
 }
 
 const HERO_SLIDES = [
@@ -47,8 +47,8 @@ const HERO_SLIDES = [
   },
   {
     src: "/gallery/toyota-car-key.jpg",
-    title: "Car/Truck Locksmith",
-    badge: "Car/Truck Locksmith",
+    title: "Car Truck Locksmith",
+    badge: "Car Truck Locksmith",
     location: "Manchester & Surrounding NH",
   },
   {
@@ -132,7 +132,7 @@ export function HeroSection({
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#faf9f6] text-slate-800 pt-5 pb-8 sm:pt-9 sm:pb-16 lg:pt-10 lg:pb-20 border-b border-slate-200">
+    <section className="relative overflow-hidden bg-[#faf9f6] text-slate-800 pt-4 pb-6 sm:pt-7 sm:pb-10 lg:pt-8 lg:pb-12 border-b border-slate-200">
       {/* Subtle modern background grid & dot texture */}
       <div className="absolute inset-0 bg-hero-dots opacity-40 pointer-events-none [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_85%)]" />
 
@@ -142,16 +142,6 @@ export function HeroSection({
       <div className="absolute top-1/2 left-1/3 w-80 h-80 bg-teal-100/25 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        {/* Prominent Centered Brand Header directly below the menu */}
-        <div className="mb-6 sm:mb-8 md:mb-10 flex items-center justify-center text-center w-full">
-          <div className="inline-flex items-center justify-center gap-2.5 sm:gap-3.5 px-5 py-2.5 sm:px-8 sm:py-3.5 rounded-2xl sm:rounded-3xl bg-slate-950 border border-emerald-500/40 text-white shadow-xl shadow-slate-950/20 max-w-full">
-            <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-emerald-400 animate-pulse shrink-0 shadow-xs" />
-            <span className="text-sm sm:text-lg md:text-xl lg:text-2xl font-black tracking-wide uppercase text-white leading-tight">
-              LOCAL LOCK &amp; KEY SERVICE • 24/7 Mobile Service
-            </span>
-          </div>
-        </div>
-
         {/* Main Content Grid: Texts on Left, Slider on Right (Top-aligned in the same horizontal plane!) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Left Column: Headline, Description & ONLY Call + Callback CTAs */}
@@ -172,15 +162,25 @@ export function HeroSection({
                 {/* New Hampshire Service Areas Overview & Anchor */}
                 <div className="space-y-2">
                   <p className="text-sm sm:text-base md:text-lg text-slate-700 leading-relaxed font-normal">
-                    <strong className="font-extrabold text-slate-950">New Hampshire Service Areas:</strong> Serving Greater Manchester, Nashua, Concord, Salem, Derry, Laconia &amp; 45+ surrounding communities across Southern &amp; Central NH. Fast, reliable 24/7 mobile locksmith service with 100% damage-free entry guarantee.
+                    <strong className="font-extrabold text-slate-950">New Hampshire Service Areas:</strong> Serving Greater Manchester, Nashua, Concord, Salem, Derry, Laconia &amp; 63+ surrounding communities across Southern &amp; Central NH with fast 24/7 mobile locksmith service.
                   </p>
                   <div>
                     <a
                       href="#coverage"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const el = document.getElementById("coverage");
+                        if (el) {
+                          const headerOffset = window.innerWidth >= 768 ? 115 : 95;
+                          const top = el.getBoundingClientRect().top + window.scrollY - headerOffset;
+                          window.scrollTo({ top, behavior: "smooth" });
+                          window.history.pushState(null, "", "#coverage");
+                        }
+                      }}
                       className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-emerald-700 hover:text-emerald-900 transition cursor-pointer"
                     >
                       <MapPin className="w-3.5 h-3.5" />
-                      <span>View All 50+ Communities We Serve ↓</span>
+                      <span>View All 63+ Communities We Serve ↓</span>
                     </a>
                   </div>
                 </div>
@@ -199,7 +199,7 @@ export function HeroSection({
                   {/* 2. Secondary Request Callback CTA */}
                   <button
                     type="button"
-                    onClick={onOpenCallback}
+                    onClick={() => onOpenCallback?.()}
                     className="flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.98] text-white px-8 py-4 rounded-2xl font-bold text-base tracking-wide shadow-lg shadow-emerald-600/20 transition-all duration-200 hover:-translate-y-0.5 cursor-pointer border border-emerald-500/40"
                   >
                     <Clock className="w-5 h-5 text-emerald-100 shrink-0" />
@@ -296,27 +296,27 @@ export function HeroSection({
               </h3>
             </div>
 
-            {/* Continuous Marquee Track on a single line */}
-            <div className="relative w-full max-w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent_0%,black_5%,black_95%,transparent_100%)] py-1">
-              <div className="animate-marquee flex items-center gap-2.5">
+            {/* Continuous Marquee Track with floating enlarged logos */}
+            <div className="relative w-full max-w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent_0%,black_5%,black_95%,transparent_100%)] py-2">
+              <div className="animate-marquee flex items-center gap-6 sm:gap-8">
                 {[...POPULAR_CAR_MAKES, ...POPULAR_CAR_MAKES].map((carName, idx) => (
                   <button
                     key={`${carName}-${idx}`}
                     type="button"
-                    onClick={() => {
-                      if (onOpenDispatchModal) {
-                        onOpenDispatchModal({
-                          category: "automotive",
-                          subType: `Car Lockout - ${carName}`,
-                        });
-                      }
-                    }}
-                    className="group/brand inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white hover:bg-emerald-50 border border-slate-200 hover:border-emerald-400 text-slate-800 hover:text-emerald-950 shadow-2xs hover:shadow-xs transition cursor-pointer shrink-0"
+                    onClick={() =>
+                      onOpenCallback?.({
+                        service: "Car Truck Locksmith",
+                        notes: `${carName} key programming / lockout service`,
+                      })
+                    }
+                    title={`Request 24/7 Locksmith Callback for ${carName}`}
+                    aria-label={`Request Locksmith Callback for ${carName} Keys and Lockout`}
+                    className="inline-flex items-center justify-center p-1.5 sm:p-2 shrink-0 select-none cursor-pointer transition-all duration-200 hover:scale-115 active:scale-95 focus:outline-none group"
                   >
-                    <CarBrandIcon brand={carName} className="w-4 h-4 text-slate-500 group-hover/brand:text-emerald-700 transition-colors shrink-0" />
-                    <span className="text-xs font-bold tracking-tight text-slate-900 group-hover/brand:text-emerald-950">
-                      {carName}
-                    </span>
+                    <CarBrandIcon
+                      brand={carName}
+                      className="h-8 sm:h-9 w-12 sm:w-16 shrink-0 object-contain pointer-events-none drop-shadow-2xs group-hover:drop-shadow-sm transition-all"
+                    />
                   </button>
                 ))}
               </div>

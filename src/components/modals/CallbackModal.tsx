@@ -22,12 +22,14 @@ interface CallbackModalProps {
   isOpen: boolean;
   onClose: () => void;
   siteSettings?: SiteSettings;
+  initialService?: string;
+  initialNotes?: string;
 }
 
 const SERVICE_OPTIONS = [
   { id: "Residential Locksmith", label: "Residential Locksmith", icon: Home },
   { id: "Commercial Locksmith", label: "Commercial Locksmith", icon: Building2 },
-  { id: "Car/Truck Locksmith", label: "Car/Truck Locksmith", icon: Car },
+  { id: "Car Truck Locksmith", label: "Car Truck Locksmith", icon: Car },
   { id: "Emergency Locksmith", label: "Emergency Locksmith", icon: ShieldCheck },
   { id: "Safe Locksmith", label: "Safe Locksmith", icon: Vault },
 ];
@@ -40,10 +42,16 @@ function formatUsPhoneNumber(value: string): string {
   return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
 }
 
-export function CallbackModal({ isOpen, onClose, siteSettings }: CallbackModalProps) {
+export function CallbackModal({
+  isOpen,
+  onClose,
+  siteSettings,
+  initialService,
+  initialNotes = "",
+}: CallbackModalProps) {
   const [phone, setPhone] = useState("");
-  const [selectedService, setSelectedService] = useState(SERVICE_OPTIONS[0].id);
-  const [notes, setNotes] = useState("");
+  const [selectedService, setSelectedService] = useState(initialService || SERVICE_OPTIONS[0].id);
+  const [notes, setNotes] = useState(initialNotes);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -74,8 +82,14 @@ export function CallbackModal({ isOpen, onClose, siteSettings }: CallbackModalPr
     if (isOpen) {
       setIsSuccess(false);
       setErrorMessage("");
+      if (initialService) {
+        setSelectedService(initialService);
+      }
+      if (initialNotes !== undefined) {
+        setNotes(initialNotes);
+      }
     }
-  }, [isOpen]);
+  }, [isOpen, initialService, initialNotes]);
 
   if (!isOpen) return null;
 
